@@ -3,15 +3,21 @@ with Ada.Exceptions;      use Ada.Exceptions;
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with TJa.Sockets;         use TJa.Sockets;
-
 procedure Klient is
+   function Read(C: in Character)
+		return Integer is
+      S: String(1..1);
+   begin
+      S(1) := C;
+      return Integer'Value(S);
+   end;
    
    --Socket_type används för att kunna kommunicera med en server
    Socket : Socket_Type;
-
-   Text      : String(1..100); --Används för att ta emot text från användaren
-   Textlangd : Natural;        --Kommer innehålla längden på denna text
-   Resultat  : Natural;        --Resultatet från servern
+   TX     : String(1..100); --Används för att ta emot text från användaren
+   TL : Natural;        --Kommer innehålla längden på denna text
+   A: Natural;        --Resultatet från servern
+   
 
 
 begin
@@ -29,31 +35,42 @@ begin
    Initiate(Socket);
 
    -- Ansluter till servern
+   -------------------------------------------------------------
    Connect(Socket, Argument(1), Positive'Value(Argument(2)));
-
-    
-   loop
+   Get_Line(Socket, TX, TL);
+   if TX(1) = '1' then
+      Put("Du är spelare 1, väntar på spelare 2");
+      Get_Line(Socket, TX, TL);
+      New_Line;
+      if TX(1) = '3' then
+	 Put("Båda spelare anslutna");
+      end if;
       
-      --Läser in en sträng från användaren
-      Put_Line("Skriv en sträng, skriv exit för att avsluta");
-      Get_Line(Text,Textlangd);
-      if Textlangd=100 then Skip_Line; end if;
+   elsif TX(1) = '2' then
+      Put("Du är spelare 2");
+   end if;
+   New_Line;
+   Put("Nu startar spelet");
+   --------------------------------------------------------------
+   Put("4");
+   Get_Line(Socket, TX, TL);
+   Put("5");
+   if TX(1) = '4' then
+      A := Read(TX(2));
+      Put(A, 1);
+      for X in  1..A loop
+	Put("Tärning "); Put(X, 1);
+	New_Line;
+	Put(TX(X+2));
+	New_Line;
+	
+      end loop;
       
-      --Avslutar vid exit
-      exit when Text(1..4) = "exit";
-      
-      --Annars skickas strängen till servern
-      Put_Line(Socket,Text(1..Textlangd));
-      
-      --Och resultatet tas emot
-      Get(Socket,Resultat);
-      
-      --och skrivs ut på skärmen
-      Put("Stänggen innehöll ");
-      Put(Resultat,Width=>0);
-      Put_Line(" st E");
-      
-   end loop;
+   end if;
+   
+  
+   
+   
    
    --Innan programmet avslutar stängs socketen, detta genererar ett exception
    --hos servern, pss kommer denna klient få ett exception när servern avslutas

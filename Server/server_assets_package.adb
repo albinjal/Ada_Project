@@ -55,6 +55,19 @@ package body Server_Assets_Package is
       
    end;
    
-   
+   procedure Yatzy(Socket1, Socket2: in out Socket_Type) is
+      TX: String(1..100);
+      TL: Integer;
+   begin
+     Put(Socket1, "45"); Put(Socket1, Roll(1..5)); New_Line(Socket1);
+     Put_Line(Socket2,"50");
+     Get_Line(Socket1, TX, TL);
+     if TX(1) = '5' then
+	if TX(2) = '1' then
+	   Put_Line(Socket2, "51");
+	end if;
+     end if;
+     
+   end;
    
 end;

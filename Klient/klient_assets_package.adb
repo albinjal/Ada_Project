@@ -65,7 +65,12 @@ package body Klient_Assets_Package is
 	
       elsif TX(1) = '5' then
 	 -- 5 betyder info om gamestate
-	 Roll.I := 6;
+	 if TX(2) = '0' then
+	    Roll.I := 6;
+	 elsif TX(2) = '1' then
+	    Roll.I := 7;
+	 end if;
+	 
    else
       raise DATATYPE_ERROR;
       
@@ -83,6 +88,11 @@ package body Klient_Assets_Package is
 		return Arr is
    begin
       return Roll.Rolls;
+   end;
+   
+   procedure Playerroll(Socket: in Socket_Type) is
+   begin
+      Put_Line(Socket, "51");
    end;
    
 

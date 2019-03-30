@@ -24,10 +24,9 @@ begin
    end if;
    --| Initierar lyssnaren på en port (klienter bara utanför "localhost").\
    Connect_To_Klients(Socket1, Socket2, Lyssnare, Natural'Value(Argument(1)));
-   
-     Put(Socket1, "45"); Put(Socket1, Roll(1..5)); New_Line(Socket1);
-     Put_Line(Socket2,"5");
-   
+   Yatzy(Socket1, Socket2);
+     
+     
    
    
    

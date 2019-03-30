@@ -17,6 +17,7 @@ package klient_assets_package is
      function GetI(Roll: in Rolls_Type)
 		  return Integer;
      
+     procedure Playerroll(Socket: in Socket_Type);
    
 private
    

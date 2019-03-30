@@ -6,7 +6,8 @@ package Server_Assets_Package is
    
    procedure Connect_To_Klients(Socket1, Socket2: in out Socket_Type;
 				Lyssnare : in out Listener_Type;
-			       Port: in Positive);
+				Port: in Positive);
+   procedure Yatzy(Socket1, Socket2: in out Socket_Type);
 private
    
 end;

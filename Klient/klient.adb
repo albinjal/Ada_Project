@@ -12,6 +12,7 @@ procedure Klient is
    Player : Positive;
    Roll: Rolls_Type;
    Result : Arr;
+   Placement: Integer;
 
 begin
    --Denna rutin kontrollerar att programmet startas med två parametrar.
@@ -28,14 +29,29 @@ begin
    Start_Game(Socket, Player);
    Get_Rolls(Socket, Roll);
    if GetI(Roll) > 5 then
-      Put("Spelare "); Put(3-Player,1); Put(" slår");
+      loop
+	 if GetI(Roll) = 6 then
+	    Put("Spelare "); Put(3-Player,1); Put(" slår");
+	    Get_Rolls(Socket, Roll);
+	 elsif GetI(Roll) = 7 then
+	    Put("Spelare ");  Put(3-Player,1); Put(" har slagit");
+	    exit;
+	    
+	 end if;
+      end loop;
+      
    else
       Result := GetR(Roll);
+      Put("Din tur"); New_Line;
+      Put("Tryck enter för att slå...");
+      Skip_Line;
+      Playerroll(Socket);
+      Put("Wow, du fick:"); New_Line;
       for X in 1..GetI(Roll) loop
-	 New_Line;
-	 Put(Result(X),1);
-	 New_Line;
+	 Put(Result(X),2);
       end loop;
+      Get(Placement);
+      
    end if;
       
 

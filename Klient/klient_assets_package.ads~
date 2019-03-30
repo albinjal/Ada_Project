@@ -1,7 +1,7 @@
 with TJa.Sockets;         use TJa.Sockets;
 package klient_assets_package is
    type Rolls_Type is private;
-   type Arr is array (1..5) of Integer;
+   type Arr is private;
    DATATYPE_ERROR: exception;
    
    procedure Bootup(Socket: out Socket_Type; Adress: in String; Port: in Positive);
@@ -12,14 +12,10 @@ package klient_assets_package is
    
    procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type);
    
-    function GetR(Roll: in Rolls_Type)
-		 return Arr;
-     function GetI(Roll: in Rolls_Type)
-		  return Integer;
-     
+   
    
 private
-   
+   type Arr is array(1..5) of Integer;
    
    type Rolls_Type is
       record

@@ -61,17 +61,31 @@ package body Klient_Assets_Package is
 	 for X in  1..Roll.I loop
 	    Roll.Rolls(X) := Read(TX(X+2));
 	 end loop;
-	 
+   
 	
       elsif TX(1) = '5' then
 	 -- 5 betyder info om gamestate
-	 Put("Annan spelare spelar");
+	 Roll.I := 6;
    else
       raise DATATYPE_ERROR;
       
       
-   end if;
+      end if;
    end;
+   
+   function GetI(Roll: in Rolls_Type)
+		return Integer is
+   begin
+      
+      return Roll.I;
+   end;
+   function GetR(Roll: in Rolls_Type)
+		return Arr is
+   begin
+      return Roll.Rolls;
+   end;
+   
+
    
       
       

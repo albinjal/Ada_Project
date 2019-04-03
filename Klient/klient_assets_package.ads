@@ -1,6 +1,7 @@
 with TJa.Sockets;         use TJa.Sockets;
 package klient_assets_package is
    type Rolls_Type is private;
+   type Protocoll_Type is array (1..15) of Integer;
    type Arr is array (1..5) of Integer;
    DATATYPE_ERROR: exception;
    

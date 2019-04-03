@@ -95,6 +95,46 @@ package body Klient_Assets_Package is
       Put_Line(Socket, "51");
    end;
    
+   
+   function Calcpoints(Prot: Protocoll_Type; Rolls: Arr)
+		      return Protocoll_Type is
+      
+      function Ental(I: Integer; Rolls: Arr)
+		    return Integer is
+	 
+	 C : Integer := 0;
+	 
+      begin
+	 for X in 1..5 loop
+	    if Rolls(X) = I then
+	       C := C + I;
+	    end if;
+	 end loop;
+	 return C;	    
+      end;
+      
+      function Pair(Rolls: Arr)
+		   return Integer is
+      begin
+	 
+      end;
+	
+      Result: Protocoll_Type;
+   begin
+      for I in 1..15 loop
+	 if Prot(I) /= -1 then
+	    Result(I) := -1;
+	 else
+	    case I is
+	       when 1..6 =>
+		  Result(I) := Ental(I, Rolls);
+		  
+	 end if;
+      end loop;
+	 
+      return Result;
+   end;
+     
 
    
       

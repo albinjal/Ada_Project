@@ -30,9 +30,6 @@ begin
    
    
    
-   
-   
-   
 exception
    --| Lite felhantering       
    when Constraint_Error =>

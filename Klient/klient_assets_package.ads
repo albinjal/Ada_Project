@@ -19,6 +19,9 @@ package klient_assets_package is
 		  return Integer;
      
      procedure Playerroll(Socket: in Socket_Type);
+     
+     function Calcpoints(Prot: Protocoll_Type; Rolls: Arr)
+		      return Protocoll_Type;
    
 private
    

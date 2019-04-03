@@ -13,12 +13,14 @@ procedure Klient is
    Roll: Rolls_Type;
    Result : Arr;
    Placement: Integer;
-
+   Pro : Protocoll_Type;
+   
 begin
    --Denna rutin kontrollerar att programmet startas med två parametrar.
    --Annars kastas ett fel.
    --Argumentet skall vara serverns adress och portnummer, t.ex.:
    --> klient localhost 3400
+   
    if Argument_Count /= 2 then
       Raise_Exception(Constraint_Error'Identity,
                       "Usage: " & Command_Name & " remotehost remoteport");
@@ -50,6 +52,17 @@ begin
       for X in 1..GetI(Roll) loop
 	 Put(Result(X),2);
       end loop;
+      for Y in 1..15 loop
+	 Pro(Y) := -1;
+      end loop;
+      
+      Pro := Calcpoints(Pro, Result);
+      New_Line;
+      for I in 1..15 loop
+	 Put(Pro(I),1);
+	 New_Line;
+      end loop;
+      
       Get(Placement);
       
    end if;

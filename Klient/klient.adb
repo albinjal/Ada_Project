@@ -5,17 +5,24 @@ with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with TJa.Sockets;         use TJa.Sockets;
 with Klient_Assets_Package; use Klient_Assets_Package;
 procedure Klient is
-
-   
+   type Rerolls is array(1..5) of Integer;
+   Reroll: Rerolls;
    --Socket_type används för att kunna kommunicera med en server
    Socket : Socket_Type;
    Player : Positive;
    Roll: Rolls_Type;
    Result : Arr;
-   Placement: Integer;
+   Placement, B: Integer;
    Pro : Protocoll_Type;
+   Continue, Switches: Integer;
+   TX : String(1..100);
+   TL : Integer;
    
 begin
+   for I in 1..5 loop
+      Reroll(I) := 0;
+   end loop;
+      
    --Denna rutin kontrollerar att programmet startas med två parametrar.
    --Annars kastas ett fel.
    --Argumentet skall vara serverns adress och portnummer, t.ex.:
@@ -43,27 +50,46 @@ begin
       end loop;
       
    else
-      Result := GetR(Roll);
       Put("Din tur"); New_Line;
-      Put("Tryck enter för att slå...");
-      Skip_Line;
-      Playerroll(Socket);
-      Put("Wow, du fick:"); New_Line;
-      for X in 1..GetI(Roll) loop
-	 Put(Result(X),2);
-      end loop;
-      for Y in 1..15 loop
-	 Pro(Y) := -1;
-      end loop;
-      
-      Pro := Calcpoints(Pro, Result);
-      New_Line;
-      for I in 1..15 loop
-	 Put(Pro(I),1);
+      for I in 1..3 loop
+	 Result := GetR(Roll);
+	 
+	 Put("Tryck enter för att slå...");
+	 Skip_Line;
+	 Playerroll(Socket);
+	 Put("Wow, du fick:"); New_Line;
+	 for X in 1..GetI(Roll) loop
+	    Put(Result(X),2);
+	 end loop;
 	 New_Line;
+	 Put("Tryck 1 för att slå igen och 0 för att placera");
+	   Get(Continue);
+	   exit when Continue = 0;
+	   Put("Hur många tärningar vill du slå om?");
+	   Get(Switches);
+	   for A in 1..Switches loop
+	      Get(B);
+	      Reroll(B) := 1;
+	   end loop;
+	   
+	   Put("STAT1"); New_Line;
+
+	   
+	   Put(Socket,'6'); Put(Socket,Switches);
+	   
+	   Put("STAT2"); New_Line;
+	   
+	   for A in 1..5 loop
+	      Put(Socket,Reroll(A));
+	   end loop;
+	   
+	   Put("STAT3"); New_Line;
+	   
+	   New_Line(Socket);
+	   Get_Rolls(Socket, Roll);
+	   
+	   
       end loop;
-      
-      Get(Placement);
       
    end if;
       

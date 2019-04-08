@@ -52,8 +52,14 @@ package body Klient_Assets_Package is
       TX: String(1..100);
       TL: Natural;
    begin
+      
+      Put("STAT111"); New_Line;
       Get_Line(Socket, TX, TL);
+      
       New_Line;
+      
+      Put("STAT222"); New_Line;
+      
       if TX(1) = '4' then
 	 -- 4 betyder inkomande tärningar
 	 Roll.I := Read(TX(2));
@@ -61,7 +67,8 @@ package body Klient_Assets_Package is
 	 for X in  1..Roll.I loop
 	    Roll.Rolls(X) := Read(TX(X+2));
 	 end loop;
-   
+	 
+	 Put("STAT333"); New_Line;
 	
       elsif TX(1) = '5' then
 	 -- 5 betyder info om gamestate
@@ -220,7 +227,7 @@ package body Klient_Assets_Package is
 	       end loop;
 	       return 20;
 	    when others =>
-	       Put("FUUUUUUUUUUUCK");
+	      null;
 	       return 0;
 	 end case;
 	 

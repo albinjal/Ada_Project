@@ -55,18 +55,47 @@ package body Server_Assets_Package is
       
    end;
    
-   procedure Yatzy(Socket1, Socket2: in out Socket_Type) is
+   procedure Yatzyloop(Socket1, Socket2: in out Socket_Type) is
+      type Rerolls is array(1..5) of Integer;
+      function Read(C: in Character)
+		   return Natural is
+	 S: String(1..1);
+      begin
+	 S(1) := C;
+	 return Integer'Value(S);
+      end;
+      Reroll: Rerolls;
       TX: String(1..100);
-      TL: Integer;
+      TL, I: Integer;
+      CurrentRolls: String(1..5);
+      
    begin
-     Put(Socket1, "45"); Put(Socket1, Roll(1..5)); New_Line(Socket1);
+     CurrentRolls := Roll(1..5);
+     Put(Socket1, "45"); Put(Socket1, CurrentRolls); New_Line(Socket1);
      Put_Line(Socket2,"50");
      Get_Line(Socket1, TX, TL);
+     
      if TX(1) = '5' then
 	if TX(2) = '1' then
 	   Put_Line(Socket2, "51");
 	end if;
      end if;
+     
+     Get_Line(Socket1, TX, Tl);
+     if TX(1) = '6' then
+	I := Read(TX(2));
+	for X in 3..7 loop
+	   Reroll(X-2) := Read(TX(X));
+	end loop;
+	for X in 1..5 loop
+	   if Reroll(X) = 1 then
+	      CurrentRolls(X) := Roll(1);
+	   end if;
+	end loop;
+	Put(Socket1, "45"); Put(Socket1, CurrentRolls); New_Line(Socket1);
+     end if;
+     
+	   
      
    end;
    

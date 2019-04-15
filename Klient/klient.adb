@@ -17,23 +17,23 @@ procedure Klient is
    Continue, Switches: Integer;
    TX : String(1..100);
    TL : Integer;
-   
+
 begin
    for I in 1..5 loop
       Reroll(I) := 0;
    end loop;
-      
+
    --Denna rutin kontrollerar att programmet startas med två parametrar.
    --Annars kastas ett fel.
    --Argumentet skall vara serverns adress och portnummer, t.ex.:
    --> klient localhost 3400
-   
+
    if Argument_Count /= 2 then
       Raise_Exception(Constraint_Error'Identity,
                       "Usage: " & Command_Name & " remotehost remoteport");
    end if;
 
-   
+
    Bootup(Socket, Argument(1), Positive'Value(Argument(2)));
    Start_Game(Socket, Player);
    Get_Rolls(Socket, Roll);
@@ -45,15 +45,15 @@ begin
 	 elsif GetI(Roll) = 7 then
 	    Put("Spelare ");  Put(3-Player,1); Put(" har slagit");
 	    exit;
-	    
+
 	 end if;
       end loop;
-      
+
    else
       Put("Din tur"); New_Line;
       for I in 1..3 loop
 	 Result := GetR(Roll);
-	 
+
 	 Put("Tryck enter för att slå...");
 	 Skip_Line;
 	 Playerroll(Socket);
@@ -71,34 +71,33 @@ begin
 	      Get(B);
 	      Reroll(B) := 1;
 	   end loop;
-	   
+
 	   Put("STAT1"); New_Line;
 
-	   
-	   Put(Socket,'6'); Put(Socket,Switches);
-	   
+
+	   Put(Socket,'6'); Put(Socket,Switches,0);
+
 	   Put("STAT2"); New_Line;
-	   
+
 	   for A in 1..5 loop
-	      Put(Socket,Reroll(A));
+	      Put(Socket,Reroll(A),0);
 	   end loop;
-	   
+
 	   Put("STAT3"); New_Line;
-	   
+
 	   New_Line(Socket);
 	   Get_Rolls(Socket, Roll);
-	   
-	   
-      end loop;
-      
-   end if;
-      
 
-   
-  
-   
-   
-   
+
+      end loop;
+
+   end if;
+
+
+
+
+
+   Skip_Line;
    --Innan programmet avslutar stängs socketen, detta genererar ett exception
    --hos servern, pss kommer denna klient få ett exception när servern avslutas
    Close(Socket);

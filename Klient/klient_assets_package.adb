@@ -38,6 +38,7 @@ package body Klient_Assets_Package is
       New_Line;
 
    end;
+   
 
    function Read(C: in Character)
 		return Natural is

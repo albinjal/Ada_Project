@@ -72,18 +72,13 @@ begin
 	      Reroll(B) := 1;
 	   end loop;
 
-	   Put("STAT1"); New_Line;
-
-
 	   Put(Socket,'6'); Put(Socket,Switches,0);
 
-	   Put("STAT2"); New_Line;
 
 	   for A in 1..5 loop
 	      Put(Socket,Reroll(A),0);
 	   end loop;
 
-	   Put("STAT3"); New_Line;
 
 	   New_Line(Socket);
 	   Get_Rolls(Socket, Roll);

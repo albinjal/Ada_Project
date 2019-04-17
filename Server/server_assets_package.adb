@@ -88,13 +88,9 @@ package body Server_Assets_Package is
      Get_Line(Socket1, TX, Tl);
      if TX(1) = '6' then
 	I := Read(TX(2));
-  Put(I);
-  -- ERROR IS HERE ^
-  Put("1");
 	for X in 3..7 loop
 	   Reroll(X-2) := Read(TX(X));
 	end loop;
-  Put("2");
 	for X in 1..5 loop
 	   if Reroll(X) = 1 then
 	      CurrentRolls(X) := Roll(1);

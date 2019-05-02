@@ -72,10 +72,9 @@ package body Server_Assets_Package is
       CurrentRolls: String(1..5);
 
    begin
+   --------------------------------- Slutställ tärningar
      CurrentRolls := Roll(1..5);
      
-     
-
      for X in 1..3 loop
 
      -- Skicka slag till spelare 1, skicka state till 2
@@ -93,7 +92,6 @@ package body Server_Assets_Package is
 
 
       Get_Line(Socket1, TX, Tl);
-	  Put(TX(1));
     if TX(1) = '6' then
              -- Slå om !!
     	I := Read(TX(2));
@@ -111,14 +109,9 @@ package body Server_Assets_Package is
     -- Färdig
     exit;
      end if;
-
      end loop;
-     
-
-
-             
-
-
+	--------------------------------- Slutställ tärningar
+	
    end;
 
 end;

@@ -12,10 +12,14 @@ package body Klient_Assets_Package is
       New_Line;
    end;
 
-   procedure Start_Game(Socket: in Socket_Type; Player: out Positive) is
+   procedure Start_Game(Socket: in Socket_Type; Player: out Positive; Prot1, Prot2: out Protocoll_Type) is
    TX     : String(1..100);
    TL : Natural;
    begin
+		for I in 1..15 loop
+			Prot1(I) := -1;
+		end loop;
+		Prot2 := Prot1;
       Get_Line(Socket, TX, TL);
 
       if TX(1) = '1' then
@@ -416,6 +420,19 @@ package body Klient_Assets_Package is
    end if;
    return Roll;
    end Rolloop;
+
+
+	procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
+
+	begin
+	Put("Annan spelare ska placera");
+	end;
+
+
+	procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
+	begin
+	Put("Du ska placera");
+	end;
 
 
 

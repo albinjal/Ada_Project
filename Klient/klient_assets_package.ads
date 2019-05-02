@@ -7,7 +7,7 @@ package klient_assets_package is
    
    procedure Bootup(Socket: out Socket_Type; Adress: in String; Port: in Positive);
    
-   procedure Start_Game(Socket: in Socket_Type; Player: out Positive);
+   procedure Start_Game(Socket: in Socket_Type; Player: out Positive; Prot1, Prot2: out Protocoll_Type);
    
    function Read(C: in Character) return Natural;
    
@@ -25,6 +25,10 @@ package klient_assets_package is
 
     function Rolloop(Socket: Socket_Type; Player: Positive)
           return Rolls_Type;
+
+	procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type);
+
+	procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type);
    
 private
    

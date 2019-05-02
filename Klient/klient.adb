@@ -28,21 +28,20 @@ begin
 
 
    Bootup(Socket, Argument(1), Positive'Value(Argument(2)));
-   Start_Game(Socket, Player);
+   Start_Game(Socket, Player, Own_Protocoll, Other_Protocoll);
 
    -- Main loop
    loop
    Dices := Rolloop(Socket, Player);
-   Put(GetI(Dices),0);
    if GetI(Dices) = 8 then
-      Put("Annan spelare ska placera");
+      Watch_Placement(Socket, Dices, Other_Protocoll);
+      
    else
-      Put("Du ska placera");
+      
+      Place(Socket, Dices, Own_Protocoll);
    end if;
-   for I in 1..5 loop
-      Put(GetR(Dices)(I),0);
-   end loop;
-   -- Place(Socket, Dices);
+
+   
 
    end loop;
 

@@ -51,7 +51,6 @@ package body Klient_Assets_Package is
       S(1) := C;
       return Integer'Value(S);
    end;
-   --hej
 
    procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type) is
       TX: String(1..100);

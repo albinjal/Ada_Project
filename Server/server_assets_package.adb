@@ -59,11 +59,8 @@ package body Server_Assets_Package is
       S: String(1..1);
       i: Natural;
    begin
-     Put(C);
       S(1) := C;
-      Put(S);
       i := Integer'Value(S);
-      Put(i,1);
       return i;
    end;
 
@@ -76,31 +73,50 @@ package body Server_Assets_Package is
 
    begin
      CurrentRolls := Roll(1..5);
-     Put(Socket1, "45"); Put(Socket1, CurrentRolls); New_Line(Socket1);
-     Put_Line(Socket2,"50");
-     Get_Line(Socket1, TX, TL);
+     
+     
 
-     if TX(1) = '5' then
-	if TX(2) = '1' then
-	   Put_Line(Socket2, "51");
-	end if;
-     end if;
-     Get_Line(Socket1, TX, Tl);
-     if TX(1) = '6' then
-	I := Read(TX(2));
-	for X in 3..7 loop
-	   Reroll(X-2) := Read(TX(X));
-	end loop;
-	for X in 1..5 loop
-	   if Reroll(X) = 1 then
-	      CurrentRolls(X) := Roll(1);
-	   end if;
-	end loop;
-  Put("Sending");
-	Put(Socket1, "45"); Put(Socket1, CurrentRolls); New_Line(Socket1);
-  Put("Sent");
+     for X in 1..3 loop
+
+     -- Skicka slag till spelare 1, skicka state till 2
+      Put(Socket1, "45"); Put(Socket1, CurrentRolls); New_Line(Socket1);
+      Put_Line(Socket2,"50");
+      
+      -- State update från 1 till 2
+      Get_Line(Socket1, TX, TL);
+      if TX(1) = '5' then
+        if TX(2) = '1' then
+        	Put(Socket2, "51");
+			Put_Line(Socket2, CurrentRolls);
+        end if;
+      end if;
+
+
+      Get_Line(Socket1, TX, Tl);
+	  Put(TX(1));
+    if TX(1) = '6' then
+             -- Slå om !!
+    	I := Read(TX(2));
+          for X in 3..7 loop
+             Reroll(X-2) := Read(TX(X));
+          end loop;
+        for X in 1..5 loop
+             if Reroll(X) = 1 then
+                CurrentRolls(X) := Roll(1);
+             end if;
+        end loop;
+    else
+		Put(Socket2, "52");
+		Put_Line(Socket2, CurrentRolls);
+    -- Färdig
+    exit;
      end if;
 
+     end loop;
+     
+
+
+             
 
 
    end;

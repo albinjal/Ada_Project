@@ -54,12 +54,10 @@ package body Klient_Assets_Package is
       TL: Natural;
    begin
 
-      Put("STAT111"); New_Line;
       Get_Line(Socket, TX, TL);
 
       New_Line;
 
-      Put("STAT222"); New_Line;
 
       if TX(1) = '4' then
 	 -- 4 betyder inkomande tärningar
@@ -69,14 +67,25 @@ package body Klient_Assets_Package is
 	    Roll.Rolls(X) := Read(TX(X+2));
 	 end loop;
 
-	 Put("STAT333"); New_Line;
 
       elsif TX(1) = '5' then
 	 -- 5 betyder info om gamestate
+
 	 if TX(2) = '0' then
+	 -- Annan spelare slår
 	    Roll.I := 6;
 	 elsif TX(2) = '1' then
+	 -- Annan spelare har slagit
 	    Roll.I := 7;
+		 for X in 1..5 loop
+		 	Roll.Rolls(X) := Read(TX(X+2));
+		 end loop;
+	 elsif TX(2) = '2' then
+	 -- Annan spelare vill placera
+	 	Roll.I := 8;
+		 for X in 1..5 loop
+		 	Roll.Rolls(X) := Read(TX(X+2));
+		 end loop;
 	 end if;
 
    else
@@ -327,6 +336,85 @@ package body Klient_Assets_Package is
       return Result;
    end;
 
+   function Rolloop(Socket: Socket_Type; Player: Positive)
+   				return Rolls_Type is
+
+   	 type Rerolls is array(1..5) of Integer;
+   	Reroll: Rerolls;
+   	 Continue, Switches: Integer;
+   	 
+   	  	Result : Arr;
+   	  	B: Integer;
+   Roll: Rolls_Type;
+
+   begin -- Rolloop
+   
+
+   	Get_Rolls(Socket, Roll);
+	-- Slår Jag?
+   if GetI(Roll) > 5 then
+		-- Jag slår inte
+      loop
+			if GetI(Roll) = 6 then
+				Put("Spelare "); Put(3-Player, 0); Put(" slår");
+			elsif GetI(Roll) = 7 then
+				Put("Spelare "); Put(3-Player, 0); Put(" har slagit");
+				Result := GetR(Roll);
+				for I in 1..5 loop
+					Put(Result(I),0);
+				end loop;
+			end if;
+			Get_Rolls(Socket, Roll);
+			exit when Roll.I = 8;
+      end loop;
+   else
+		-- Jag slår
+
+		for I in 1..5 loop
+      Reroll(I) := 0;
+   end loop;
+      Put("Din tur"); New_Line;
+      
+		for I in 1..2 loop
+			Result := GetR(Roll);
+
+			Put("Tryck enter för att slå...");
+			Skip_Line;
+			Playerroll(Socket);
+			Put("Wow, du fick:"); New_Line;
+			
+			for X in 1..GetI(Roll) loop
+				Put(Result(X),2);
+			end loop;
+			
+			New_Line;
+			Put("Tryck 1 för att slå igen och 0 för att placera");
+			Get(Continue);
+			exit when Continue = 0 or I = 2;
+			Put("Hur många tärningar vill du slå om?");
+			Get(Switches);
+			
+			for A in 1..Switches loop
+				Get(B);
+				Reroll(B) := 1;
+			end loop;
+
+			Put(Socket,'6'); Put(Socket,Switches,0);
+
+
+			for A in 1..5 loop
+				Put(Socket,Reroll(A),0);
+			end loop;
+
+
+			New_Line(Socket);
+			Get_Rolls(Socket, Roll);
+
+		end loop;
+		Put_Line(Socket, "7");
+   end if;
+   return Roll;
+   end Rolloop;
 
 
 

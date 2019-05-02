@@ -375,7 +375,7 @@ package body Klient_Assets_Package is
    end loop;
       Put("Din tur"); New_Line;
       
-		for I in 1..2 loop
+		for I in 1..3 loop
 			Result := GetR(Roll);
 
 			Put("Tryck enter för att slå...");
@@ -388,9 +388,10 @@ package body Klient_Assets_Package is
 			end loop;
 			
 			New_Line;
+			exit when I = 3;
 			Put("Tryck 1 för att slå igen och 0 för att placera");
 			Get(Continue);
-			exit when Continue = 0 or I = 2;
+			exit when Continue = 0;
 			Put("Hur många tärningar vill du slå om?");
 			Get(Switches);
 			

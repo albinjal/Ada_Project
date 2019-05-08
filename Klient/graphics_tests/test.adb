@@ -7,12 +7,11 @@ with TJa.Window.Text;      use TJa.Window.Text;
 with TJa.Window.Elementary; use TJa.Window.Elementary;
 with TJa.Window.Graphic; use TJa.Window.Graphic;
 with TJa.Keyboard;			use TJa.Keyboard;
-
+with Yatzy_graphics_package; use Yatzy_graphics_package;
 procedure Test is
 procedure Test_TJa is
 
-  X_Start : constant Integer := 1;
-  Y_Start : constant Integer := 1;
+  Own_Protocoll, Other_Protocoll: Protocoll_Type;
 
 begin
   Reset_Colours;  -- Standard colours is supposed to be black on white ...
@@ -21,31 +20,14 @@ begin
   -- Draw a rectangle on screen ...
   Set_Graphical_Mode(On);
 
-  Goto_XY(X_Start, Y_Start);
-  Put(Upper_Left_Corner);
-  Put(Horisontal_Line, Times => 7);
-  Put(Upper_Right_Corner);
-for I in 1..17 loop
-  Goto_XY(X_Start, Y_Start + I);
-  Put(Vertical_Line);
 
-
-  Goto_XY(X_Start + 7 + 1, Y_Start + I);
-  Put(Vertical_Line);
-end loop;
-  Goto_XY(X_Start, Y_Start + 18);
-  Put(Lower_Left_Corner);
-  Put(Horisontal_Line, 7);
-  Put(Lower_Right_Corner);
+  update_protocoll(60, 2, Own_Protocoll, Other_Protocoll);
 
   Set_Graphical_Mode(Off);
 
   Reset_Colours;
   Reset_Text_Modes;  -- Resets boold mode ...
-   Goto_XY(2,2);
-Put(10,0);
-  Goto_XY(1, Y_Start + 4);
- 
+
 
 end Test_TJa;
 

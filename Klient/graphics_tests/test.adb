@@ -21,7 +21,7 @@ begin
   Set_Graphical_Mode(On);
 
 
-  update_protocoll(60, 2, Own_Protocoll, Other_Protocoll);
+  update_protocoll(60, 1, Own_Protocoll, Other_Protocoll);
 
   Set_Graphical_Mode(Off);
 

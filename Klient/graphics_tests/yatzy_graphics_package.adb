@@ -31,10 +31,10 @@ begin
     Goto_XY(X_Start + 4 + widthcol1 + widthcol2 + widthcol3, y);
     y := y + 2;
   end loop;
-  
-  for I in Y_Start..(Y_Start+height - 1) loop
+
+  for I in Y_Start..(Y_Start+height -1) loop
     Goto_XY(X_Start,I);
-    if I mod 2 = 0 then
+    if (I + Y_Start) mod 2 /= 0 then
       Put(Vertical_Line);
       Goto_XY(X_Start + 1 + widthcol1,I);
       Put(Vertical_Line);
@@ -51,7 +51,7 @@ begin
         Put(Horisontal_Down);
         Goto_XY(X_Start + 3 + widthcol1 + widthcol2 + widthcol3,I);
         Put(Upper_Right_Corner);
-      elsif I = Y_Start+height then
+      elsif I = Y_Start+height  then
         Put(Lower_Left_Corner);
         Goto_XY(X_Start + 1 + widthcol1,I);
         Put(Horisontal_Up);

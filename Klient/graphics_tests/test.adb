@@ -19,6 +19,13 @@ begin
 
   -- Draw a rectangle on screen ...
   Set_Graphical_Mode(On);
+  for I in 1..15 loop
+    Own_Protocoll(I) := I;
+  end loop;
+  for I in 1..15 loop
+    Other_Protocoll(I) := I;
+  end loop;
+
 
 
   update_protocoll(130, 4, Own_Protocoll, Other_Protocoll);

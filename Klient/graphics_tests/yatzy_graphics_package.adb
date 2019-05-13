@@ -107,6 +107,30 @@ begin
 
 end update_protocoll;
 
+procedure dice (A, X_Start, Y_Start: in Integer) is
+
+begin
+  Goto_XY(X_Start, Y_Start);
+  for I in 1..5 loop
+    if I = 1 then
+      Put(Upper_Left_Corner);
+      Put(Horisontal_Line, Times => 3);
+      Put(Upper_Right_Corner);
+      New_Line;
+    elsif I = 5 then
+      Put(Lower_Left_Corner);
+      Put(Horisontal_Line, Times => 3);
+      Put(Lower_Right_Corner);
+    else
+      Put(Vertical_Line);
+      Put("   ");
+      Put(Vertical_Line);
+      New_Line;
+    end if;
+  end loop;
+  --Put('•');
+
+end dice;
 
 
 

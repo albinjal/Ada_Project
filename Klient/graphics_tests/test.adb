@@ -23,6 +23,8 @@ begin
 
   update_protocoll(130, 4, Own_Protocoll, Other_Protocoll);
 
+  dice(5, 10, 10);
+
   Set_Graphical_Mode(Off);
 
   Reset_Colours;

@@ -30,7 +30,9 @@ begin
 
   update_protocoll(130, 4, Own_Protocoll, Other_Protocoll);
 
-  dice(5, 10, 10);
+  for x in 1..5 loop
+    dice(x,10 + 15 * x, 40);
+  end loop;
 
   Set_Graphical_Mode(Off);
 

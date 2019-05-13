@@ -140,21 +140,102 @@ begin
   for I in 1..5 loop
     if I = 1 then
       Put(Upper_Left_Corner);
-      Put(Horisontal_Line, Times => 8);
+      Put(Horisontal_Line, Times => 9);
       Put(Upper_Right_Corner);
       Goto_XY(X_Start, Y_Start + I);
     elsif I = 5 then
       Put(Lower_Left_Corner);
-      Put(Horisontal_Line, Times => 8);
+      Put(Horisontal_Line, Times => 9);
       Put(Lower_Right_Corner);
     else
-      Put(Vertical_Line);
-      Put("  •  •  ");
-      Put(Vertical_Line);
-      Goto_XY(X_Start, Y_Start + I);
+      case A is
+        when 1 =>
+        Put(Vertical_Line);
+        if I = 3 then
+        Put("    •    ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 2 or I = 4 then
+        Put("         ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        end if;
+
+        when 2 =>
+        Put(Vertical_Line);
+        if I = 2 then
+        Put("  •      ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 3 then
+        Put("         ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 4 then
+        Put("      •  ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        end if;
+
+        when 3 =>
+        Put(Vertical_Line);
+        if I = 2 then
+        Put("  •      ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 3 then
+        Put("    •    ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 4 then
+        Put("      •  ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        end if;
+
+        when 4 =>
+        Put(Vertical_Line);
+        if I = 2 then
+        Put("  •   •  ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 3 then
+        Put("         ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 4 then
+        Put("  •   •  ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        end if;
+
+        when 5 =>
+        Put(Vertical_Line);
+        if I = 2 then
+        Put("  •   •  ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 3 then
+        Put("    •    ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        elsif I = 4 then
+        Put("  •   •  ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+        end if;
+
+        when 6 =>
+        Put(Vertical_Line);
+        Put("  •   •  ");
+        Put(Vertical_Line);
+        Goto_XY(X_Start, Y_Start + I);
+
+        when others => null;
+      end case;
     end if;
   end loop;
-  --Put('•');
+
 
 end dice;
 

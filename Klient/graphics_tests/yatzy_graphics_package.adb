@@ -31,8 +31,8 @@ begin
     Goto_XY(X_Start + 4 + widthcol1 + widthcol2 + widthcol3, y);
     y := y + 2;
   end loop;
-
-  for I in 1..39 loop
+  
+  for I in Y_Start..(Y_Start+height - 1) loop
     Goto_XY(X_Start,I);
     if I mod 2 = 0 then
       Put(Vertical_Line);
@@ -43,7 +43,7 @@ begin
       Goto_XY(X_Start + 3 + widthcol1 + widthcol2 + widthcol3,I);
       Put(Vertical_Line);
     else
-      if I = 1 then
+      if I =  Y_Start then
         Put(Upper_Left_Corner);
         Goto_XY(X_Start + 1 + widthcol1,I);
         Put(Horisontal_Down);
@@ -51,7 +51,7 @@ begin
         Put(Horisontal_Down);
         Goto_XY(X_Start + 3 + widthcol1 + widthcol2 + widthcol3,I);
         Put(Upper_Right_Corner);
-      elsif I = 39 then
+      elsif I = Y_Start+height then
         Put(Lower_Left_Corner);
         Goto_XY(X_Start + 1 + widthcol1,I);
         Put(Horisontal_Up);
@@ -74,7 +74,7 @@ begin
   Set_Graphical_Mode(Off);
 
   For I in 1..19 loop
-      Goto_XY(X_Start + 2, I * 2);
+      Goto_XY(X_Start + 2, Y_Start - 1 + I * 2);
       case I is
         when 1 => Set_Text_Modes(On, Off, Off); Put("Spelare:"); Set_Text_Modes(Off, Off, On);
         when 2 => Put("Ettor");

@@ -140,18 +140,18 @@ begin
   for I in 1..5 loop
     if I = 1 then
       Put(Upper_Left_Corner);
-      Put(Horisontal_Line, Times => 3);
+      Put(Horisontal_Line, Times => 8);
       Put(Upper_Right_Corner);
-      New_Line;
+      Goto_XY(X_Start, Y_Start + I);
     elsif I = 5 then
       Put(Lower_Left_Corner);
-      Put(Horisontal_Line, Times => 3);
+      Put(Horisontal_Line, Times => 8);
       Put(Lower_Right_Corner);
     else
       Put(Vertical_Line);
-      Put("   ");
+      Put("  •  •  ");
       Put(Vertical_Line);
-      New_Line;
+      Goto_XY(X_Start, Y_Start + I);
     end if;
   end loop;
   --Put('•');

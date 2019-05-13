@@ -51,7 +51,7 @@ begin
         Put(Horisontal_Down);
         Goto_XY(X_Start + 3 + widthcol1 + widthcol2 + widthcol3,I);
         Put(Upper_Right_Corner);
-      elsif I = Y_Start+height  then
+      elsif I = Y_Start+height - 1  then
         Put(Lower_Left_Corner);
         Goto_XY(X_Start + 1 + widthcol1,I);
         Put(Horisontal_Up);
@@ -71,7 +71,7 @@ begin
     end if;
   end loop;
 
-  Set_Graphical_Mode(Off);
+Set_Graphical_Mode(Off);
 
   For I in 1..19 loop
       Goto_XY(X_Start + 2, Y_Start - 1 + I * 2);
@@ -101,7 +101,33 @@ begin
   end loop;
 
 
+  For I in 1..19 loop
+    Goto_XY(X_Start + 2 + widthcol1, Y_Start - 1 + I * 2);
+    case I is
+      when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
+    when 2..7 => if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
+      when 8 => Put("Sum:");
+      when 9 => Put("BON");
+    when 10..18 => if Prot1(I - 3) /= -1 then Put(Prot1(I - 3), 1 + widthcol2 / 2); end if;
+      when 19 => Put("Sum:");
 
+      when others => null;
+    end case;
+  end loop;
+
+  For I in 1..19 loop
+    Goto_XY(X_Start + 3 + widthcol1 + widthcol2, Y_Start - 1 + I * 2);
+    case I is
+      when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
+    when 2..7 => if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
+      when 8 => Put("Sum:");
+      when 9 => Put("BON");
+    when 10..18 => if Prot2(I - 3) /= -1 then Put(Prot2(I - 3), 1 + widthcol2 / 2); end if;
+      when 19 => Put("Sum:");
+
+      when others => null;
+    end case;
+  end loop;
 
 
 

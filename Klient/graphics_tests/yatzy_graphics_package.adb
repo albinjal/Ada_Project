@@ -6,6 +6,18 @@ with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 package body Yatzy_graphics_package is
 
+procedure background is
+
+begin
+  for X in 1..300 loop
+      for Y in 1..50 loop
+        Set_Default_Colours(Black, Green);
+        Reset_Colours;
+        goto_xy(X, Y);
+        Put(' ');
+      end loop;
+  end loop;
+end background;
 
 procedure update_protocoll(X_Start, Y_Start: in Integer; prot1, prot2: in Protocoll_Type) is
   x : Integer := X_Start;
@@ -75,6 +87,7 @@ Set_Graphical_Mode(Off);
 
   For I in 1..19 loop
       Goto_XY(X_Start + 2, Y_Start - 1 + I * 2);
+      --Set_Background_Colour(Blue);
       case I is
         when 1 => Set_Text_Modes(On, Off, Off); Put("Spelare:"); Set_Text_Modes(Off, Off, On);
         when 2 => Put("Ettor");
@@ -103,6 +116,7 @@ Set_Graphical_Mode(Off);
 
   For I in 1..19 loop
     Goto_XY(X_Start + 2 + widthcol1, Y_Start - 1 + I * 2);
+
     case I is
       when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
     when 2..7 => if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
@@ -138,14 +152,15 @@ procedure dice (A, X_Start, Y_Start: in Integer) is
 begin
   Goto_XY(X_Start, Y_Start);
   for I in 1..5 loop
+    --Set_Background_Colour(White);
     if I = 1 then
       Put(Upper_Left_Corner);
-      Put(Horisontal_Line, Times => 9);
+      Put(Horisontal_Very_High_Line, Times => 9);
       Put(Upper_Right_Corner);
       Goto_XY(X_Start, Y_Start + I);
     elsif I = 5 then
       Put(Lower_Left_Corner);
-      Put(Horisontal_Line, Times => 9);
+      Put(Horisontal_Very_Low_Line, Times => 9);
       Put(Lower_Right_Corner);
     else
       case A is

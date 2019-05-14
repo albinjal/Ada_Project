@@ -9,6 +9,7 @@ package Yatzy_graphics_package is
   procedure update_protocoll(X_Start, Y_Start: in Integer; prot1, prot2: in Protocoll_Type);
   procedure dice (A, X_Start, Y_Start: in Integer);
   procedure background;
+  procedure logo;
   private
 
 

@@ -16,10 +16,11 @@ procedure Test_TJa is
 begin
   Reset_Colours;  -- Standard colours is supposed to be black on white ...
   Clear_Window;
-  
-  background;
-  -- Draw a rectangle on screen ...
   Set_Graphical_Mode(On);
+  background;
+  logo;
+  -- Draw a rectangle on screen ...
+  --Set_Graphical_Mode(On);
   for I in 1..15 loop
     Own_Protocoll(I) := I;
   end loop;
@@ -32,7 +33,7 @@ begin
   update_protocoll(130, 4, Own_Protocoll, Other_Protocoll);
 
   for x in 1..5 loop
-    dice(x,10 + 15 * x, 40);
+    dice(x,10 + 15 * x, 38);
   end loop;
 
 

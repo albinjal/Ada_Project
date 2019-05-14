@@ -11,8 +11,9 @@ procedure background is
 begin
   for X in 1..300 loop
       for Y in 1..50 loop
-        Set_Default_Colours(Black, Green);
-        Reset_Colours;
+        --Set_Default_Colours(Black, Green);
+        --Reset_Colours;
+        Put(ASCII.ESC & "[48;5;22m");
         goto_xy(X, Y);
         Put(' ');
       end loop;
@@ -31,7 +32,7 @@ procedure update_protocoll(X_Start, Y_Start: in Integer; prot1, prot2: in Protoc
 
 begin
   -- Frame
-
+Set_Background_Colour(White);
   -- Skriver ut horisontella linjer
   while y < Y_Start + height loop
     Goto_XY(X_Start + 1, y);
@@ -254,6 +255,11 @@ begin
 
 end dice;
 
+Procedure logo is
+
+begin
+Put("8b        d8                                               \nY8,    ,8P                 ,d                             \nY8,  ,8P                  88                             \n""""8aa8""""     ,adPPYYba,  MM88MMM  888888888  8b       d8  \n`88'      """"""""     `Y8    88          a8P""""  `8b     d8'  \n88       ,adPPPPP88    88       ,d8P'     `8b   d8'   \n88       88,    ,88    88,    ,d8""""         `8b,d8'    \n88       `""""8bbdP""""Y8    """"Y888  888888888      Y88'     \nd8'      \nd8'   ");
+end logo;
 
 
 

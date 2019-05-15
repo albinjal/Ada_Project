@@ -12,15 +12,17 @@ procedure Test is
 procedure Test_TJa is
 
   Own_Protocoll, Other_Protocoll: Protocoll_Type;
+  Selected_Place : Integer;
 
 begin
   Reset_Colours;  -- Standard colours is supposed to be black on white ...
   Clear_Window;
   Set_Graphical_Mode(On);
   background;
-  protocoll_background(130, 4);
-  logo_background(15, 4);
-  logo(15, 4);
+  protocoll_background(125, 4);
+  logo_background(24, 4);
+  message(38, 18);
+
   -- Draw a rectangle on screen ...
   --Set_Graphical_Mode(On);
   for I in 1..15 loop
@@ -32,18 +34,24 @@ begin
 
 
 
-  update_protocoll(130, 4, Own_Protocoll, Other_Protocoll);
+  update_protocoll(125, 4, Own_Protocoll, Other_Protocoll);
 
   for x in 1..5 loop
-    dice(x,10 + 15 * x, 38);
+    dice(x,8 + 15 * x, 38);
   end loop;
 
-  logo(8, 4);
+
+
+  logo(24, 4);
 
   Set_Graphical_Mode(Off);
 
+  --place(Own_Protocoll, Selected_Place);
+
+
   Reset_Colours;
   Reset_Text_Modes;  -- Resets boold mode ...
+
 
 
 end Test_TJa;

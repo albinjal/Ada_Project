@@ -2,9 +2,35 @@
 with TJa.Window.Text;      use TJa.Window.Text;
 with TJa.Window.Elementary; use TJa.Window.Elementary;
 with TJa.Window.Graphic; use TJa.Window.Graphic;
+with TJa.Keyboard;        use TJa.Keyboard;
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 package body Yatzy_graphics_package is
+
+procedure place (avaial_points : in Protocoll_Type; select_place : out Integer) is
+  Key: Key_Type;
+begin
+
+  --Set_Buffer_Mode(Off);
+  --Set_Echo_Mode(Off);
+
+  loop
+    Get_Immediate(Key);
+
+    Goto_XY(1,1);
+
+    if Is_Up_Arrow(Key) then
+      Put("Uppppp");
+    elsif Is_Down_Arrow(Key) then
+      Put("Neeeeer");
+    end if;
+
+  end loop;
+
+  --Set_Buffer_Mode(On);
+  --Set_Echo_Mode(On);
+
+end place;
 
 procedure background is
 
@@ -299,7 +325,7 @@ begin
   Set_Background_Colour(White);
   Set_Foreground_Colour(Blue);
   Set_Bold_Mode(on);
-  
+
   goto_xy(X_Start, Y_Start);
   Put("  ____  ____         __         _________      ________      ____  ____ ");
   goto_xy(X_Start, Y_Start + 1);
@@ -397,6 +423,39 @@ begin
 
 end logo;
 
+procedure message (X_Start, Y_Start : in Integer) is
+
+begin
+
+  Set_Graphical_Mode(Off);
+  
+  for X in 1..42 loop
+     for Y in 1..12 loop
+        if Y /= 1 OR Y /= 12 then
+          if X /= 1 OR X /= 2 OR X /= 41 OR X /= 42 then
+          if X mod 2 = 0 then
+            Put(ASCII.ESC & "[48;5;77m");
+          else
+            Put(ASCII.ESC & "[48;5;88m");
+          end if;
+        end if;
+        end if;
+      goto_xy((X_Start - 2 + X), (Y_Start - 1 + Y));
+      Put(' ');
+    end loop;
+  end loop;
+
+  for X in 1..38 loop
+    for Y in 1..10 loop
+      Put(ASCII.ESC & "[48;5;15m");
+      goto_xy((X_Start + X), (Y_Start + Y));
+      Put(' ');
+    end loop;
+  end loop;
+
+goto_xy(X_Start + 3, Y_Start + 5);
+Put("Hejsan vi spelar");
+end message;
 
 
 end;

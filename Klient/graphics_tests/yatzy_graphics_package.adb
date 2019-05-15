@@ -20,6 +20,29 @@ begin
   end loop;
 end background;
 
+procedure protocoll_background (X_Start, Y_Start: in Integer) is
+
+begin
+
+  for X in 1..31 loop
+    for Y in 1..41 loop
+      Put(ASCII.ESC & "[48;5;88m");
+      goto_xy((X_Start - 3 + X), (Y_Start - 2 + Y));
+      Put(' ');
+    end loop;
+  end loop;
+
+  for X in 1..25 loop
+    for Y in 1..38 loop
+      Put(ASCII.ESC & "[48;5;15m");
+      goto_xy(X_Start + X, Y_Start + Y);
+      Put(' ');
+    end loop;
+  end loop;
+
+end protocoll_background;
+
+
 procedure update_protocoll(X_Start, Y_Start: in Integer; prot1, prot2: in Protocoll_Type) is
   x : Integer := X_Start;
   y : Integer := Y_Start;
@@ -33,6 +56,7 @@ procedure update_protocoll(X_Start, Y_Start: in Integer; prot1, prot2: in Protoc
 begin
   -- Frame
 Set_Background_Colour(White);
+Set_Foreground_Colour(Black);
   -- Skriver ut horisontella linjer
   while y < Y_Start + height loop
     Goto_XY(X_Start + 1, y);
@@ -255,10 +279,122 @@ begin
 
 end dice;
 
-Procedure logo is
+
+Procedure logo_background (X_Start, Y_Start : in Integer) is
 
 begin
-Put("8b        d8                                               \nY8,    ,8P                 ,d                             \nY8,  ,8P                  88                             \n""""8aa8""""     ,adPPYYba,  MM88MMM  888888888  8b       d8  \n`88'      """"""""     `Y8    88          a8P""""  `8b     d8'  \n88       ,adPPPPP88    88       ,d8P'     `8b   d8'   \n88       88,    ,88    88,    ,d8""""         `8b,d8'    \n88       `""""8bbdP""""Y8    """"Y888  888888888      Y88'     \nd8'      \nd8'   ");
+  for X in 1..76 loop
+    for Y in 1..9 loop
+      Put(ASCII.ESC & "[48;5;88m");
+      goto_xy((X_Start - 3 + X), (Y_Start - 2 + Y));
+      Put(' ');
+    end loop;
+  end loop;
+end logo_background;
+
+
+Procedure logo (X_Start, Y_Start : in Integer) is
+
+begin
+  Set_Background_Colour(White);
+  Set_Foreground_Colour(Blue);
+  Set_Bold_Mode(on);
+  
+  goto_xy(X_Start, Y_Start);
+  Put("  ____  ____         __         _________      ________      ____  ____ ");
+  goto_xy(X_Start, Y_Start + 1);
+  Put(' ');
+  Put(Vertical_Line);
+  Put("_  _");
+  Put(Vertical_Line, Times => 2);
+  Put("_  _");
+  Put(Vertical_Line);
+  Put("       /  \       ");
+  Put(Vertical_Line);
+  Put("  _   _  ");
+  Put(Vertical_Line);
+  Put("    ");
+  Put(Vertical_Line);
+  Put("  __  __");
+  Put(Vertical_Line);
+  Put("    ");
+  Put(Vertical_Line);
+  Put("_  _");
+  Put(Vertical_Line, Times => 2);
+  Put("_  _");
+  Put(Vertical_Line);
+  goto_xy(X_Start, Y_Start + 2);
+  Put("   \ \  / /        / /\ \      ");
+  Put(Vertical_Line);
+  Put("_/ ");
+  Put(Vertical_Line);
+  Put(' ');
+  Put(Vertical_Line);
+  Put(" \_");
+  Put(Vertical_Line);
+  Put("    ");
+  Put(Vertical_Line);
+  Put("_/ / /         \ \  / /  ");
+  goto_xy(X_Start, Y_Start + 3);
+  Put("    \ \/ /        / ____ \         ");
+  Put(Vertical_Line);
+  Put(' ');
+  Put(Vertical_Line);
+  Put("           / /  _        \ \/ /   ");
+  goto_xy(X_Start, Y_Start + 4);
+  Put("    _");
+  Put(Vertical_Line);
+  Put("  ");
+  Put(Vertical_Line);
+  Put("_      _/ /    \ \_      _");
+  Put(Vertical_Line);
+  Put(' ');
+  Put(Vertical_Line);
+  Put("_         / /__/ ");
+  Put(Vertical_Line);
+  Put("       _");
+  Put(Vertical_Line);
+  Put("  ");
+  Put(Vertical_Line);
+  Put("_   ");
+  goto_xy(X_Start, Y_Start + 5);
+  Put("   ");
+  Put(Vertical_Line);
+  Put("______");
+  Put(Vertical_Line);
+  Put("    ");
+  Put(Vertical_Line);
+  Put("____");
+  Put(Vertical_Line);
+  Put("  ");
+  Put(Vertical_Line);
+  Put("____");
+  Put(Vertical_Line);
+  Put("    ");
+  Put(Vertical_Line);
+  Put("_____");
+  Put(Vertical_Line);
+  Put("       ");
+  Put(Vertical_Line);
+  Put("_______");
+  Put(Vertical_Line);
+  Put("      ");
+  Put(Vertical_Line);
+  Put("______");
+  Put(Vertical_Line);
+  Put("  ");
+  goto_xy(X_Start, Y_Start + 6);
+  Put("                                                                        ");
+
+  --  ____  ____         __         _________      ________      ____  ____
+  -- |_  _||_  _|       /  \       |  _   _  |    |  __  __|    |_  _||_  _|
+  --   \ \  / /        / /\ \      |_/ | | \_|    |_/ / /         \ \  / /
+  --    \ \/ /        / ____ \         | |           / /  _        \ \/ /
+  --    _|  |_      _/ /    \ \_      _| |_         / /__/ |       _|  |_
+  --   |______|    |____|  |____|    |_____|       |_______|      |______|
+
+
+
 end logo;
 
 

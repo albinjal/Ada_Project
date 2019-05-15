@@ -18,7 +18,9 @@ begin
   Clear_Window;
   Set_Graphical_Mode(On);
   background;
-  logo;
+  protocoll_background(130, 4);
+  logo_background(15, 4);
+  logo(15, 4);
   -- Draw a rectangle on screen ...
   --Set_Graphical_Mode(On);
   for I in 1..15 loop
@@ -36,6 +38,7 @@ begin
     dice(x,10 + 15 * x, 38);
   end loop;
 
+  logo(8, 4);
 
   Set_Graphical_Mode(Off);
 

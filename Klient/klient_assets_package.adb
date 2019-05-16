@@ -2,6 +2,12 @@ with TJa.Sockets;         use TJa.Sockets;
 with Ada.Exceptions;      use Ada.Exceptions;
 with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Yatzy_graphics_package; use Yatzy_graphics_package;
+with TJa.Window.Text;      use TJa.Window.Text;
+with TJa.Window.Elementary; use TJa.Window.Elementary;
+with TJa.Window.Graphic; use TJa.Window.Graphic;
+with TJa.Keyboard;        use TJa.Keyboard;
+
 package body Klient_Assets_Package is
 
    procedure Bootup(Socket: out Socket_Type; Adress: in String; Port: in Positive) is
@@ -11,6 +17,17 @@ package body Klient_Assets_Package is
       Put("Ansluten till servern");
       New_Line;
    end;
+
+   procedure graphics is
+
+   begin
+     Clear_Window;
+   	Set_Graphical_Mode(On);
+   	background;
+   	protocoll_background(125, 4);
+   	logo_background(24, 4);
+    logo(24, 4);
+   end graphics;
 
    procedure Start_Game(Socket: in Socket_Type; Player: out Positive; Prot1, Prot2: out Protocoll_Type) is
    TX     : String(1..100);
@@ -23,26 +40,30 @@ package body Klient_Assets_Package is
       Get_Line(Socket, TX, TL);
 
       if TX(1) = '1' then
-	 Put("Du är spelare 1, väntar på spelare 2");
+	 --Put("Du är spelare 1, väntar på spelare 2");
+   message(38, 18, "Du är spelare 1, väntar på spelare 2");
 	 Player := 1;
 	 Get_Line(Socket, TX, TL);
 	 New_Line;
 	 if TX(1) = '3' then
-	    Put("Båda spelare anslutna");
+	    --Put("Båda spelare anslutna");
+      message(38, 18, "Båda spelare anslutna");
 	 end if;
 
       elsif TX(1) = '2' then
-	 Put("Du är spelare 2");
+	 --Put("Du är spelare 2");
+   message(38, 18, "Du är spelare 2");
 	 Player := 2;
       else
 	 raise DATATYPE_ERROR;
       end if;
       New_Line;
-      Put("Nu startar spelet");
+      --Put("Nu startar spelet");
+      message(38, 18, "Nu startar spelet");
       New_Line;
 
    end;
-   
+
 
    function Read(C: in Character)
 		return Natural is
@@ -345,13 +366,13 @@ package body Klient_Assets_Package is
    	 type Rerolls is array(1..5) of Integer;
    	Reroll: Rerolls;
    	 Continue, Switches: Integer;
-   	 
+
    	  	Result : Arr;
    	  	B: Integer;
    Roll: Rolls_Type;
 
    begin -- Rolloop
-   
+
 
    	Get_Rolls(Socket, Roll);
 	-- Slår Jag?
@@ -376,28 +397,33 @@ package body Klient_Assets_Package is
 		for I in 1..5 loop
       Reroll(I) := 0;
    end loop;
-      Put("Din tur"); New_Line;
-      
+      --Put("Din tur"); New_Line;
+      message(38, 18, "Din tur");
+
 		for I in 1..3 loop
 			Result := GetR(Roll);
 
-			Put("Tryck enter för att slå...");
+			--Put("Tryck enter för att slå...");
+      message(38, 18, "Tryck enter för att slå...");
 			Skip_Line;
 			Playerroll(Socket);
-			Put("Wow, du fick:"); New_Line;
-			
+			--Put("Wow, du fick:"); New_Line;
+      message(38, 18, "Wow, du fick:");
+
 			for X in 1..GetI(Roll) loop
 				Put(Result(X),2);
 			end loop;
-			
+
 			New_Line;
 			exit when I = 3;
-			Put("Tryck 1 för att slå igen och 0 för att placera");
+			--Put("Tryck 1 för att slå igen och 0 för att placera");
+      message(38, 18, "Tryck 1 för att slå igen och 0 för att placera");
 			Get(Continue);
 			exit when Continue = 0;
-			Put("Hur många tärningar vill du slå om?");
+			--Put("Hur många tärningar vill du slå om?");
+      message(38, 18, "Hur många tärningar vill du slå om?");
 			Get(Switches);
-			
+
 			for A in 1..Switches loop
 				Get(B);
 				Reroll(B) := 1;
@@ -424,13 +450,15 @@ package body Klient_Assets_Package is
 	procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
 
 	begin
-	Put("Annan spelare ska placera");
+	--Put("Annan spelare ska placera");
+    message(38, 18, "Annan spelare ska placera");
 	end;
 
 
 	procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
 	begin
-	Put("Du ska placera");
+	--Put("Du ska placera");
+  message(38, 18, "Du ska placera");
 	end;
 
 

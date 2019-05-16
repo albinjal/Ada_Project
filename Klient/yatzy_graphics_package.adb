@@ -36,7 +36,7 @@
 		type dynamic_array is array(Integer range <>) of Integer;
 
 		procedure goto_prev is
-			
+
 		begin
 			-- Clear screen
 			for X in 1..17 loop
@@ -62,13 +62,13 @@
 			else
 				Goto_XY(Coord_Config_X, Coord_Config_Y + Curr_Index_Selected * 2);
 			end if;
-			
+
 			Put("->");
 			Goto_XY(1000,1000);
 		end goto_prev;
 
 		procedure goto_next is
-		
+
 		begin
 			-- Clear screen
 			for X in 1..17 loop
@@ -643,28 +643,28 @@
 	--   |______|    |____|  |____|    |_____|       |_______|      |______|
 
 	end logo;
-	
+
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 
-	
-	
-	
-	
-	
-	
-	
+
+
+
+
+
+
+
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
-	
-	procedure message (X_Start, Y_Start : in Integer) is
+
+	procedure message (X_Start, Y_Start : in Integer; S : in String) is
 
 	begin
 
 	Set_Graphical_Mode(Off);
-	
+
 	for Y in 1..11 loop
 		for X in 1..42 loop
 
@@ -709,7 +709,8 @@
 	end loop;
 
 	goto_xy(X_Start + 3, Y_Start + 5);
-	Put("Hejsan, vi spelar!");
+  Set_Foreground_Colour(Black);
+	Put(S);
 	end message;
 
 	---------------------------------------------------------------------------------------------

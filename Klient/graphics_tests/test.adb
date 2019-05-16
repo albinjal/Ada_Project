@@ -21,7 +21,7 @@
 	background;
 	protocoll_background(125, 4);
 	logo_background(24, 4);
-	message(38, 18);
+	message(38, 18, "Hejsan");
 
 	-- Draw a rectangle on screen ...
 	--Set_Graphical_Mode(On);

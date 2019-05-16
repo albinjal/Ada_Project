@@ -5,7 +5,7 @@ with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with TJa.Sockets;         use TJa.Sockets;
 with Klient_Assets_Package; use Klient_Assets_Package;
 procedure Klient is
-   
+
    Player : Positive;
    --Socket_type används för att kunna kommunicera med en server
    Socket : Socket_Type;
@@ -14,7 +14,7 @@ procedure Klient is
 
 
 begin
-   
+
 
    --Denna rutin kontrollerar att programmet startas med två parametrar.
    --Annars kastas ett fel.
@@ -28,6 +28,7 @@ begin
 
 
    Bootup(Socket, Argument(1), Positive'Value(Argument(2)));
+   graphics;
    Start_Game(Socket, Player, Own_Protocoll, Other_Protocoll);
 
    -- Main loop
@@ -35,13 +36,13 @@ begin
    Dices := Rolloop(Socket, Player);
    if GetI(Dices) = 8 then
       Watch_Placement(Socket, Dices, Other_Protocoll);
-      
+
    else
-      
+
       Place(Socket, Dices, Own_Protocoll);
    end if;
 
-   
+
 
    end loop;
 

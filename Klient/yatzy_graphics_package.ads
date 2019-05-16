@@ -14,6 +14,7 @@ package Yatzy_graphics_package is
   Procedure logo_background (X_Start, Y_Start : in Integer);
   procedure place (avaial_points : in Protocoll_Type; select_place : out Integer);
   procedure message (X_Start, Y_Start : in Integer; S : in String);
+  procedure dice_placement (D1, D2, D3, D4, D5 : in Integer);
   private
 
 

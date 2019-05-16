@@ -492,7 +492,17 @@
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
+procedure dice_placement (D1, D2, D3, D4, D5 : in Integer) is
 
+begin
+
+	Dice(D1, 8 + 15 * 1, 38);
+	Dice(D2, 8 + 15 * 2, 38);
+	Dice(D3, 8 + 15 * 3, 38);
+	Dice(D4, 8 + 15 * 4, 38);
+	Dice(D5, 8 + 15 * 5, 38);
+
+end dice_placement;
 
 
 
@@ -666,7 +676,7 @@
 	Set_Graphical_Mode(Off);
 
 	for Y in 1..11 loop
-		for X in 1..42 loop
+		for X in 1..55 loop
 
 			-- om inte första eller inte sista raden
 			if Y = 1 OR Y = 11 then
@@ -676,7 +686,7 @@
 						Put(ASCII.ESC & message_frame_color2);
 					end if;
 			else
-				if X = 1 OR X = 41 then
+				if X = 1 OR X = 55 then
 					if Y mod 2 = 0 then
 						Put(ASCII.ESC & message_frame_color1);
 					else
@@ -700,7 +710,7 @@
 
 
 	-- White inner frame
-	for X in 1..38 loop
+	for X in 1..51 loop
 		for Y in 1..9 loop
 		Put(ASCII.ESC & "[48;5;15m");
 		goto_xy((X_Start + X), (Y_Start + Y));

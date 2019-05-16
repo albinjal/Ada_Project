@@ -41,26 +41,30 @@ package body Klient_Assets_Package is
 
       if TX(1) = '1' then
 	 --Put("Du är spelare 1, väntar på spelare 2");
-   message(38, 18, "Du är spelare 1, väntar på spelare 2");
+   message(33, 18, "Du är spelare 1, väntar på spelare 2");
 	 Player := 1;
 	 Get_Line(Socket, TX, TL);
 	 New_Line;
 	 if TX(1) = '3' then
 	    --Put("Båda spelare anslutna");
-      message(38, 18, "Båda spelare anslutna");
+      message(33, 18, "Båda spelare anslutna");
 	 end if;
 
       elsif TX(1) = '2' then
 	 --Put("Du är spelare 2");
-   message(38, 18, "Du är spelare 2");
+   message(33, 18, "Du är spelare 2");
 	 Player := 2;
       else
 	 raise DATATYPE_ERROR;
       end if;
       New_Line;
       --Put("Nu startar spelet");
-      message(38, 18, "Nu startar spelet");
+      message(33, 18, "Nu startar spelet");
       New_Line;
+
+
+      -- ta bort
+       dice_placement(5,4,3,1,2);
 
    end;
 
@@ -380,9 +384,11 @@ package body Klient_Assets_Package is
 		-- Jag slår inte
       loop
 			if GetI(Roll) = 6 then
-				Put("Spelare "); Put(3-Player, 0); Put(" slår");
+				-- Put("Spelare "); Put(3-Player, 0); Put(" slår");
+        message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 			elsif GetI(Roll) = 7 then
-				Put("Spelare "); Put(3-Player, 0); Put(" har slagit");
+				-- Put("Spelare "); Put(3-Player, 0); Put(" har slagit");
+        message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 				Result := GetR(Roll);
 				for I in 1..5 loop
 					Put(Result(I),0);
@@ -398,17 +404,17 @@ package body Klient_Assets_Package is
       Reroll(I) := 0;
    end loop;
       --Put("Din tur"); New_Line;
-      message(38, 18, "Din tur");
+      message(33, 18, "Din tur");
 
 		for I in 1..3 loop
 			Result := GetR(Roll);
 
 			--Put("Tryck enter för att slå...");
-      message(38, 18, "Tryck enter för att slå...");
+      message(33, 18, "Tryck enter för att slå...");
 			Skip_Line;
 			Playerroll(Socket);
 			--Put("Wow, du fick:"); New_Line;
-      message(38, 18, "Wow, du fick:");
+      message(33, 18, "Wow, du fick:");
 
 			for X in 1..GetI(Roll) loop
 				Put(Result(X),2);
@@ -417,11 +423,11 @@ package body Klient_Assets_Package is
 			New_Line;
 			exit when I = 3;
 			--Put("Tryck 1 för att slå igen och 0 för att placera");
-      message(38, 18, "Tryck 1 för att slå igen och 0 för att placera");
+      message(33, 18, "Tryck 1 för att slå igen och 0 för att placera");
 			Get(Continue);
 			exit when Continue = 0;
 			--Put("Hur många tärningar vill du slå om?");
-      message(38, 18, "Hur många tärningar vill du slå om?");
+      message(33, 18, "Hur många tärningar vill du slå om?");
 			Get(Switches);
 
 			for A in 1..Switches loop
@@ -451,14 +457,14 @@ package body Klient_Assets_Package is
 
 	begin
 	--Put("Annan spelare ska placera");
-    message(38, 18, "Annan spelare ska placera");
+    message(33, 18, "Annan spelare ska placera");
 	end;
 
 
 	procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
 	begin
 	--Put("Du ska placera");
-  message(38, 18, "Du ska placera");
+  message(33, 18, "Du ska placera");
 	end;
 
 

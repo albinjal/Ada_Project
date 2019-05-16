@@ -56,6 +56,7 @@
 
 	for x in 1..5 loop
 		dice(x,8 + 15 * x, 38);
+		--dice_placement;
 	end loop;
 
 

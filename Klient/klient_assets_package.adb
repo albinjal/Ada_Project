@@ -376,16 +376,13 @@
 
 
    function Rolloop(Socket: Socket_Type; Player: Positive)
-   				return Rolls_Type is
-
-   	 type Rerolls is array(1..5) of Integer;
-   	Reroll: Rerolls;
-   	 Continue, Switches: Integer;
-
-   	  	Result : Arr;
-   	  	B: Integer;
-   Roll: Rolls_Type;
-
+   				return Rolls_Type is type Rerolls is array(1..5) of Integer;
+		
+		Reroll: Rerolls;
+		Continue, Switches: Integer;
+		Result : Arr;
+		B: Integer;
+		Roll: Rolls_Type;
    begin -- Rolloop
 
 
@@ -446,24 +443,7 @@
 	end if;
 
 	end;
-		
 	
-	function Calcpoints(Prot: Protocoll_Type; Rolls: Arr)
-				return Protocoll_Type is
-
-		function Ental(I: Integer; Rolls: Arr)
-				return Integer is
-
-		C : Integer := 0;
-
-		begin
-		for X in 1..5 loop
-			if Rolls(X) = I then
-			C := C + I;
-			end if;
-		end loop;
-		return C;
-		end;
 
 				function FourPair(Rolls: Arr)
 				return Integer is

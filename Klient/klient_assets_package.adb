@@ -412,7 +412,7 @@
 
       message(33, 18, "Din tur");
 
-		elsif TX(1) = '5' then
+		if TX(1) = '5' then
 		-- 5 betyder info om gamestate
 
 		if TX(2) = '0' then

@@ -77,7 +77,7 @@
 		return Integer'Value(S);
 	end;
 
-		procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type) is
+	procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type) is
 		TX: String(1..100);
 		TL: Natural;
 	begin

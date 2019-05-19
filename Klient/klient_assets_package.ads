@@ -36,7 +36,7 @@ package klient_assets_package is
 	function Calcpoints(Prot: Protocoll_Type; Rolls: Arr)
 		return Protocoll_Type;
 
-	function Rolloop(Socket: Socket_Type; Player: Positive)
+	function Roll_loop(Socket: Socket_Type; Player: Positive)
 		return Rolls_Type;
 	------------------------------------------------------------------------------------------
 	------------------------------------------------------------------------------------------

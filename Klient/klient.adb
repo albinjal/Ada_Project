@@ -36,14 +36,12 @@ begin
 
    -- Main loop
    loop
-   Dices := Rolloop(Socket, Player);
+   Dices := Roll_loop(Socket, Player);
 
 
    if GetI(Dices) = 8 then
       Watch_Placement(Socket, Dices, Other_Protocoll);
-
    else
-
       Place(Socket, Dices, Own_Protocoll);
    end if;
 

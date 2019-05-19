@@ -23,7 +23,7 @@
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 
-	procedure place (avaial_points : in Protocoll_Type; select_place : out Integer) is
+	procedure place_graphics (avail_points : in Protocoll_Type; select_place : out Integer) is
 
 		Coord_Config_X : Integer := 120;
 		Coord_Config_Y : Integer := 5;
@@ -52,7 +52,7 @@
 
 			loop
 				Curr_Index_Selected := Curr_Index_Selected - 1;
-				if avaial_points(Curr_Index_Selected) >= 0 then
+				if avail_points(Curr_Index_Selected) >= 0 then
 					exit;
 				end if;
 			end loop;
@@ -84,7 +84,7 @@
 
 			loop
 				Curr_Index_Selected := Curr_Index_Selected + 1;
-				if avaial_points(Curr_Index_Selected) >= 0 then
+				if avail_points(Curr_Index_Selected) >= 0 then
 					exit;
 				end if;
 				if Curr_Index_Selected = 15 then
@@ -106,7 +106,7 @@
 
 		-- Build array of available slots
 		for x in 1..15 loop
-			if avaial_points(x) >= 0 then
+			if avail_points(x) >= 0 then
 				temp_arraysize := temp_arraysize + 1;
 			end if;
 		end loop;
@@ -115,7 +115,7 @@
 			test_array : dynamic_array(0..temp_arraysize);
 			begin
 			for x in 1..15 loop
-				if avaial_points(x) >= 0 then
+				if avail_points(x) >= 0 then
 					test_array(temp_array_index) := temp_array_index * 2;
 					temp_array_index := temp_array_index + 1;
 				end if;
@@ -149,7 +149,7 @@
 
 		Set_Buffer_Mode(On);
 		Set_Echo_Mode(On);
-	end place;
+	end place_graphics;
 
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------

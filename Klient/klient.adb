@@ -24,33 +24,30 @@ begin
 						"Usage: " & Command_Name & " remotehost remoteport");
 	end if;
 
-
 	Bootup(Socket, Argument(1), Positive'Value(Argument(2)));
 	graphics;
 	Start_Game(Socket, Player, Own_Protocoll, Other_Protocoll);
 
 	-- Main loop
 	loop
-	Dices := Rolloop(Socket, Player);
-	if GetI(Dices) = 8 then
-		Watch_Placement(Socket, Dices, Other_Protocoll);
+		Dices := Rolloop(Socket, Player);
+		
+		if GetI(Dices) = 8 then
+			
+			Watch_Placement(Socket, Dices, Other_Protocoll);
 
-	else
+		else
+			
+			Place(Socket, Dices, Own_Protocoll);
 
-		Place(Socket, Dices, Own_Protocoll);
-	end if;
-
-
+		end if;
 
 	end loop;
 
-
-
 	Skip_Line;
+	
 	--Innan programmet avslutar stängs socketen, detta genererar ett exception
 	--hos servern, pss kommer denna klient få ett exception när servern avslutas
 	Close(Socket);
-
-
 
 end Klient;

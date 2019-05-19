@@ -63,8 +63,8 @@ package body Klient_Assets_Package is
       New_Line;
 
 
-      -- ta bort
-       dice_placement(5,4,3,1,2);
+      -- ta bort, exempelkod. Såhär uppdaterar vi tärningar.
+		-- dice_placement(5,4,3,1,2);
 
    end;
 

@@ -447,7 +447,6 @@
 
 		Swap(Arrayen_Med_Talen(IOuter), Arrayen_Med_Talen(Minsta_Talet_Index));
 
-		end loop;
 	end Sort;
 
 

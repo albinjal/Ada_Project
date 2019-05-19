@@ -371,6 +371,10 @@
       return Result;
    end;
 
+
+
+
+
    function Rolloop(Socket: Socket_Type; Player: Positive)
    				return Rolls_Type is
 
@@ -387,64 +391,60 @@
 
    	Get_Rolls(Socket, Roll);
 	-- Slår Jag?
-   if GetI(Roll) > 5 then
-		-- Jag slår inte
-      loop
+	if GetI(Roll) > 5 then
+	-- Jag slår inte
+		loop
 			if GetI(Roll) = 6 then
-        message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
+		 	       message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 			elsif GetI(Roll) = 7 then
-        message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit");
+			        message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit");
 				Result := GetR(Roll);
-        dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
+			        dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 			end if;
+			
 			Get_Rolls(Socket, Roll);
 			exit when Roll.I = 8;
-      end loop;
-   else
-		-- Jag slår
+      		end loop;
+	else
+	-- Jag slår
 
 		for I in 1..5 loop
-      Reroll(I) := 0;
-   end loop;
+			Reroll(I) := 0;
+		end loop;
 
-      message(33, 18, "Din tur");
+		message(33, 18, "Din tur");
 
 		if TX(1) = '5' then
 		-- 5 betyder info om gamestate
 		
-		if TX(2) = '0' then
-		-- Annan spelare slår
-			Roll.I := 6;
-		elsif TX(2) = '1' then
-		-- Annan spelare har slagit
-			Roll.I := 7;
-			for X in 1..5 loop
-				Roll.Rolls(X) := Read(TX(X+2));
-			end loop;
-		elsif TX(2) = '2' then
-		-- Annan spelare vill placera
-			Roll.I := 8;
-			for X in 1..5 loop
-				Roll.Rolls(X) := Read(TX(X+2));
-			end loop;
+			if TX(2) = '0' then
+			-- Annan spelare slår
+				Roll.I := 6;
+			elsif TX(2) = '1' then
+			-- Annan spelare har slagit
+				Roll.I := 7;
+				for X in 1..5 loop
+					Roll.Rolls(X) := Read(TX(X+2));
+				end loop;
+			elsif TX(2) = '2' then
+			-- Annan spelare vill placera
+				Roll.I := 8;
+				for X in 1..5 loop
+					Roll.Rolls(X) := Read(TX(X+2));
+				end loop;
+			end if;
 		end if;
-	end if;
 
 
-      message(33, 18, "Tryck enter för att slå...");
-			Skip_Line;
-			Playerroll(Socket);
-			--Put("Wow, du fick:"); New_Line;
-      message(33, 18, "Wow, du fick:");
-
-			--for X in 1..GetI(Roll) loop
-				--Put(Result(X),2);
-			--end loop;
-      dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
-
+		message(33, 18, "Tryck enter för att slå...");
+		Skip_Line;
+		Playerroll(Socket);
+		message(33, 18, "Wow, du fick:");
+      
+		dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 		Swap(Arrayen_Med_Talen(IOuter), Arrayen_Med_Talen(Minsta_Talet_Index));
-		
 	end if;
+
 	end;
 		
 	

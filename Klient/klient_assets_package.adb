@@ -390,7 +390,10 @@ with TJa.Sockets;         use TJa.Sockets;
 
 				end loop;
 				Put_Line(Socket, "7");
+<<<<<<< HEAD
 
+=======
+>>>>>>> a07c9a90cb0bbfddbc1677e1fbd7ec5326d863ea
 		end if;
 
 		return Roll;

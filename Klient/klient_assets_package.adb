@@ -377,79 +377,88 @@
 
 	begin -- Rolloop
 
-
+		-- Hämta data
 		Get_Rolls(Socket, Roll);
+		
 		-- Slår Jag?
-	if GetI(Roll) > 5 then
+		if GetI(Roll) > 5 then
 			-- Jag slår inte
-		loop
+			loop
 				if GetI(Roll) = 6 then
-					-- Put("Spelare "); Put(3-Player, 0); Put(" slår");
-			message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
+					message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 				elsif GetI(Roll) = 7 then
-					-- Put("Spelare "); Put(3-Player, 0); Put(" har slagit");
-			message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
+					message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 					Result := GetR(Roll);
-					for I in 1..5 loop
-						Put(Result(I),0);
-					end loop;
+					
+					-- Visa resultatet.
+
+					--for I in 1..5 loop
+					--	Put(Result(I),0);
+					-- end loop;
+
+					message(33, 18, "Spelare" & Integer'Image(3-Player) & " fick" & Integer'Image(Result(1)) & "," & Integer'Image(Result(2)) & "," & Integer'Image(Result(3)) & "," & Integer'Image(Result(4)) & "," & Integer'Image(5));
+
 				end if;
+				
 				Get_Rolls(Socket, Roll);
 				exit when Roll.I = 8;
-		end loop;
-	else
-			-- Jag slår
-
-			for I in 1..5 loop
-		Reroll(I) := 0;
-	end loop;
-		--Put("Din tur"); New_Line;
-		message(33, 18, "Din tur");
-
-			for I in 1..3 loop
-				Result := GetR(Roll);
-
-				--Put("Tryck enter för att slå...");
-		message(33, 18, "Tryck enter för att slå...");
-				Skip_Line;
-				Playerroll(Socket);
-				--Put("Wow, du fick:"); New_Line;
-		message(33, 18, "Wow, du fick:");
-
-				for X in 1..GetI(Roll) loop
-					Put(Result(X),2);
-				end loop;
-
-				New_Line;
-				exit when I = 3;
-				--Put("Tryck 1 för att slå igen och 0 för att placera");
-		message(33, 18, "Tryck 1 för att slå igen och 0 för att placera");
-				Get(Continue);
-				exit when Continue = 0;
-				--Put("Hur många tärningar vill du slå om?");
-		message(33, 18, "Hur många tärningar vill du slå om?");
-				Get(Switches);
-
-				for A in 1..Switches loop
-					Get(B);
-					Reroll(B) := 1;
-				end loop;
-
-				Put(Socket,'6'); Put(Socket,Switches,0);
-
-
-				for A in 1..5 loop
-					Put(Socket,Reroll(A),0);
-				end loop;
-
-
-				New_Line(Socket);
-				Get_Rolls(Socket, Roll);
-
+				
 			end loop;
-			Put_Line(Socket, "7");
-	end if;
-	return Roll;
+		else
+				-- Jag slår
+
+				for I in 1..5 loop
+			Reroll(I) := 0;
+		end loop;
+			--Put("Din tur"); New_Line;
+			message(33, 18, "Din tur");
+
+				for I in 1..3 loop
+					Result := GetR(Roll);
+
+					--Put("Tryck enter för att slå...");
+			message(33, 18, "Tryck enter för att slå...");
+					Skip_Line;
+					Playerroll(Socket);
+					--Put("Wow, du fick:"); New_Line;
+			message(33, 18, "Wow, du fick:");
+
+					for X in 1..GetI(Roll) loop
+						Put(Result(X),2);
+					end loop;
+
+					New_Line;
+					exit when I = 3;
+					--Put("Tryck 1 för att slå igen och 0 för att placera");
+			message(33, 18, "Tryck 1 för att slå igen och 0 för att placera");
+					Get(Continue);
+					exit when Continue = 0;
+					--Put("Hur många tärningar vill du slå om?");
+			message(33, 18, "Hur många tärningar vill du slå om?");
+					Get(Switches);
+
+					for A in 1..Switches loop
+						Get(B);
+						Reroll(B) := 1;
+					end loop;
+
+					Put(Socket,'6'); Put(Socket,Switches,0);
+
+
+					for A in 1..5 loop
+						Put(Socket,Reroll(A),0);
+					end loop;
+
+
+					New_Line(Socket);
+					Get_Rolls(Socket, Roll);
+
+				end loop;
+				Put_Line(Socket, "7");
+		end if;
+		
+		return Roll;
+
 	end Rolloop;
 
 

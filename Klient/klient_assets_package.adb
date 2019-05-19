@@ -293,6 +293,20 @@ with TJa.Sockets;         use TJa.Sockets;
 		end loop;
 		return Result;
 	end;
+<<<<<<< HEAD
+
+
+	procedure protocoll (Prot1, Prot2 : in Protocoll_Type; ) is
+
+	begin
+		prot := Calcpoints(Prot1, )
+		update_protocoll(125, 4, Prot1, Prot2);
+
+	end protocoll;
+
+
+=======
+>>>>>>> a07c9a90cb0bbfddbc1677e1fbd7ec5326d863ea
 	function Rolloop(Socket: Socket_Type; Player: Positive)
 					return Rolls_Type is
 		type Rerolls is array(1..5) of Integer;
@@ -376,6 +390,7 @@ with TJa.Sockets;         use TJa.Sockets;
 
 				end loop;
 				Put_Line(Socket, "7");
+
 		end if;
 
 		return Roll;

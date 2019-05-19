@@ -63,8 +63,7 @@ package body Klient_Assets_Package is
       New_Line;
 
 
-      -- ta bort
-       dice_placement(5,4,3,1,2);
+
 
    end;
 
@@ -93,6 +92,7 @@ package body Klient_Assets_Package is
 	 -- A betyder här antalet tärningar
 	 for X in  1..Roll.I loop
 	    Roll.Rolls(X) := Read(TX(X+2));
+      
 	 end loop;
 
 
@@ -107,6 +107,7 @@ package body Klient_Assets_Package is
 	    Roll.I := 7;
 		 for X in 1..5 loop
 		 	Roll.Rolls(X) := Read(TX(X+2));
+
 		 end loop;
 	 elsif TX(2) = '2' then
 	 -- Annan spelare vill placera
@@ -384,15 +385,14 @@ package body Klient_Assets_Package is
 		-- Jag slår inte
       loop
 			if GetI(Roll) = 6 then
-				-- Put("Spelare "); Put(3-Player, 0); Put(" slår");
         message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 			elsif GetI(Roll) = 7 then
-				-- Put("Spelare "); Put(3-Player, 0); Put(" har slagit");
-        message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
+        message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit");
 				Result := GetR(Roll);
-				for I in 1..5 loop
-					Put(Result(I),0);
-				end loop;
+				--for I in 1..5 loop
+					--Put(Result(I),0);
+				--end loop;
+        dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 			end if;
 			Get_Rolls(Socket, Roll);
 			exit when Roll.I = 8;
@@ -403,22 +403,23 @@ package body Klient_Assets_Package is
 		for I in 1..5 loop
       Reroll(I) := 0;
    end loop;
-      --Put("Din tur"); New_Line;
+
       message(33, 18, "Din tur");
 
 		for I in 1..3 loop
 			Result := GetR(Roll);
 
-			--Put("Tryck enter för att slå...");
+
       message(33, 18, "Tryck enter för att slå...");
 			Skip_Line;
 			Playerroll(Socket);
 			--Put("Wow, du fick:"); New_Line;
       message(33, 18, "Wow, du fick:");
 
-			for X in 1..GetI(Roll) loop
-				Put(Result(X),2);
-			end loop;
+			--for X in 1..GetI(Roll) loop
+				--Put(Result(X),2);
+			--end loop;
+      dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 
 			New_Line;
 			exit when I = 3;

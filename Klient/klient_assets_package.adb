@@ -77,110 +77,59 @@
 		return Integer'Value(S);
 	end;
 
-	procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type) is
+		procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type) is
 		TX: String(1..100);
 		TL: Natural;
 	begin
-
+	
 		Get_Line(Socket, TX, TL);
-
 		New_Line;
-
-
+		
 		if TX(1) = '4' then
-		-- 4 betyder inkomande tärningar
-		Roll.I := Read(TX(2));
-		-- A betyder här antalet tärningar
-		for X in  1..Roll.I loop
-			Roll.Rolls(X) := Read(TX(X+2));
-		end loop;
-		Prot2 := Prot1;
-      Get_Line(Socket, TX, TL);
 
-      if TX(1) = '1' then
-	 --Put("Du är spelare 1, väntar på spelare 2");
-   message(33, 18, "Du är spelare 1, väntar på spelare 2");
-	 Player := 1;
-	 Get_Line(Socket, TX, TL);
-	 New_Line;
-	 if TX(1) = '3' then
-	    --Put("Båda spelare anslutna");
-      message(33, 18, "Båda spelare anslutna");
-	 end if;
+			-- 4 betyder inkomande tärningar
+			Roll.I := Read(TX(2));
+			-- A betyder här antalet tärningar
+			for X in  1..Roll.I loop
+				Roll.Rolls(X) := Read(TX(X+2));
+			end loop;
 
-      elsif TX(1) = '2' then
-	 --Put("Du är spelare 2");
-   message(33, 18, "Du är spelare 2");
-	 Player := 2;
-      else
-	 raise DATATYPE_ERROR;
-      end if;
-      New_Line;
-      --Put("Nu startar spelet");
-      message(33, 18, "Nu startar spelet");
-      New_Line;
+		elsif TX(1) = '5' then
+			-- 5 betyder info om gamestate
+		end if;
+		
+		if TX(2) = '0' then
+		-- Annan spelare slår
+			Roll.I := 6;
+		elsif TX(2) = '1' then
+		-- Annan spelare har slagit
+			Roll.I := 7;
+			for X in 1..5 loop
+				Roll.Rolls(X) := Read(TX(X+2));
 
+			end loop;
+		elsif TX(2) = '2' then
+		-- Annan spelare vill placera
+			Roll.I := 8;
+			for X in 1..5 loop
+				Roll.Rolls(X) := Read(TX(X+2));
+			end loop;
+		end if;
+	else
+		raise DATATYPE_ERROR;
+		end if;
+	end;
 
-
-
-   end;
-
-
-   function Read(C: in Character)
-		return Natural is
-      S: String(1..1);
-   begin
-      S(1) := C;
-      return Integer'Value(S);
-   end;
-
-   procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type) is
-      TX: String(1..100);
-      TL: Natural;
-   begin
-
-      Get_Line(Socket, TX, TL);
-
-      New_Line;
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+	-- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 
-      if TX(1) = '4' then
-	 -- 4 betyder inkomande tärningar
-	 Roll.I := Read(TX(2));
-	 -- A betyder här antalet tärningar
-	 for X in  1..Roll.I loop
-	    Roll.Rolls(X) := Read(TX(X+2));
-
-	 end loop;
-
-
-      elsif TX(1) = '5' then
-	 -- 5 betyder info om gamestate
-
-	 if TX(2) = '0' then
-	 -- Annan spelare slår
-	    Roll.I := 6;
-	 elsif TX(2) = '1' then
-	 -- Annan spelare har slagit
-	    Roll.I := 7;
-		 for X in 1..5 loop
-		 	Roll.Rolls(X) := Read(TX(X+2));
-
-		 end loop;
-	 elsif TX(2) = '2' then
-	 -- Annan spelare vill placera
-	 	Roll.I := 8;
-		 for X in 1..5 loop
-		 	Roll.Rolls(X) := Read(TX(X+2));
-		 end loop;
-	 end if;
-
-   else
-      raise DATATYPE_ERROR;
-
-
-      end if;
-   end;
 
    function GetI(Roll: in Rolls_Type)
 		return Integer is
@@ -445,9 +394,11 @@
 			if GetI(Roll) = 6 then
         message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 			elsif GetI(Roll) = 7 then
-        message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit:");
+        message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit");
 				Result := GetR(Roll);
-
+				--for I in 1..5 loop
+					--Put(Result(I),0);
+				--end loop;
         dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 			end if;
 			Get_Rolls(Socket, Roll);
@@ -486,27 +437,14 @@
       message(33, 18, "Tryck enter för att slå...");
 			Skip_Line;
 			Playerroll(Socket);
-
+			--Put("Wow, du fick:"); New_Line;
       message(33, 18, "Wow, du fick:");
 
+			--for X in 1..GetI(Roll) loop
+				--Put(Result(X),2);
+			--end loop;
       dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 
-<<<<<<< HEAD
-			New_Line;
-			exit when I = 3;
-
-      message(33, 18, "Tryck 1 för att slå igen och 0 för att placera: ");
-			Get(Continue);
-			exit when Continue = 0;
-
-      message(33, 18, "Välj hur många tätningar du vill slå om: ");
-			Get(Switches);
-
-			for A in 1..Switches loop
-        message(33, 18, "Välj en tärning att slå om: ");
-				Get(B);
-				Reroll(B) := 1;
-=======
 		Swap(Arrayen_Med_Talen(IOuter), Arrayen_Med_Talen(Minsta_Talet_Index));
 
 		end loop;
@@ -565,7 +503,6 @@
 			if Rolls(X) = Rolls(X+1) then
 				return 2 * ( Rolls(I) + Rolls(X) );
 			end if;
->>>>>>> 4ddd30b905e6cd84c3fa784a84c24a85e260523c
 			end loop;
 			return 0;
 			end if;

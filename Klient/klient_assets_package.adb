@@ -446,8 +446,10 @@
       dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 
 		Swap(Arrayen_Med_Talen(IOuter), Arrayen_Med_Talen(Minsta_Talet_Index));
-
-
+		
+	end Get_Rolls;
+		
+	
 	function Calcpoints(Prot: Protocoll_Type; Rolls: Arr)
 				return Protocoll_Type is
 

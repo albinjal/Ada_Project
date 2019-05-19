@@ -6,3 +6,6 @@
 
 # Compiled files
 /Klient/klient
+
+# Mac thumbnail files
+.DS_Store

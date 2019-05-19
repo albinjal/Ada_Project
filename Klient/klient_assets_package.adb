@@ -96,24 +96,23 @@
 
 		elsif TX(1) = '5' then
 			-- 5 betyder info om gamestate
-		end if;
-		
-		if TX(2) = '0' then
-		-- Annan spelare slår
-			Roll.I := 6;
-		elsif TX(2) = '1' then
-		-- Annan spelare har slagit
-			Roll.I := 7;
-			for X in 1..5 loop
-				Roll.Rolls(X) := Read(TX(X+2));
 
-			end loop;
-		elsif TX(2) = '2' then
-		-- Annan spelare vill placera
-			Roll.I := 8;
-			for X in 1..5 loop
-				Roll.Rolls(X) := Read(TX(X+2));
-			end loop;
+			if TX(2) = '0' then
+			-- Annan spelare slår
+				Roll.I := 6;
+			elsif TX(2) = '1' then
+			-- Annan spelare har slagit
+				Roll.I := 7;
+				for X in 1..5 loop
+					Roll.Rolls(X) := Read(TX(X+2));
+
+				end loop;
+			elsif TX(2) = '2' then
+			-- Annan spelare vill placera
+				Roll.I := 8;
+				for X in 1..5 loop
+					Roll.Rolls(X) := Read(TX(X+2));
+				end loop;
 		end if;
 	else
 		raise DATATYPE_ERROR;

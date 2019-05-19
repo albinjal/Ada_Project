@@ -315,14 +315,10 @@ with TJa.Sockets;         use TJa.Sockets;
 				elsif GetI(Roll) = 7 then
 				message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 					Result := GetR(Roll);
-					
+
 					-- Visa resultatet.
+					dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 
-					--for I in 1..5 loop
-					--	Put(Result(I),0);
-					-- end loop;
-
-					message(33, 18, "Spelare" & Integer'Image(3-Player) & " fick" & Integer'Image(Result(1)) & "," & Integer'Image(Result(2)) & "," & Integer'Image(Result(3)) & "," & Integer'Image(Result(4)) & "," & Integer'Image(5));
 
 				end if;
 
@@ -336,31 +332,31 @@ with TJa.Sockets;         use TJa.Sockets;
 				for I in 1..5 loop
 			Reroll(I) := 0;
 		end loop;
-		--Put("Din tur"); New_Line;
+
 			message(33, 18, "Din tur");
 			for I in 1..3 loop
 					Result := GetR(Roll);
-					--Put("Tryck enter för att slå...");
+
 			message(33, 18, "Tryck enter för att slå...");
 					Skip_Line;
 					Playerroll(Socket);
-					--Put("Wow, du fick:"); New_Line;
+
 			message(33, 18, "Wow, du fick:");
 
-					for X in 1..GetI(Roll) loop
-						Put(Result(X),2);
-					end loop;
+				dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
+
 					New_Line;
 					exit when I = 3;
-					--Put("Tryck 1 för att slå igen och 0 för att placera");
-			message(33, 18, "Tryck 1 för att slå igen och 0 för att placera");
+
+			message(33, 18, "Tryck 1 för att slå igen och 0 för att placera: ");
 					Get(Continue);
 					exit when Continue = 0;
-					--Put("Hur många tärningar vill du slå om?");
-			message(33, 18, "Hur många tärningar vill du slå om?");
+
+			message(33, 18, "Hur många tärningar vill du slå om?: ");
 					Get(Switches);
 
 					for A in 1..Switches loop
+						message(33, 18, "Välj en tärning att slå om: ");
 						Get(B);
 						Reroll(B) := 1;
 					end loop;

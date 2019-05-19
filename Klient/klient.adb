@@ -4,22 +4,21 @@ with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with TJa.Sockets;         use TJa.Sockets;
 with Klient_Assets_Package; use Klient_Assets_Package;
-	
+
 procedure Klient is
 
-<<<<<<< HEAD
    Player : Positive;
    --Socket_type används för att kunna kommunicera med en server
    Socket : Socket_Type;
    Own_Protocoll, Other_Protocoll, Prot: Protocoll_Type;
    Dices: Rolls_Type;
 
-=======
+
 	Dices: Rolls_Type;
 	Own_Protocoll, Other_Protocoll: Protocoll_Type;
 	Player : Positive;
 	Socket : Socket_Type; -- Socket_type används för att kunna kommunicera med en server
->>>>>>> a07c9a90cb0bbfddbc1677e1fbd7ec5326d863ea
+
 
 begin
 
@@ -27,12 +26,6 @@ begin
 	-- Annars kastas ett fel.
 	-- Argumentet skall vara serverns adress och portnummer, t.ex.:
 	--> klient localhost 3400
-
-<<<<<<< HEAD
-   --Denna rutin kontrollerar att programmet startas med två parametrar.
-   --Annars kastas ett fel.
-   --Argumentet skall vara serverns adress och portnummer, t.ex.:
-   --> klient localhost 3400
 
    if Argument_Count /= 2 then
       Raise_Exception(Constraint_Error'Identity,
@@ -59,12 +52,12 @@ begin
    end if;
 
 
-=======
+
 	if Argument_Count /= 2 then
 		Raise_Exception(Constraint_Error'Identity,
 						"Usage: " & Command_Name & " remotehost remoteport");
 	end if;
->>>>>>> a07c9a90cb0bbfddbc1677e1fbd7ec5326d863ea
+
 
 	Bootup(Socket, Argument(1), Positive'Value(Argument(2)));
 	graphics;
@@ -73,13 +66,13 @@ begin
 	-- Main loop
 	loop
 		Dices := Rolloop(Socket, Player);
-		
+
 		if GetI(Dices) = 8 then
-			
+
 			Watch_Placement(Socket, Dices, Other_Protocoll);
 
 		else
-			
+
 			Place(Socket, Dices, Own_Protocoll);
 
 		end if;
@@ -87,7 +80,7 @@ begin
 	end loop;
 
 	Skip_Line;
-	
+
 	--Innan programmet avslutar stängs socketen, detta genererar ett exception
 	--hos servern, pss kommer denna klient få ett exception när servern avslutas
 	Close(Socket);

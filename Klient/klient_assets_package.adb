@@ -413,6 +413,15 @@ with TJa.Sockets;         use TJa.Sockets;
 	end;
 
 
+	procedure protocoll (Prot1, Prot2 : in Protocoll_Type; ) is
+
+	begin
+		prot := Calcpoints(Prot1, )
+		update_protocoll(125, 4, Prot1, Prot2);
+
+	end protocoll;
+
+
 	function Rolloop(Socket: Socket_Type; Player: Positive)
 					return Rolls_Type is
 
@@ -494,7 +503,7 @@ with TJa.Sockets;         use TJa.Sockets;
 				end loop;
 
 				Put_Line(Socket, "7");
-				
+
 		end if;
 
 		return Roll;

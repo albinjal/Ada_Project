@@ -9,7 +9,7 @@ procedure Klient is
    Player : Positive;
    --Socket_type används för att kunna kommunicera med en server
    Socket : Socket_Type;
-   Own_Protocoll, Other_Protocoll: Protocoll_Type;
+   Own_Protocoll, Other_Protocoll, Prot: Protocoll_Type;
    Dices: Rolls_Type;
 
 
@@ -31,9 +31,12 @@ begin
    graphics;
    Start_Game(Socket, Player, Own_Protocoll, Other_Protocoll);
 
+
    -- Main loop
    loop
    Dices := Rolloop(Socket, Player);
+   Protocoll(Own_Protocoll, Other_Protocoll, Dices);
+
    if GetI(Dices) = 8 then
       Watch_Placement(Socket, Dices, Other_Protocoll);
 

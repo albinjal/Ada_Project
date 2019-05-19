@@ -496,11 +496,12 @@ procedure dice_placement (D1, D2, D3, D4, D5 : in Integer) is
 
 begin
 
-	Dice(D1, 8 + 15 * 1, 38);
-	Dice(D2, 8 + 15 * 2, 38);
-	Dice(D3, 8 + 15 * 3, 38);
-	Dice(D4, 8 + 15 * 4, 38);
-	Dice(D5, 8 + 15 * 5, 38);
+	-- Only update dice if input is bigger than 0
+	if D1 > 0 then Dice(D1, 8 + 15 * 1, 38); end if;
+	if D2 > 0 then Dice(D2, 8 + 15 * 2, 38); end if;
+	if D3 > 0 then Dice(D3, 8 + 15 * 3, 38); end if;
+	if D4 > 0 then Dice(D4, 8 + 15 * 4, 38); end if;
+	if D5 > 0 then Dice(D5, 8 + 15 * 5, 38); end if;
 
 end dice_placement;
 

@@ -1,515 +1,738 @@
-with TJa.Sockets;         use TJa.Sockets;
-	with Ada.Exceptions;      use Ada.Exceptions;
-	with Ada.Text_IO;         use Ada.Text_IO;
-	with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-	with Yatzy_graphics_package; use Yatzy_graphics_package;
+	-- graphics
 	with TJa.Window.Text;      use TJa.Window.Text;
 	with TJa.Window.Elementary; use TJa.Window.Elementary;
 	with TJa.Window.Graphic; use TJa.Window.Graphic;
 	with TJa.Keyboard;        use TJa.Keyboard;
+	with Ada.Text_IO;         use Ada.Text_IO;
+	with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+	package body Yatzy_graphics_package is
 
-	package body Klient_Assets_Package is
+	-- Colors
+	bg_color : String := "[48;5;22m";
+	protocoll_frame_bg : String := "[48;5;232m";
+	logo_frame_bg : String := "[48;5;232m";
+	message_frame_color1 : String := "[48;5;178m";
+	message_frame_color2 : String := "[48;5;220m";
 
 
-	procedure Bootup(Socket: out Socket_Type; Adress: in String; Port: in Positive) is
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+	procedure place (avaial_points : in Protocoll_Type; select_place : out Integer) is
+
+		Coord_Config_X : Integer := 120;
+		Coord_Config_Y : Integer := 5;
+
+		Curr_Index_Selected : Integer := 0;
+
+		Key: Key_Type;
+		temp_arraysize: Integer := 0;
+		temp_array_index: Integer := 0;
+		type dynamic_array is array(Integer range <>) of Integer;
+
+		procedure goto_prev is
+
+		begin
+			-- Clear screen
+			for X in 1..17 loop
+				Goto_XY(Coord_Config_X, Coord_Config_Y + X * 2);
+				Put(ASCII.ESC & bg_color);
+				Put("  ");
+				Goto_XY(1000,1000);
+			end loop;
+
+			if Curr_Index_Selected = 1 then
+				Curr_Index_Selected := 16;
+			end if;
+
+			loop
+				Curr_Index_Selected := Curr_Index_Selected - 1;
+				if avaial_points(Curr_Index_Selected) >= 0 then
+					exit;
+				end if;
+			end loop;
+
+			if Curr_Index_Selected > 6 then
+				Goto_XY(Coord_Config_X, Coord_Config_Y + Curr_Index_Selected * 2 + 4);
+			else
+				Goto_XY(Coord_Config_X, Coord_Config_Y + Curr_Index_Selected * 2);
+			end if;
+
+			Put("->");
+			Goto_XY(1000,1000);
+		end goto_prev;
+
+		procedure goto_next is
+
+		begin
+			-- Clear screen
+			for X in 1..17 loop
+				Goto_XY(Coord_Config_X, Coord_Config_Y + X * 2);
+				Put(ASCII.ESC & bg_color);
+				Put("  ");
+				Goto_XY(1000,1000);
+			end loop;
+
+			if Curr_Index_Selected = 15 then
+				Curr_Index_Selected := 0;
+			end if;
+
+			loop
+				Curr_Index_Selected := Curr_Index_Selected + 1;
+				if avaial_points(Curr_Index_Selected) >= 0 then
+					exit;
+				end if;
+				if Curr_Index_Selected = 15 then
+					Curr_Index_Selected := 0;
+				end if;
+			end loop;
+
+			if Curr_Index_Selected > 6 then
+				Goto_XY(Coord_Config_X, Coord_Config_Y + Curr_Index_Selected * 2 + 4);
+			else
+				Goto_XY(Coord_Config_X, Coord_Config_Y + Curr_Index_Selected * 2);
+			end if;
+
+			Put("->");
+			Goto_XY(1000,1000);
+		end goto_next;
+
 	begin
-		Initiate(Socket);
-		Connect(Socket, Adress, Port);
-		Put("Ansluten till servern");
-		New_Line;
-	end;
 
-
-	procedure graphics is
-	begin
-		Clear_Window;
-		Set_Graphical_Mode(On);
-		background;
-		protocoll_background(125, 4);
-		logo_background(24, 4);
-		logo(24, 4);
-	end graphics;
-
-
-	procedure Start_Game(Socket: in Socket_Type; Player: out Positive; Prot1, Prot2: out Protocoll_Type) is
-
-	TX     : String(1..100);
-	TL : Natural;
-
-	begin
-
-		for I in 1..15 loop
-			Prot1(I) := -1;
+		-- Build array of available slots
+		for x in 1..15 loop
+			if avaial_points(x) >= 0 then
+				temp_arraysize := temp_arraysize + 1;
+			end if;
 		end loop;
 
-		Prot2 := Prot1;
+		declare
+			test_array : dynamic_array(0..temp_arraysize);
+			begin
+			for x in 1..15 loop
+				if avaial_points(x) >= 0 then
+					test_array(temp_array_index) := temp_array_index * 2;
+					temp_array_index := temp_array_index + 1;
+				end if;
+			end loop;
+		end;
 
-		Get_Line(Socket, TX, TL);
 
-		if TX(1) = '1' then
+		--Put("Arraystorlek: "); Put(temp_arraysize,0);
 
-	  message(33, 18, "Du är spelare 1, väntar på spelare 2");
-		Player := 1;
-		Get_Line(Socket, TX, TL);
-		New_Line;
-		if TX(1) = '3' then
+		Set_Buffer_Mode(Off);
+		Set_Echo_Mode(Off);
 
-		message(33, 18, "Båda spelare anslutna");
-		end if;
-		elsif TX(1) = '2' then
+		goto_next;
 
-		message(33, 18, "Du är spelare 2");
-		Player := 2;
+		loop
+			Get_Immediate(Key);
+
+			Goto_XY(Coord_Config_X,Coord_Config_Y);
+
+			if Is_Up_Arrow(Key) then
+				goto_prev;
+			elsif Is_Down_Arrow(Key) then
+				goto_next;
+			elsif Is_Return(Key) then
+				Put("Index "); Put(Curr_Index_Selected,0); Put(" was selected.");
+				select_place := Curr_Index_Selected;
+				exit;
+			end if;
+
+		end loop;
+
+		Set_Buffer_Mode(On);
+		Set_Echo_Mode(On);
+	end place;
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+	procedure background is
+
+	begin
+
+	-- Skriver ut bakgrundsfärgen för hela terminalen
+	for X in 1..300 loop
+		for Y in 1..50 loop
+			Put(ASCII.ESC & bg_color);
+			goto_xy(X, Y);
+			Put(' ');
+		end loop;
+	end loop;
+	end background;
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+	procedure protocoll_background (X_Start, Y_Start: in Integer) is
+
+	begin
+
+	-- Skriver ut ramen kring protokollet
+	for X in 1..31 loop
+		for Y in 1..41 loop
+		Put(ASCII.ESC & protocoll_frame_bg);
+		goto_xy((X_Start - 3 + X), (Y_Start - 2 + Y));
+		Put(' ');
+		end loop;
+	end loop;
+
+	-- Skriver ut protokollets bakgrund
+	for X in 1..25 loop
+		for Y in 1..38 loop
+		Put(ASCII.ESC & "[48;5;15m");
+		goto_xy(X_Start + X, Y_Start + Y);
+		Put(' ');
+		end loop;
+	end loop;
+
+	end protocoll_background;
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+	procedure update_protocoll(X_Start, Y_Start: in Integer; prot1, prot2: in Protocoll_Type) is
+	x : Integer := X_Start;
+	y : Integer := Y_Start;
+	widthcol1 : constant Integer := 13;
+	widthcol2 : constant Integer := 5;
+	widthcol3 : constant Integer := 5;
+	height: constant Integer := 39;
+	text_width: constant Integer := 12;
+	points_width: constant Integer := 5;
+
+	begin
+	-- Frame
+	Set_Background_Colour(White);
+	Set_Foreground_Colour(Black);
+	-- Skriver ut horisontella linjer
+	while y < Y_Start + height loop
+		Goto_XY(X_Start + 1, y);
+		Put(Horisontal_Line, Times => widthcol1);
+		Goto_XY(X_Start + 2 + widthcol1, y);
+		Put(Horisontal_Line, Times => widthcol2);
+		Goto_XY(X_Start + 3 + widthcol1 + widthcol2, y);
+		Put(Horisontal_Line, Times => widthcol3);
+		Goto_XY(X_Start + 4 + widthcol1 + widthcol2 + widthcol3, y);
+		y := y + 2;
+	end loop;
+
+	for I in Y_Start..(Y_Start+height -1) loop
+		Goto_XY(X_Start,I);
+		if (I + Y_Start) mod 2 /= 0 then
+		Put(Vertical_Line);
+		Goto_XY(X_Start + 1 + widthcol1,I);
+		Put(Vertical_Line);
+		Goto_XY(X_Start + 2 + widthcol1 + widthcol2,I);
+		Put(Vertical_Line);
+		Goto_XY(X_Start + 3 + widthcol1 + widthcol2 + widthcol3,I);
+		Put(Vertical_Line);
 		else
-		raise DATATYPE_ERROR;
+		if I =  Y_Start then
+			Put(Upper_Left_Corner);
+			Goto_XY(X_Start + 1 + widthcol1,I);
+			Put(Horisontal_Down);
+			Goto_XY(X_Start + 2 + widthcol1 + widthcol2,I);
+			Put(Horisontal_Down);
+			Goto_XY(X_Start + 3 + widthcol1 + widthcol2 + widthcol3,I);
+			Put(Upper_Right_Corner);
+		elsif I = Y_Start+height - 1  then
+			Put(Lower_Left_Corner);
+			Goto_XY(X_Start + 1 + widthcol1,I);
+			Put(Horisontal_Up);
+			Goto_XY(X_Start + 2 + widthcol1 + widthcol2,I);
+			Put(Horisontal_Up);
+			Goto_XY(X_Start + 3 + widthcol1 + widthcol2 + widthcol3,I);
+			Put(Lower_Right_Corner);
+		else
+			Put(Vertical_Right);
+			Goto_XY(X_Start + 1 + widthcol1,I);
+			Put(Cross);
+			Goto_XY(X_Start + 2 + widthcol1 + widthcol2,I);
+			Put(Cross);
+			Goto_XY(X_Start + 3 + widthcol1 + widthcol2 + widthcol3,I);
+			Put(Vertical_Left);
 		end if;
-		New_Line;
-
-		message(33, 18, "Nu startar spelet");
-		New_Line;
-
-	end;
-
-
-	function Read(C: in Character)
-			return Natural is
-
-		S: String(1..1);
-
-	begin
-
-		S(1) := C;
-		return Integer'Value(S);
-
-	end;
-
-
-	procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type) is
-
-		TX: String(1..100);
-		TL: Natural;
-
-	begin
-
-		Get_Line(Socket, TX, TL);
-		New_Line;
-
-		if TX(1) = '4' then
-		-- 4 betyder inkomande tärningar
-		Roll.I := Read(TX(2));
-		-- A betyder här antalet tärningar
-		for X in  1..Roll.I loop
-			Roll.Rolls(X) := Read(TX(X+2));
-		end loop;
-
-		elsif TX(1) = '5' then
-		-- 5 betyder info om gamestate
-		if TX(2) = '0' then
-		-- Annan spelare slår
-			Roll.I := 6;
-		elsif TX(2) = '1' then
-		-- Annan spelare har slagit
-			Roll.I := 7;
-
-			for X in 1..5 loop
-				Roll.Rolls(X) := Read(TX(X+2));
-			end loop;
-
-		elsif TX(2) = '2' then
-		-- Annan spelare vill placera
-			Roll.I := 8;
-
-			for X in 1..5 loop
-				Roll.Rolls(X) := Read(TX(X+2));
-			end loop;
-
 		end if;
+	end loop;
 
-	else
-		raise DATATYPE_ERROR;
-		end if;
+	Set_Graphical_Mode(Off);
 
-	end;
+	For I in 1..19 loop
+		Goto_XY(X_Start + 2, Y_Start - 1 + I * 2);
+		--Set_Background_Colour(Blue);
+		case I is
+			when 1 => Set_Text_Modes(On, Off, Off); Put("Spelare:"); Set_Text_Modes(Off, Off, On);
+			when 2 => Put("Ettor");
+			when 3 => Put("Tvåor");
+			when 4 => Put("Treor");
+			when 5 => Put("Fyror");
+			when 6 => Put("Femmor");
+			when 7 => Put("Sexor"); Set_Text_Modes(On, Off, Off);
+			when 8 => Put("Summa:");
+			when 9 => Put("BONUS"); Set_Text_Modes(Off, Off, On);
+			when 10 => Put("Par");
+			when 11 => Put("Två par");
+			when 12 => Put("Triss");
+			when 13 => Put("Fyrtal");
+			when 14 => Put("Kåk");
+			when 15 => Put("Liten stege");
+			when 16 => Put("Stor stege");
+			when 17 => Put("Chans");
+			when 18 => Put("Yatzy"); Set_Text_Modes(On, Off, Off);
+			when 19 => Put("Summa:");
+
+			when others => null;
+		end case;
+	end loop;
 
 
-	function GetI(Roll: in Rolls_Type)
-			return Integer is
+	For I in 1..19 loop
+		Goto_XY(X_Start + 2 + widthcol1, Y_Start - 1 + I * 2);
+
+		case I is
+		when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
+		when 2..7 => if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
+		when 8 => Put("Sum:");
+		when 9 => Put("BON");
+		when 10..18 => if Prot1(I - 3) /= -1 then Put(Prot1(I - 3), 1 + widthcol2 / 2); end if;
+		when 19 => Put("Sum:");
+
+		when others => null;
+		end case;
+	end loop;
+
+	For I in 1..19 loop
+		Goto_XY(X_Start + 3 + widthcol1 + widthcol2, Y_Start - 1 + I * 2);
+		case I is
+		when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
+		when 2..7 => if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
+		when 8 => Put("Sum:");
+		when 9 => Put("BON");
+		when 10..18 => if Prot2(I - 3) /= -1 then Put(Prot2(I - 3), 1 + widthcol2 / 2); end if;
+		when 19 => Put("Sum:");
+
+		when others => null;
+		end case;
+	end loop;
+
+	end update_protocoll;
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+	procedure dice (A, X_Start, Y_Start: in Integer) is
 
 	begin
-
-		return Roll.I;
-
-	end;
-
-
-	function GetR(Roll: in Rolls_Type)
-			return Arr is
-
-	begin
-
-		return Roll.Rolls;
-
-	end;
-
-
-	procedure Playerroll(Socket: in Socket_Type) is
-
-	begin
-
-		Put_Line(Socket, "51");
-
-	end;
-
-
-	procedure Sort(Arrayen_Med_Talen: in out Arr) is
-
-		procedure Swap(Tal_1,Tal_2: in out Integer) is
-
-		Tal_B : Integer; -- Temporary buffer
-
-		begin
-
-		Tal_B := Tal_1;
-		Tal_1 := Tal_2;
-		Tal_2 := Tal_B;
-
-		end Swap;
-
-		Minsta_Talet, Minsta_Talet_Index : Integer;
-
-	begin
-
-		Minsta_Talet := 0;
-
-		for IOuter in Arrayen_Med_Talen'Range loop
-			for I in IOuter..Arrayen_Med_Talen'Last loop
-			if I = IOuter or Arrayen_Med_Talen(I) > Minsta_Talet then
-			Minsta_Talet := Arrayen_Med_Talen(I);
-			Minsta_Talet_Index := I;
-			end if;
-			end loop;
-
-		Swap(Arrayen_Med_Talen(IOuter), Arrayen_Med_Talen(Minsta_Talet_Index));
-		end loop;
-
-	end Sort;
-
-
-	function Calcpoints(Prot: Protocoll_Type; Rolls: Arr)
-				return Protocoll_Type is
-
-		function Ental(I: Integer; Rolls: Arr)
-				return Integer is
-
-		C : Integer := 0;
-
-		begin
-
-		for X in 1..5 loop
-			if Rolls(X) = I then
-			C := C + I;
-			end if;
-		end loop;
-
-		return C;
-
-		end;
-
-
-		function FourPair(Rolls: Arr)
-				return Integer is
-
-		begin
-
-			for I in 1..2 loop
-				if Rolls(I) = Rolls(I+1) and Rolls(I) = Rolls(I+2) and Rolls(I) = Rolls(I+3) then
-					return 4 * Rolls(I);
-				end if;
-			end loop;
-
-			return 0;
-		end;
-
-
-		function Pair(Rolls: Arr)
-			return Integer is
-
-		begin
-
-			for I in 1..4 loop
-				if Rolls(I) = Rolls(I+1) then
-					return 2 * Rolls(I);
-				end if;
-			end loop;
-
-		return 0;
-
-		end;
-
-
-		function TwoPair(Rolls: Arr)
-				return Integer is
-
-		begin
-
-			if FourPair(Rolls) /= 0 then
-				return 0;
+	Goto_XY(X_Start, Y_Start);
+	for I in 1..5 loop
+		--Set_Background_Colour(White);
+		if I = 1 then
+		Put(Upper_Left_Corner);
+		Put(Horisontal_Very_High_Line, Times => 9);
+		Put(Upper_Right_Corner);
+		Goto_XY(X_Start, Y_Start + I);
+		elsif I = 5 then
+		Put(Lower_Left_Corner);
+		Put(Horisontal_Very_Low_Line, Times => 9);
+		Put(Lower_Right_Corner);
+		else
+		case A is
+			when 1 =>
+			Put(Vertical_Line);
+			if I = 3 then
+			Put("    •    ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 2 or I = 4 then
+			Put("         ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
 			end if;
 
-			for I in 1..2 loop
-				if Rolls(I) = Rolls(I+1) then
-					for X in (I+2)..4 loop
-						if Rolls(X) = Rolls(X+1) then
-							return 2 * ( Rolls(I) + Rolls(X) );
-						end if;
-					end loop;
-					return 0;
-				end if;
-			end loop;
-			return 0;
+			when 2 =>
+			Put(Vertical_Line);
+			if I = 2 then
+			Put("  •      ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 3 then
+			Put("         ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 4 then
+			Put("      •  ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			end if;
 
-		end;
+			when 3 =>
+			Put(Vertical_Line);
+			if I = 2 then
+			Put("  •      ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 3 then
+			Put("    •    ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 4 then
+			Put("      •  ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			end if;
+
+			when 4 =>
+			Put(Vertical_Line);
+			if I = 2 then
+			Put("  •   •  ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 3 then
+			Put("         ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 4 then
+			Put("  •   •  ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			end if;
+
+			when 5 =>
+			Put(Vertical_Line);
+			if I = 2 then
+			Put("  •   •  ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 3 then
+			Put("    •    ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			elsif I = 4 then
+			Put("  •   •  ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+			end if;
+
+			when 6 =>
+			Put(Vertical_Line);
+			Put("  •   •  ");
+			Put(Vertical_Line);
+			Goto_XY(X_Start, Y_Start + I);
+
+			when others => null;
+		end case;
+		end if;
+	end loop;
 
 
-		function Triss(Rolls: Arr)
-				return Integer is
+	end dice;
 
-		begin
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+procedure dice_placement (D1, D2, D3, D4, D5 : in Integer) is
 
-			for I in 1..3 loop
-				if Rolls(I) = Rolls(I+1) and Rolls(I) = Rolls(I+2) then
-					return 3 * Rolls(I);
-				end if;
-			end loop;
-			return 0;
-		end;
+begin
 
+	-- Only update dice if input is bigger than 0
+	if D1 > 0 then Dice(D1, 8 + 15 * 1, 38); end if;
+	if D2 > 0 then Dice(D2, 8 + 15 * 2, 38); end if;
+	if D3 > 0 then Dice(D3, 8 + 15 * 3, 38); end if;
+	if D4 > 0 then Dice(D4, 8 + 15 * 4, 38); end if;
+	if D5 > 0 then Dice(D5, 8 + 15 * 5, 38); end if;
 
-		function Stege(I: Integer; Rolls: Arr)
-				return Integer is
-
-		begin
-
-			case I is
-				when 11 =>
-				--Liten
-				for X in  1..5 loop
-					if Rolls(6-X) /= X then
-						return 0;
-					end if;
-				end loop;
-				return 15;
-
-				when 12 =>
-			--Stor
-				for X in 2..6 loop
-					if Rolls(7-X) /= X then
-						return 0;
-					end if;
-				end loop;
-				return 20;
-
-				when others =>
-				null;
-				return 0;
-
-			end case;
-
-		end;
+end dice_placement;
 
 
-		function Chans(Rolls: Arr)
-				return Integer is
-
-		X : Integer := 0;
-
-		begin
-
-			for I in 1..5 loop
-				X := X + Rolls(I);
-			end loop;
-			return X;
-		end;
 
 
-		function Kaok(Rolls: Arr)
-			return Integer is
 
-		begin
 
-			for X in 1..2 loop
-				exit when Rolls(X) /= Rolls(X+1);
-				if X = 2 then
-					if Rolls(4) = Rolls(5) and Rolls(5) /= Rolls(1) then
-						return Chans(Rolls);
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+	Procedure logo_background (X_Start, Y_Start : in Integer) is
+
+	begin
+	for X in 1..76 loop
+		for Y in 1..9 loop
+		Put(ASCII.ESC & logo_frame_bg);
+		goto_xy((X_Start - 3 + X), (Y_Start - 2 + Y));
+		Put(' ');
+		end loop;
+	end loop;
+	end logo_background;
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+	Procedure logo (X_Start, Y_Start : in Integer) is
+
+	begin
+	Set_Background_Colour(White);
+	Set_Foreground_Colour(Blue);
+	Set_Bold_Mode(on);
+
+	goto_xy(X_Start, Y_Start);
+	Put("  ____  ____         __         _________      ________      ____  ____ ");
+	goto_xy(X_Start, Y_Start + 1);
+	Put(' ');
+	Put(Vertical_Line);
+	Put("_  _");
+	Put(Vertical_Line, Times => 2);
+	Put("_  _");
+	Put(Vertical_Line);
+	Put("       /  \       ");
+	Put(Vertical_Line);
+	Put("  _   _  ");
+	Put(Vertical_Line);
+	Put("    ");
+	Put(Vertical_Line);
+	Put("  __  __");
+	Put(Vertical_Line);
+	Put("    ");
+	Put(Vertical_Line);
+	Put("_  _");
+	Put(Vertical_Line, Times => 2);
+	Put("_  _");
+	Put(Vertical_Line);
+	goto_xy(X_Start, Y_Start + 2);
+	Put("   \ \  / /        / /\ \      ");
+	Put(Vertical_Line);
+	Put("_/ ");
+	Put(Vertical_Line);
+	Put(' ');
+	Put(Vertical_Line);
+	Put(" \_");
+	Put(Vertical_Line);
+	Put("    ");
+	Put(Vertical_Line);
+	Put("_/ / /         \ \  / /  ");
+	goto_xy(X_Start, Y_Start + 3);
+	Put("    \ \/ /        / ____ \         ");
+	Put(Vertical_Line);
+	Put(' ');
+	Put(Vertical_Line);
+	Put("           / /  _        \ \/ /   ");
+	goto_xy(X_Start, Y_Start + 4);
+	Put("    _");
+	Put(Vertical_Line);
+	Put("  ");
+	Put(Vertical_Line);
+	Put("_      _/ /    \ \_      _");
+	Put(Vertical_Line);
+	Put(' ');
+	Put(Vertical_Line);
+	Put("_         / /__/ ");
+	Put(Vertical_Line);
+	Put("       _");
+	Put(Vertical_Line);
+	Put("  ");
+	Put(Vertical_Line);
+	Put("_   ");
+	goto_xy(X_Start, Y_Start + 5);
+	Put("   ");
+	Put(Vertical_Line);
+	Put("______");
+	Put(Vertical_Line);
+	Put("    ");
+	Put(Vertical_Line);
+	Put("____");
+	Put(Vertical_Line);
+	Put("  ");
+	Put(Vertical_Line);
+	Put("____");
+	Put(Vertical_Line);
+	Put("    ");
+	Put(Vertical_Line);
+	Put("_____");
+	Put(Vertical_Line);
+	Put("       ");
+	Put(Vertical_Line);
+	Put("_______");
+	Put(Vertical_Line);
+	Put("      ");
+	Put(Vertical_Line);
+	Put("______");
+	Put(Vertical_Line);
+	Put("  ");
+	goto_xy(X_Start, Y_Start + 6);
+	Put("                                                                        ");
+
+	--  ____  ____         __         _________      ________      ____  ____
+	-- |_  _||_  _|       /  \       |  _   _  |    |  __  __|    |_  _||_  _|
+	--   \ \  / /        / /\ \      |_/ | | \_|    |_/ / /         \ \  / /
+	--    \ \/ /        / ____ \         | |           / /  _        \ \/ /
+	--    _|  |_      _/ /    \ \_      _| |_         / /__/ |       _|  |_
+	--   |______|    |____|  |____|    |_____|       |_______|      |______|
+
+	end logo;
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+	procedure message (X_Start, Y_Start : in Integer; S : in String) is
+
+	begin
+
+	Set_Graphical_Mode(Off);
+
+	for Y in 1..11 loop
+		for X in 1..55 loop
+
+			-- om inte första eller inte sista raden
+			if Y = 1 OR Y = 11 then
+					if X mod 2 = 0 then
+						Put(ASCII.ESC & message_frame_color1);
 					else
-						return 0;
+						Put(ASCII.ESC & message_frame_color2);
+					end if;
+			else
+				if X = 1 OR X = 55 then
+					if Y mod 2 = 0 then
+						Put(ASCII.ESC & message_frame_color1);
+					else
+						Put(ASCII.ESC & message_frame_color2);
+					end if;
+				else
+					if Y mod 2 = 0 then
+						Put(ASCII.ESC & message_frame_color2);
+					else
+						Put(ASCII.ESC & message_frame_color1);
 					end if;
 				end if;
-			end loop;
-
-			if Rolls(1) = Rolls(2) then
-				if Rolls(3) = Rolls(4) and Rolls(3) = Rolls(5) then
-					return Chans(Rolls);
-				end if;
 			end if;
-			return 0;
 
-		end;
+		goto_xy((X_Start - 2 + X), (Y_Start - 1 + Y));
+		Put(' ');
 
-
-		function Yatzy(Rolls: Arr)
-			return Integer is
-
-		begin
-
-			for X in 1..4 loop
-				if Rolls(X) /= Rolls(X+1) then
-					return 0;
-				end if;
-			end loop;
-			return 50;
-
-		end;
-
-		TRolls: Arr := Rolls;
-		Result: Protocoll_Type;
-
-	begin
-
-		Sort(TRolls);
-
-		for I in 1..15 loop
-			if Prot(I) /= -1 then
-				Result(I) := -1;
-			else
-				case I is
-					when 1..6 =>
-					Result(I) := Ental(I, TRolls);
-					when 7 =>
-					Result(I) := Pair(TRolls);
-					when 8 =>
-					Result(I) := TwoPair(TRolls);
-					when 9 =>
-					Result(I) := Triss(Trolls);
-					when 10 =>
-					Result(I) := FourPair(Trolls);
-					when 11..12 =>
-					Result(I) := Stege(I, Trolls);
-					when 13 =>
-					Result(I) := Kaok(Trolls);
-					when 14 =>
-					Result(I) := Chans(Trolls);
-					when 15 =>
-					Result(I) := Yatzy(Trolls);
-					when others =>
-					Result(I) := 0;
-				end case;
-			end if;
 		end loop;
-
-		return Result;
-
-	end;
+	end loop;
 
 
-	function Rolloop(Socket: Socket_Type; Player: Positive)
-					return Rolls_Type is
 
-		type Rerolls is array(1..5) of Integer;
+	-- White inner frame
+	for X in 1..51 loop
+		for Y in 1..9 loop
+		Put(ASCII.ESC & "[48;5;15m");
+		goto_xy((X_Start + X), (Y_Start + Y));
+		Put(' ');
+		end loop;
+	end loop;
 
-		Reroll: Rerolls;
-		Continue, Switches: Integer;
-		Result : Arr;
-		B: Integer;
-		Roll: Rolls_Type;
+	goto_xy(X_Start + 3, Y_Start + 5);
+  Set_Foreground_Colour(Black);
+	Put(S);
+	end message;
 
-	begin -- Rolloop
-		-- Hämta data
-			Get_Rolls(Socket, Roll);
-
-			-- Slår Jag?
-			if GetI(Roll) > 5 then
-			-- Jag slår inte
-				loop
-
-					if GetI(Roll) = 6 then
-						message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
-						elsif GetI(Roll) = 7 then
-							message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
-							Result := GetR(Roll);
-							-- Visa resultatet.
-							dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
-						end if;
-
-						Get_Rolls(Socket, Roll);
-						exit when Roll.I = 8;
-
-				end loop;
-
-			else
-				-- Jag slår
-				for I in 1..5 loop
-					Reroll(I) := 0;
-				end loop;
-
-				message(33, 18, "Din tur");
-
-				for I in 1..3 loop
-					Result := GetR(Roll);
-
-					message(33, 18, "Tryck enter för att slå...");
-					Skip_Line;
-					Playerroll(Socket);
-
-					message(33, 18, "Wow, du fick:");
-
-					dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
-
-					New_Line;
-					exit when I = 3;
-
-					message(33, 18, "Tryck 1 för att slå igen och 0 för att placera: ");
-					Get(Continue);
-					exit when Continue = 0;
-
-					message(33, 18, "Hur många tärningar vill du slå om?: ");
-					Get(Switches);
-
-					for A in 1..Switches loop
-						message(33, 18, "Välj en tärning att slå om: ");
-						Get(B);
-						Reroll(B) := 1;
-					end loop;
-
-					Put(Socket,'6'); Put(Socket,Switches,0);
-					for A in 1..5 loop
-						Put(Socket,Reroll(A),0);
-					end loop;
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
 
 
-					New_Line(Socket);
-					Get_Rolls(Socket, Roll);
-
-				end loop;
-
-				Put_Line(Socket, "7");
-				
-		end if;
-
-		return Roll;
-
-	end Rolloop;
 
 
-		procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
-		begin
 
-		message(33, 18, "Annan spelare ska placera");
-		end;
-		procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
-		begin
 
-	message(33, 18, "Du ska placera");
-		end;
-	end Klient_Assets_Package;
+
+
+end;

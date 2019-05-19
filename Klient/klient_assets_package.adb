@@ -447,8 +447,6 @@
 
 		Swap(Arrayen_Med_Talen(IOuter), Arrayen_Med_Talen(Minsta_Talet_Index));
 
-	end Sort;
-
 
 	function Calcpoints(Prot: Protocoll_Type; Rolls: Arr)
 				return Protocoll_Type is

@@ -9,3 +9,4 @@
 
 # Mac thumbnail files
 .DS_Store
+/Server/server

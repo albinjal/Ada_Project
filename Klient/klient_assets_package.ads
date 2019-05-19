@@ -22,7 +22,7 @@ package klient_assets_package is
 
 	procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type);
 
-  procedure protocoll (Prot1, Prot2 : in Protocoll_Type);
+  --procedure protocoll (Prot1, Prot2 : in Protocoll_Type);
 	------------------------------------------------------------------------------------------
 	------------------------------------------------------------------------------------------
 	function Read(C: in Character) return Natural;

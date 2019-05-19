@@ -3,3 +3,10 @@
 
 # Ada Library Information
 *.ali
+
+# Compiled files
+/Klient/klient
+
+# Mac thumbnail files
+.DS_Store
+/Server/server

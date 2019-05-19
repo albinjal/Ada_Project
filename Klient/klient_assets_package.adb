@@ -395,9 +395,6 @@
 			elsif GetI(Roll) = 7 then
         message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit");
 				Result := GetR(Roll);
-				--for I in 1..5 loop
-					--Put(Result(I),0);
-				--end loop;
         dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 			end if;
 			Get_Rolls(Socket, Roll);
@@ -447,6 +444,7 @@
 
 		Swap(Arrayen_Med_Talen(IOuter), Arrayen_Med_Talen(Minsta_Talet_Index));
 		
+	end if;
 	end;
 		
 	

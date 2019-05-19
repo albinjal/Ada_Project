@@ -92,7 +92,7 @@ package body Klient_Assets_Package is
 	 -- A betyder här antalet tärningar
 	 for X in  1..Roll.I loop
 	    Roll.Rolls(X) := Read(TX(X+2));
-      
+
 	 end loop;
 
 
@@ -387,11 +387,9 @@ package body Klient_Assets_Package is
 			if GetI(Roll) = 6 then
         message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 			elsif GetI(Roll) = 7 then
-        message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit");
+        message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit:");
 				Result := GetR(Roll);
-				--for I in 1..5 loop
-					--Put(Result(I),0);
-				--end loop;
+
         dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 			end if;
 			Get_Rolls(Socket, Roll);
@@ -413,25 +411,23 @@ package body Klient_Assets_Package is
       message(33, 18, "Tryck enter för att slå...");
 			Skip_Line;
 			Playerroll(Socket);
-			--Put("Wow, du fick:"); New_Line;
+
       message(33, 18, "Wow, du fick:");
 
-			--for X in 1..GetI(Roll) loop
-				--Put(Result(X),2);
-			--end loop;
       dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 
 			New_Line;
 			exit when I = 3;
-			--Put("Tryck 1 för att slå igen och 0 för att placera");
-      message(33, 18, "Tryck 1 för att slå igen och 0 för att placera");
+
+      message(33, 18, "Tryck 1 för att slå igen och 0 för att placera: ");
 			Get(Continue);
 			exit when Continue = 0;
-			--Put("Hur många tärningar vill du slå om?");
-      message(33, 18, "Hur många tärningar vill du slå om?");
+
+      message(33, 18, "Välj hur många tätningar du vill slå om: ");
 			Get(Switches);
 
 			for A in 1..Switches loop
+        message(33, 18, "Välj en tärning att slå om: ");
 				Get(B);
 				Reroll(B) := 1;
 			end loop;

@@ -333,6 +333,62 @@
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
+	procedure vinst (X_Start, Y_Start : in Integer) is
+
+	begin
+
+	Set_Foreground_Colour(white);
+	Set_Graphical_Mode(off);
+	goto_xy(X_Start, Y_Start);
+
+	Put("DDDDDDDDDDDDD                                                                                                             ");
+	goto_xy(X_Start, Y_Start + 1);
+	Put("D::::::::::::DDD                                                                                                          ");
+	goto_xy(X_Start, Y_Start + 2);
+	Put("D:::::::::::::::DD                                                                                                        ");
+	goto_xy(X_Start, Y_Start + 3);
+	Put("DDD:::::DDDDD:::::D                                                                                                       ");
+	goto_xy(X_Start, Y_Start + 4);
+	Put("D:::::D    D:::::D  uuuuuu    uuuuuu       vvvvvvv           vvvvvvv  aaaaaaaaaaaaa   nnnn  nnnnnnnn    nnnn  nnnnnnnn    ");
+	goto_xy(X_Start, Y_Start + 5);
+	Put("D:::::D     D:::::D u::::u    u::::u        v:::::v         v:::::v   a::::::::::::a  n:::nn::::::::nn  n:::nn::::::::nn  ");
+	goto_xy(X_Start, Y_Start + 6);
+	Put("D:::::D     D:::::D u::::u    u::::u         v:::::v       v:::::v    aaaaaaaaa:::::a n::::::::::::::nn n::::::::::::::nn ");
+	goto_xy(X_Start, Y_Start + 7);
+	Put("D:::::D     D:::::D u::::u    u::::u          v:::::v     v:::::v              a::::a nn:::::::::::::::nnn:::::::::::::::n");
+	goto_xy(X_Start, Y_Start + 8);
+	Put("D:::::D     D:::::D u::::u    u::::u           v:::::v   v:::::v        aaaaaaa:::::a   n:::::nnnn:::::n  n:::::nnnn:::::n");
+	goto_xy(X_Start, Y_Start + 9);
+	Put("D:::::D     D:::::D u::::u    u::::u            v:::::v v:::::v       aa::::::::::::a   n::::n    n::::n  n::::n    n::::n");
+	goto_xy(X_Start, Y_Start + 10);
+	Put("D:::::D     D:::::D u::::u    u::::u             v:::::v:::::v       a::::aaaa::::::a   n::::n    n::::n  n::::n    n::::n");
+	goto_xy(X_Start, Y_Start + 11);
+	Put(" D:::::D    D:::::D u:::::uuuu:::::u              v:::::::::v       a::::a    a:::::a   n::::n    n::::n  n::::n    n::::n");
+	goto_xy(X_Start, Y_Start + 12);
+	Put("DDD:::::DDDDD:::::D  u:::::::::::::::uu            v:::::::v        a::::a    a:::::a   n::::n    n::::n  n::::n    n::::n");
+	goto_xy(X_Start, Y_Start + 13);
+	Put("D:::::::::::::::DD    u:::::::::::::::u             v:::::v         a:::::aaaa::::::a   n::::n    n::::n  n::::n    n::::n");
+	goto_xy(X_Start, Y_Start + 14);
+	Put("D::::::::::::DDD       uu::::::::uu:::u              v:::v           a::::::::::aa:::a  n::::n    n::::n  n::::n    n::::n");
+	goto_xy(X_Start, Y_Start + 15);
+	Put("DDDDDDDDDDDDD            uuuuuuuu  uuuu               vvv             aaaaaaaaaa  aaaa  nnnnnn    nnnnnn  nnnnnn    nnnnnn");
+
+
+end vinst;
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
 	procedure clear_protocoll(X_Start, Y_Start: in Integer; Which_Protocoll_Or_Both: in Integer) is
 		x : Integer := X_Start;
 		y : Integer := Y_Start;

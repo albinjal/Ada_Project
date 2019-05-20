@@ -10,19 +10,19 @@ package klient_assets_package is
 	------------------------------------------------------------------------------------------
 	procedure Bootup(Socket: out Socket_Type; Adress: in String; Port: in Positive);
 
-	-- procedure Fill_Protocoll_Empty(Proto: in out Protocoll_Type); REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE
+	procedure Fill_Protocoll_Empty(Proto: in out Protocoll_Type);
 
 	procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type);
 
 	procedure graphics;
 
-	procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: in out Protocoll_Type; Player: in Positive);
+	procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type);
 
 	procedure Playerroll(Socket: in Socket_Type);
 
 	procedure Start_Game(Socket: in Socket_Type; Player: out Positive; Prot1, Prot2: out Protocoll_Type);
 
-	procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: in out Protocoll_Type; Player: in Positive);
+	procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type);
 
   --procedure protocoll (Prot1, Prot2 : in Protocoll_Type);
 	------------------------------------------------------------------------------------------
@@ -38,7 +38,7 @@ package klient_assets_package is
 	function Calcpoints(Prot: Protocoll_Type; Rolls: Arr)
 		return Protocoll_Type;
 
-	function Roll_loop(Socket: Socket_Type; Player: Positive; Own_Protocoll: in Protocoll_Type)
+	function Roll_loop(Socket: Socket_Type; Player: Positive)
 		return Rolls_Type;
 	------------------------------------------------------------------------------------------
 	------------------------------------------------------------------------------------------

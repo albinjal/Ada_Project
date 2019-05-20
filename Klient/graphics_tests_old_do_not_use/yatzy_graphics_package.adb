@@ -17,38 +17,13 @@
 
 
 
-	procedure update_reroll_arrow_graphics(d1, d2, d3, d4, d5: in Integer) is
-		x_start: Integer := 28;
-		y_start: Integer := 36;
-		arrow_color: String := "[38;5;196m";
-		black_color: String := "[38;5;0m";
-	begin
-		-- clear arrows
-		Goto_XY(x_start + 15 * 0, y_start); Put(ASCII.ESC & bg_color); Put(" "); Goto_XY(x_start + 15 * 0, y_start - 1); Put(" "); -- 1
-		Goto_XY(x_start + 15 * 1, y_start); Put(ASCII.ESC & bg_color); Put(" "); Goto_XY(x_start + 15 * 1, y_start - 1); Put(" "); -- 2
-		Goto_XY(x_start + 15 * 2, y_start); Put(ASCII.ESC & bg_color); Put(" "); Goto_XY(x_start + 15 * 2, y_start - 1); Put(" "); -- 3
-		Goto_XY(x_start + 15 * 3, y_start); Put(ASCII.ESC & bg_color); Put(" "); Goto_XY(x_start + 15 * 3, y_start - 1); Put(" "); -- 4
-		Goto_XY(x_start + 15 * 4, y_start); Put(ASCII.ESC & bg_color); Put(" "); Goto_XY(x_start + 15 * 4, y_start - 1); Put(" "); -- 5
 
-		if d1 = 1 then Goto_XY(x_start + 15 * 0, y_start); Put(ASCII.ESC & arrow_color); Put("V"); Goto_XY(x_start + 15 * 0, y_start - 1); Put("|"); end if; -- 1
-		if d2 = 1 then Goto_XY(x_start + 15 * 1, y_start); Put(ASCII.ESC & arrow_color); Put("V"); Goto_XY(x_start + 15 * 1, y_start - 1); Put("|"); end if; -- 2
-		if d3 = 1 then Goto_XY(x_start + 15 * 2, y_start); Put(ASCII.ESC & arrow_color); Put("V"); Goto_XY(x_start + 15 * 2, y_start - 1); Put("|"); end if; -- 3
-		if d4 = 1 then Goto_XY(x_start + 15 * 3, y_start); Put(ASCII.ESC & arrow_color); Put("V"); Goto_XY(x_start + 15 * 3, y_start - 1); Put("|"); end if; -- 4
-		if d5 = 1 then Goto_XY(x_start + 15 * 4, y_start); Put(ASCII.ESC & arrow_color); Put("V"); Goto_XY(x_start + 15 * 4, y_start - 1); Put("|"); end if; -- 5
-
-		-- move cursor out of the way
-		Goto_XY(1000, 1000);
-
-		-- reset color to black
-		Put(ASCII.ESC & black_color);
-
-	end update_reroll_arrow_graphics;
 
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 
-	procedure place_graphics (avail_points : in Protocoll_Type; select_place : out Integer; Player: in Positive) is
+	procedure place (avail_points : in Protocoll_Type; select_place : out Integer) is
 
 		Coord_Config_X : Integer := 120;
 		Coord_Config_Y : Integer := 5;
@@ -79,9 +54,6 @@
 				Curr_Index_Selected := Curr_Index_Selected - 1;
 				if avail_points(Curr_Index_Selected) >= 0 then
 					exit;
-				end if;
-				if Curr_Index_Selected = 1 then
-					Curr_Index_Selected := 16;
 				end if;
 			end loop;
 
@@ -131,6 +103,7 @@
 		end goto_next;
 
 	begin
+		Put("a1"); -- DEBUG
 		-- Build array of available slots
 		for x in 1..15 loop
 			if avail_points(x) >= 0 then
@@ -138,6 +111,7 @@
 			end if;
 		end loop;
 
+		New_Line; Put("a2"); -- DEBUG
 		declare
 			test_array : dynamic_array(0..temp_arraysize);
 			begin
@@ -149,9 +123,7 @@
 			end loop;
 		end;
 
-		-- Display available points in protocoll
-		update_protocoll(125, 4, avail_points, avail_points, Player, 1);
-
+		New_Line; Put("a3"); -- DEBUG
 
 		New_Line; Put("Arraystorlek: "); Put(temp_arraysize,0); -- DEBUG
 
@@ -170,6 +142,7 @@
 			elsif Is_Down_Arrow(Key) then
 				goto_next;
 			elsif Is_Return(Key) then
+				Put("Index "); Put(Curr_Index_Selected,0); Put(" was selected.");
 				select_place := Curr_Index_Selected;
 				exit;
 			end if;
@@ -268,46 +241,7 @@
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 
-	procedure clear_protocoll(X_Start, Y_Start: in Integer; Which_Protocoll_Or_Both: in Integer) is
-		x : Integer := X_Start;
-		y : Integer := Y_Start;
-		widthcol1 : constant Integer := 13;
-		widthcol2 : constant Integer := 5;
-	begin
-		if Which_Protocoll_Or_Both = 0 or Which_Protocoll_Or_Both = 1 then
-			For I in 1..19 loop
-				Goto_XY(X_Start + 2 + widthcol1, Y_Start - 1 + I * 2);
-				case I is
-				when 1 => Set_Text_Modes(Off, Off, On);
-				when 2..7 => Put("   ");
-				when 8 => null;
-				when 9 => null;
-				when 10..18 => Put("   ");
-				when 19 => null;
-
-				when others => null;
-				end case;
-			end loop;
-		end if;
-
-		if Which_Protocoll_Or_Both = 0 or Which_Protocoll_Or_Both = 2 then
-			For I in 1..19 loop
-				Goto_XY(X_Start + 3 + widthcol1 + widthcol2, Y_Start - 1 + I * 2);
-				case I is
-				when 1 => Set_Text_Modes(Off, Off, On);
-				when 2..7 => Put("   ");
-				when 8 => null;
-				when 9 => null;
-				when 10..18 => Put("   ");
-				when 19 => null;
-
-				when others => null;
-				end case;
-			end loop;
-		end if;
-	end clear_protocoll;
-
-	procedure update_protocoll(X_Start, Y_Start: in Integer; prot1, prot2: in Protocoll_Type; Which_Protocoll_Or_Both: in Integer; Other_Color: in Integer) is
+	procedure update_protocoll(X_Start, Y_Start: in Integer; prot1, prot2: in Protocoll_Type) is
 	x : Integer := X_Start;
 	y : Integer := Y_Start;
 	widthcol1 : constant Integer := 13;
@@ -316,19 +250,6 @@
 	height: constant Integer := 39;
 	text_width: constant Integer := 12;
 	points_width: constant Integer := 5;
-	avail_place_text_color1: String := "[38;5;208m";
-
-	procedure other_color_chk is
-	begin
-		if Other_Color = 1 then
-			Put(ASCII.ESC & avail_place_text_color1);
-		end if;
-	end other_color_chk;
-
-	procedure reset_black_color is
-	begin
-		Put(ASCII.ESC & "[38;5;0m");
-	end reset_black_color;
 
 	begin
 	-- Frame
@@ -415,40 +336,35 @@
 		end case;
 	end loop;
 
-	if Which_Protocoll_Or_Both = 0 or Which_Protocoll_Or_Both = 1 then
-		For I in 1..19 loop
-			Goto_XY(X_Start + 2 + widthcol1, Y_Start - 1 + I * 2);
 
-			case I is
-			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
-			when 2..7 => other_color_chk; if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
-			when 8 => reset_black_color; Put("Sum:");
-			when 9 => reset_black_color; Put("BON");
-			when 10..18 => other_color_chk; if Prot1(I - 3) /= -1 then Put(Prot1(I - 3), 1 + widthcol2 / 2); end if;
-			when 19 => reset_black_color; Put("Sum:");
+	For I in 1..19 loop
+		Goto_XY(X_Start + 2 + widthcol1, Y_Start - 1 + I * 2);
 
-			when others => null;
-			end case;
-		end loop;
-	end if;
+		case I is
+		when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
+		when 2..7 => if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
+		when 8 => Put("Sum:");
+		when 9 => Put("BON");
+		when 10..18 => if Prot1(I - 3) /= -1 then Put(Prot1(I - 3), 1 + widthcol2 / 2); end if;
+		when 19 => Put("Sum:");
 
-	if Which_Protocoll_Or_Both = 0 or Which_Protocoll_Or_Both = 2 then
-		For I in 1..19 loop
-			Goto_XY(X_Start + 3 + widthcol1 + widthcol2, Y_Start - 1 + I * 2);
-			case I is
-			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
-			when 2..7 => other_color_chk; if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
-			when 8 => reset_black_color; Put("Sum:");
-			when 9 => reset_black_color; Put("BON");
-			when 10..18 => other_color_chk; if Prot2(I - 3) /= -1 then Put(Prot2(I - 3), 1 + widthcol2 / 2); end if;
-			when 19 => reset_black_color; Put("Sum:");
+		when others => null;
+		end case;
+	end loop;
 
-			when others => null;
-			end case;
-		end loop;
-	end if;
+	For I in 1..19 loop
+		Goto_XY(X_Start + 3 + widthcol1 + widthcol2, Y_Start - 1 + I * 2);
+		case I is
+		when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
+		when 2..7 => if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
+		when 8 => Put("Sum:");
+		when 9 => Put("BON");
+		when 10..18 => if Prot2(I - 3) /= -1 then Put(Prot2(I - 3), 1 + widthcol2 / 2); end if;
+		when 19 => Put("Sum:");
 
-	reset_black_color;
+		when others => null;
+		end case;
+	end loop;
 
 	end update_protocoll;
 
@@ -745,75 +661,12 @@ end dice_placement;
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 
-	procedure message4 (X_Start, Y_Start : in Integer; S : in String) is
-
-	begin
-
-	Set_Graphical_Mode(Off);
-
-	-- reset white first
-	for X in 1..51 loop
-		Put(ASCII.ESC & "[38;5;0m");
-			goto_xy((X_Start + X), Y_Start + 22);
-		Put(' ');
-	end loop;
-
-	goto_xy(X_Start + 3, Y_Start + 25);
-	Put(S);
-
-	end message4;
-
-
-	---------------------------------------------------------------------------------------------
-	---------------------------------------------------------------------------------------------
-	---------------------------------------------------------------------------------------------
-
-	procedure message3 (X_Start, Y_Start : in Integer; S : in String) is
-
-	begin
-
-	Set_Graphical_Mode(Off);
-
-	-- reset white first
-	for X in 1..51 loop
-		Put(ASCII.ESC & "[38;5;196m");
-			goto_xy((X_Start + X), Y_Start + 25);
-		Put(' ');
-	end loop;
-
-	goto_xy(X_Start + 3, Y_Start + 25);
-	Put(S);
-
-	end message3;
-
-	---------------------------------------------------------------------------------------------
-	---------------------------------------------------------------------------------------------
-	---------------------------------------------------------------------------------------------
 
 
 
-	procedure message2 (X_Start, Y_Start : in Integer; S : in String) is
 
-	begin
 
-	Set_Graphical_Mode(Off);
 
-	-- White inner frame
-	for X in 1..51 loop
-		for Y in 1..9 loop
-		Put(ASCII.ESC & "[48;5;15m");
-		if Y /= 5 then	
-			goto_xy((X_Start + X), (Y_Start + Y));
-		else
-			goto_xy((X_Start + X), (Y_Start + Y + 1));
-		end if;
-		Put(' ');
-		end loop;
-	end loop;
-
-	goto_xy(X_Start + 3, Y_Start + 8);
-	Put(S);
-	end message2;
 
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------

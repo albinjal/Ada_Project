@@ -4,6 +4,7 @@ with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with TJa.Sockets;         use TJa.Sockets;
 with Klient_Assets_Package; use Klient_Assets_Package;
+with Yatzy_graphics_package; use Yatzy_graphics_package;
 
 procedure Klient is
 
@@ -28,26 +29,25 @@ begin
                       "Usage: " & Command_Name & " remotehost remoteport");
    end if;
 
-
+   -- Fill_Protocoll_Empty(Own_Protocoll);
+   -- Fill_Protocoll_Empty(Other_Protocoll);
    Bootup(Socket, Argument(1), Positive'Value(Argument(2)));
    graphics;
+   -- update_protocoll(125,4,Own_Protocoll, Other_Protocoll, 0);
    Start_Game(Socket, Player, Own_Protocoll, Other_Protocoll);
 
 
    -- Main loop
    loop
-   Dices := Roll_loop(Socket, Player);
-
+   Dices := Roll_loop(Socket, Player, Own_Protocoll); -- We send own protocoll so we can display available points immediately after rolling
 
    if GetI(Dices) = 8 then
-      Watch_Placement(Socket, Dices, Other_Protocoll);
+      Watch_Placement(Socket, Dices, Other_Protocoll, Player);
    else
-      Place(Socket, Dices, Own_Protocoll);
+      Place(Socket, Dices, Own_Protocoll, Player);
    end if;
 
 	end loop;
-
-	Skip_Line;
 
 	--Innan programmet avslutar stängs socketen, detta genererar ett exception
 	--hos servern, pss kommer denna klient få ett exception när servern avslutas

@@ -14,26 +14,26 @@ package body Klient_Assets_Package is
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
--- REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMO
---procedure Fill_Protocoll_Empty(Proto: in out Protocoll_Type) is
---begin
---	Proto(1) := 12;
---	Proto(2) := -1;
---	Proto(3) := -1;
---	Proto(4) := -1;
---	Proto(5) := -1;
---	Proto(6) := -1;
---	Proto(7) := -1;
---	Proto(8) := -1;
---	Proto(9) := -1;
---	Proto(10) := -1;
---	Proto(11) := -1;
---	Proto(12) := -1;
---	Proto(13) := -1;
---	Proto(14) := -1;
---	Proto(15) := -1;
---end Fill_Protocoll_Empty;
--- REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMO
+
+procedure Fill_Protocoll_Empty(Proto: in out Protocoll_Type) is
+begin
+	Proto(1) := 12;
+	Proto(2) := -1;
+	Proto(3) := -1;
+	Proto(4) := -1;
+	Proto(5) := -1;
+	Proto(6) := -1;
+	Proto(7) := -1;
+	Proto(8) := -1;
+	Proto(9) := -1;
+	Proto(10) := -1;
+	Proto(11) := -1;
+	Proto(12) := -1;
+	Proto(13) := -1;
+	Proto(14) := -1;
+	Proto(15) := -1;
+end Fill_Protocoll_Empty;
+
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -73,11 +73,9 @@ procedure Start_Game(Socket: in Socket_Type; Player: out Positive; Prot1, Prot2:
 begin  --      --      --      --      --      --      --      --      --      --      --      --      --      --      --      --      --      --      --      --
 	for I in 1..15 loop
 		Prot1(I) := -1;
-		-- if I = 1 then Prot1(1) := 2; end if; -- DEBUG, REMOVE
 	end loop;
 	
 	Prot2 := Prot1;
-
 	Get_Line(Socket, TX, TL);
 
 	if TX(1) = '1' then
@@ -100,8 +98,6 @@ begin  --      --      --      --      --      --      --      --      --      -
 
 	message(33, 18, "Nu startar spelet");
 	New_Line;
-
-	update_protocoll(125,4,Prot1, Prot2, 0, 0);
 
 end Start_Game;
 
@@ -130,7 +126,7 @@ procedure Get_Rolls(Socket: in Socket_Type; Roll: out Rolls_Type) is
 begin
 
 	Get_Line(Socket, TX, TL);
-	-- New_Line;
+	New_Line;
 
 	if TX(1) = '4' then -- 4 betyder inkomande tärningar
 		
@@ -387,9 +383,7 @@ begin
 	for I in 1..15 loop
 		if Prot(I) /= -1 then
 			Result(I) := -1;
-			-- New_Line; New_Line; Put("INDEX " & Integer'Image(I) & " WAS -1");
 		else
-			-- New_Line; New_Line; Put("INDEX " & Integer'Image(I) & " WAS NOT -1, IT WAS = " & Integer'Image(Prot(I)));
 			case I is
 			when 1..6 =>
 			Result(I) := Ental(I, TRolls);
@@ -416,25 +410,25 @@ begin
 	end loop;
 
 	return Result;
-end Calcpoints;
+end;
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
-function Roll_loop(Socket: Socket_Type; Player: Positive; Own_Protocoll: in Protocoll_Type)
+function Roll_loop(Socket: Socket_Type; Player: Positive)
 	return Rolls_Type is
 
 	type Rerolls is array(1..5) of Integer;
-
-	Number_Of_Rerolls_Entered: Integer;
+	
+	B: Integer;
+	Continue, Switches: Integer;
 	Reroll: Rerolls;
 	Result : Arr;
 	Roll: Rolls_Type;
 	Key  : Key_Type;
 	temp_resp_int: Integer;
-	temp_num_of_other_player_rolls: Integer := 0;
 	--C0 : Character := 0;
 	--C1 : Character := 1;
 
@@ -442,21 +436,13 @@ begin --      --      --      --      --      --      --      --      --      --
 
 	Get_Rolls(Socket, Roll);
 	-- Slår Jag?
-	if GetI(Roll) > 5 then -- Jag slår inte - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-		temp_num_of_other_player_rolls := temp_num_of_other_player_rolls + 1;
+	if GetI(Roll) > 5 then -- Jag slår inte - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+		
 		loop
 			if GetI(Roll) = 6 then
-				if temp_num_of_other_player_rolls > 1 then
-					message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår igen");
-				else
-					message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
-				end if;
+				message(33, 18, "Spelare " & Integer'Image(3-Player) & " slår");
 			elsif GetI(Roll) = 7 then
-				if temp_num_of_other_player_rolls > 1 then
-					message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit igen:");
-				else
-					message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit:");
-				end if;	
+				message(33, 18, "Spelare " & Integer'Image(3-Player) & " har slagit:");
 				Result := GetR(Roll);
 				dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
 			end if;
@@ -474,130 +460,72 @@ begin --      --      --      --      --      --      --      --      --      --
 		message(33, 18, "Din tur");
 
 		for I in 1..3 loop -- Man kan slå max 3 gånger totalt per omgång
+		
+		Result := GetR(Roll);
+		message(33, 18, "Tryck enter för att slå...");
 
-			-- New_Line; Put("Händer det här? 1338");	-- DEBUG --
-			
-
-			Result := GetR(Roll);
-			message(33, 18, "Tryck enter för att slå...");
-
-			--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-			Set_Buffer_Mode(Off);
-			Set_Echo_Mode(Off);
-			loop  -- Infinite loop waiting for return key
-				Get_Immediate(Key);					
-				if Is_Return(Key) then
-					exit;
-				end if;
-			end loop;
-			Set_Echo_Mode(On);
-			Set_Buffer_Mode(On);
-			--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-
-			message(33, 18, "Wow, du fick:");
-			dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
-			
-			-- Tell server that we have played
-			Put(Socket,"51"); New_Line(Socket);
-				
-			-- New_Line; Put("Händer det här? 1340");	-- DEBUG --
-
-			
-			-- If third time, exit loop and do not allow user to roll again
-			exit when I = 3;
-
-			message(33, 18, "Tryck 1 för att slå igen och 0 för att placera: ");
-
-			-- Calculate points and update protocoll
-			update_protocoll( 125 , 4 , Calcpoints(Own_Protocoll, GetR(Roll)) , Calcpoints(Own_Protocoll, GetR(Roll)),  Player, 1);
-			
-			--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-			Set_Buffer_Mode(Off);
-			Set_Echo_Mode(Off);
-			loop  -- Infinite loop waiting for either 1 or 0
-				
-				-- New_Line; Put("Händer det här? 1339");	-- DEBUG --
-				Get_Immediate(Key);
-
-				if To_String(Key) = "0" then
-					temp_resp_int := 0;
-					exit;
-				elsif To_String(Key) = "1" then
-					temp_resp_int := 1;
-					exit;
-				end if;
-			end loop;
-			Set_Echo_Mode(On);
-			Set_Buffer_Mode(On);
-			--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-
-			if temp_resp_int = 0 then
-				exit; -- exit loop, move to placement
-			elsif temp_resp_int = 1 then
-				
-				message(33, 18, "Välj vilka tärningar som ska slås om (1-5):");
-				message2(33, 18, "1-5 = Välj tärningar, godkänn med retur");
-
-				--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
-				Set_Buffer_Mode(Off);
-				Set_Echo_Mode(Off);
-				loop  -- Infinite loop waiting for 1, 2, 3, 4 or 5. Enter exits the input
-					Get_Immediate(Key);
-
-					if To_String(Key) = "1" or To_String(Key) = "2" or To_String(Key) = "3" or To_String(Key) = "4" or To_String(Key) = "5" then
-						if Reroll( Integer'Value( To_String(Key) ) ) = 1 then
-							Reroll( Integer'Value( To_String(Key) ) ) := 0;
-						else
-							Reroll( Integer'Value( To_String(Key) ) ) := 1;
-						end if;
-						-- DEBUG New_Line; -- DEBUG
-						-- Put(Reroll(1), 2); Put("+"); Put(Reroll(2), 2); Put("+"); Put(Reroll(3), 2); Put("+"); Put(Reroll(4), 2); Put("+"); Put(Reroll(5), 2); Put("+"); -- DEBUG
-						update_reroll_arrow_graphics(Reroll(1), Reroll(2), Reroll(3), Reroll(4), Reroll(5));
-					elsif Is_Return(Key) then
-						-- Calculate number of inputs
-						Number_Of_Rerolls_Entered := 0;
-						if Reroll(1) = 1 then Number_Of_Rerolls_Entered := Number_Of_Rerolls_Entered + 1; end if;
-						if Reroll(2) = 1 then Number_Of_Rerolls_Entered := Number_Of_Rerolls_Entered + 1; end if;
-						if Reroll(3) = 1 then Number_Of_Rerolls_Entered := Number_Of_Rerolls_Entered + 1; end if;
-						if Reroll(4) = 1 then Number_Of_Rerolls_Entered := Number_Of_Rerolls_Entered + 1; end if;
-						if Reroll(5) = 1 then Number_Of_Rerolls_Entered := Number_Of_Rerolls_Entered + 1; end if;
-						
-						if Number_Of_Rerolls_Entered > 0 then -- At least one dice needs to be selected
-							-- clear graphical arrows
-							update_reroll_arrow_graphics(0,0,0,0,0);
-
-							exit;
-						else -- no dice selected, show error message
-							message3(33, 0, "Du måste välja minst en tärning");
-						end if;
-					end if; 
-				end loop;
-				Set_Echo_Mode(On);
-				Set_Buffer_Mode(On);
-				--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  -
-				
-
-				Put(Socket,'6'); Put(Socket,Number_Of_Rerolls_Entered,0);
-
-				for A in 1..5 loop
-					Put(Socket,Reroll(A),0);
-				end loop;
-				New_Line(Socket);
-
-				-- RESET VALUES
-				Reroll(1) := 0;
-				Reroll(2) := 0;
-				Reroll(3) := 0;
-				Reroll(4) := 0;
-				Reroll(5) := 0;
-
-				Get_Rolls(Socket, Roll);
-
+		--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
+		Set_Buffer_Mode(Off);
+		Set_Echo_Mode(Off);		
+		loop  -- Infinite loop waiting for return key
+			Get_Immediate(Key);					
+			if Is_Return(Key) then
+				exit;
 			end if;
 		end loop;
+		Set_Echo_Mode(On);
+		Set_Buffer_Mode(On);
+		--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 
-	Put_Line(Socket, "7"); -- 7 = placement
+		message(33, 18, "Wow, du fick:");
+		dice_placement(Roll.Rolls(1), Roll.Rolls(2), Roll.Rolls(3), Roll.Rolls(4), Roll.Rolls(5));
+		
+		-- If third time, exit loop and do not allow user to roll again
+		exit when I = 3;
 
+		message(33, 18, "Tryck 1 för att slå igen och 0 för att placera: ");
+		
+		--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
+		Set_Buffer_Mode(Off);
+		Set_Echo_Mode(Off);
+		loop  -- Infinite loop waiting for either 1 or 0
+			Get_Immediate(Key);
+
+			if To_String(Key) = "0" then
+				temp_resp_int := 0;
+				exit;
+			elsif To_String(Key) = "1" then
+				temp_resp_int := 1;
+				exit;
+			end if;
+		end loop;
+		Set_Echo_Mode(On);
+		Set_Buffer_Mode(On);
+		--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
+
+		if temp_resp_int = 0 then
+			exit; -- exit loop, move to placement
+		elsif temp_resp_int = 1 then
+			message(33, 18, "Välj hur många tätningar du vill slå om: ");
+			Get(Switches);
+
+			for A in 1..Switches loop
+				message(33, 18, "Välj en tärning att slå om: ");
+				Get(B);
+				Reroll(B) := 1;
+			end loop;
+
+			Put(Socket,'6'); Put(Socket,Switches,0);
+
+			for A in 1..5 loop
+				Put(Socket,Reroll(A),0);
+			end loop;
+
+			New_Line(Socket);
+			Get_Rolls(Socket, Roll);
+		end if;
+	end loop;
+	Put_Line(Socket, "7");
 
 	end if;
 	
@@ -609,13 +537,11 @@ end Roll_loop;
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
-procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: in out Protocoll_Type; Player: in Positive) is
+procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
 
 begin
-	-- message4(0, 0, "Välkommen, spelare " & Integer'Image(Player));
-	
-	message(33, 18, "Spelare " & Integer'Image(3 - Player) & " ska placera");
-
+	message(33, 18, "Annan spelare ska placera");
+	Skip_Line;
 end Watch_Placement;
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
@@ -623,26 +549,12 @@ end Watch_Placement;
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- 
 
-procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: in out Protocoll_Type; Player: in Positive) is
+procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: Protocoll_Type) is
 	selected_index: Integer;
 begin
 	message(33, 18, "Du ska placera");
-	--New_Line; New_Line; Put("-FFS " & Integer'Image(GetR(Dices)(1)) & "+" & Integer'Image(GetR(Dices)(2)) & "+" & Integer'Image(GetR(Dices)(3)) & "+" & Integer'Image(GetR(Dices)(4)) & "+" & Integer'Image(GetR(Dices)(5)) & " FFS-");
-	
-	--New_Line; Put("1. " & Integer'Image( Calcpoints(Protocoll, GetR(Dices))(1) ));
-
-	place_graphics(  Calcpoints(Protocoll, GetR(Dices) ),  selected_index, Player);
-
-	Put_Line(Socket, Integer'Image(selected_index)); -- 7 = placement
-
-	-- SERVER RESPONDS WITH VALUE AND INDEX
-
-	Protocoll(selected_index) := 1337;
-
-	-- Own_Protocoll.selected_index := Protocoll.selected_index;
-	clear_protocoll( 125, 4, Player);
-	update_protocoll( 125 , 4 , Protocoll , Protocoll, Player, 0);
-
+	New_Line; New_Line; Put("-FFS " & Integer'Image(GetR(Dices)(1)) & "+" & Integer'Image(GetR(Dices)(2)) & "+" & Integer'Image(GetR(Dices)(3)) & "+" & Integer'Image(GetR(Dices)(4)) & "+" & Integer'Image(GetR(Dices)(5)) & " FFS-");
+	place_graphics( Calcpoints(Protocoll, GetR(Dices)), selected_index );
 end Place;
 
 

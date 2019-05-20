@@ -550,6 +550,7 @@ end vinst;
 			case I is
 			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
+
 			when 8 => if Other_Color /= 1 then reset_black_color; Put(Calcfirstsum(temp1), 1 + widthcol2 / 2); end if;
 			when 9 => if Other_Color /= 1 then reset_black_color; Put(Bonus(temp1), 1 + widthcol2 / 2); end if;
 			when 10..18 => other_color_chk; if Prot1(I - 3) /= -1 then Put(Prot1(I - 3), 1 + widthcol2 / 2); end if;
@@ -566,8 +567,11 @@ end vinst;
 			case I is
 			when 1 => Set_Text_Modes(Off, Off, Off); Put("P2"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
+
+
 			when 8 => if Other_Color /= 1 then reset_black_color; Put(Calcfirstsum(temp2), 1 + widthcol2 / 2); end if;
 			when 9 => if Other_Color /= 1 then reset_black_color; Put(Bonus(temp2), 1 + widthcol2 / 2); end if;
+
 			when 10..18 => other_color_chk; if Prot2(I - 3) /= -1 then Put(Prot2(I - 3), 1 + widthcol2 / 2); end if;
 		when 19 => if Other_Color /= 1 then reset_black_color; Put(Calctotsum(temp2), 1 + widthcol2 / 2); end if;
 

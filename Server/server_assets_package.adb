@@ -65,22 +65,38 @@ begin
 		return i;
 	end;
 
-	procedure Yatzyloop(Socket1, Socket2: in out Socket_Type; Prot1, Prot2: in out Protocoll_Type) is
+	procedure Yatzyloop(Socket1, Socket2: in out Socket_Type; Prot1, Prot2: in out Protocoll_Type; First: in Integer) is
 		type Rerolls is array(1..5) of Integer;
 		Reroll: Rerolls;
 		TX: String(1..100);
 		TL, I: Integer;
 		Current_Rolls: String(1..5);
 		temp_prot_calc: Protocoll_Type;
+		temp_prot1, temp_prot2: Protocoll_Type;
 
 		type rolls_arr_type_t is array (1..5) of Integer;
 		temp_calc_rolls_arr: Arr;
 
+		first_temp: Integer := 0;
+
 	begin
+
+	first_temp := First;
+
+	temp_prot1 := Prot1;
+	temp_prot2 := Prot2;
+
 	-- DEBUG - REMOVE - REMOVE
 	-- DEBUG - REMOVE - REMOVE
-	Put("Socket 1 has proto var1: "); Put( Prot1(1) ); New_Line;
-	Put("Socket 1 has proto var2: "); Put( Prot1(2) ); New_Line;
+	for x in 1..15 loop
+		Put("Socket 1 has proto var "); Put(x, 0); Put(": "); Put( temp_prot1(x) ); New_Line;
+	end loop;
+	New_Line;
+	for x in 1..15 loop
+		Put("Socket 2 has proto var "); Put(x, 0); Put(": "); Put( temp_prot2(x) ); New_Line;
+	end loop;
+
+	
 	-- DEBUG - REMOVE - REMOVE
 	-- DEBUG - REMOVE - REMOVE
 
@@ -150,13 +166,54 @@ begin
 				
 				temp_prot_calc := Calcpoints(Prot1, temp_calc_rolls_arr);
 
-				if temp_prot_calc( Integer'Value(TX(1..TL)) ) >= 0 then
+				--if temp_prot_calc( Integer'Value(TX(1..TL)) ) >= 0 then
 					Put("Placement possible! Gives "); Put( temp_prot_calc( Integer'Value(TX(1..TL)) ) , 0); Put(" points."); New_Line; -- DEBUG
-				else
-					-- Not possible!
-					Put("Placement not possible! Handle this plz, code not written yet"); New_Line;
-					null; -- Add code to handle this here
-				end if;
+
+					-- Prot1( Integer'Value ( TX(1..TL) ) ) := temp_prot_calc(Integer'Value(TX(1..TL)));
+
+					-- temp_prot1( Integer'Value ( TX(1..TL) ) ) := temp_prot_calc(Integer'Value(TX(1..TL)));
+
+					--temp_prot2( Integer'Value ( TX(1..TL) ) ) := temp_prot_calc(Integer'Value(TX(1..TL)));
+
+					if(first_temp = 1) then
+						first_temp := 0;
+						Put("FIRST ======================= TRUE"); New_Line; -- DEBUG
+						temp_prot1( Integer'Value ( TX(1..TL) ) ) := temp_prot_calc(Integer'Value(TX(1..TL)));
+
+						-- SEND RESPONSE
+						Put_Line(Socket1, temp_prot_calc(Integer'Value(TX(1..TL))));
+						
+						-- SEND RESPONSE TO OTHER PLAYER
+
+						Put(Socket2, Integer'Value(TX(1..TL)), 2);
+
+						Put(Socket2, temp_prot_calc(Integer'Value(TX(1..TL))));
+
+						New_Line(Socket2);
+						
+
+					elsif(first_temp = 0)then
+						first_temp := 1;
+						Put("FIRST ======================= FALSE"); New_Line; -- DEBUG
+						temp_prot2( Integer'Value ( TX(1..TL) ) ) := temp_prot_calc(Integer'Value(TX(1..TL)));
+
+						-- SEND RESPONSE TO PLAYER
+						Put_Line(Socket1, temp_prot_calc(Integer'Value(TX(1..TL))));
+						
+						-- SEND RESPONSE TO OTHER PLAYER
+						Put(Socket2, Integer'Value(TX(1..TL)), 2);
+
+						Put(Socket2, temp_prot_calc(Integer'Value(TX(1..TL))));
+
+						New_Line(Socket2);
+
+
+					end if;
+				--else
+				--	-- Not possible!
+				--	Put("Placement not possible! Handle this plz, code not written yet"); New_Line;
+				--	null; -- Add code to handle this here
+				--end if;
 
 				exit;
 
@@ -169,7 +226,7 @@ begin
 		--------------------------------- Slutställ tärningar
 
 	-- swap players and protocolls
-	Yatzyloop(Socket2, Socket1, Prot2, Prot1);
+	Yatzyloop(Socket2, Socket1, temp_prot1, temp_prot2, first_temp);
 		
 	end;
 

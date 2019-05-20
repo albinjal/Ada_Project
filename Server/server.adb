@@ -35,7 +35,7 @@ begin
    end loop;
 
    -- Start main loop
-   Yatzyloop(Socket1, Socket2, Emptyprotocoll1, Emptyprotocoll2);
+   Yatzyloop(Socket1, Socket2, Emptyprotocoll1, Emptyprotocoll2, 1);
      
      
    

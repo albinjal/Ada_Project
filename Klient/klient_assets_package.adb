@@ -584,11 +584,20 @@ end Roll_loop;
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
 procedure Watch_Placement(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: in out Protocoll_Type; Player: in Positive) is
-
+	temp_place_points: String(1..100);
+	temp_place_points_l: Integer;
 begin
 	-- message4(0, 0, "Välkommen, spelare " & Integer'Image(Player));
 
 	message(33, 18, "Spelare " & Integer'Image(3 - Player) & " ska placera");
+
+	Get_Line(Socket, temp_place_points, temp_place_points_l);
+
+	Protocoll(  Integer'Value(temp_place_points(1..2))  ) := Integer'Value(temp_place_points(3..temp_place_points_l) );
+
+	-- Own_Protocoll.selected_index := Protocoll.selected_index;
+	--clear_protocoll( 125, 4, Player);
+	update_protocoll( 125 , 4 , Protocoll , Protocoll, 3 - Player, 0);
 
 end Watch_Placement;
 
@@ -599,6 +608,8 @@ end Watch_Placement;
 
 procedure Place(Socket: Socket_Type; Dices: Rolls_Type; Protocoll: in out Protocoll_Type; Player: in Positive) is
 	selected_index: Integer;
+	temp_place_points: String(1..100);
+	temp_place_points_l: Integer;
 begin
 	message(33, 18, "Du ska placera");
 	--New_Line; New_Line; Put("-FFS " & Integer'Image(GetR(Dices)(1)) & "+" & Integer'Image(GetR(Dices)(2)) & "+" & Integer'Image(GetR(Dices)(3)) & "+" & Integer'Image(GetR(Dices)(4)) & "+" & Integer'Image(GetR(Dices)(5)) & " FFS-");
@@ -609,9 +620,11 @@ begin
 
 	Put_Line(Socket, Integer'Image(selected_index)); -- 7 = placement
 
+	Get_Line(Socket, temp_place_points, temp_place_points_l);
+
 	-- SERVER RESPONDS WITH VALUE AND INDEX
 
-	Protocoll(selected_index) := 1337;
+	Protocoll(selected_index) := Integer'Value(temp_place_points(1..temp_place_points_l) );
 
 	-- Own_Protocoll.selected_index := Protocoll.selected_index;
 	clear_protocoll( 125, 4, Player);
@@ -634,7 +647,7 @@ end Place;
 		sum := sum + Prot(I);
 		end if;
 	end loop;
-	New_Line; New_Line; Put("CALCFIRSTSUM = "); Put(sum, 0); -- DEBUG
+	-- New_Line; New_Line; Put("CALCFIRSTSUM = "); Put(sum, 0); -- DEBUG
 	return sum;
 	end;
 
@@ -648,7 +661,7 @@ end Place;
 		end if;
 	end loop;
 	sum := sum + Bonus(Prot);
-	New_Line; New_Line; Put("CALCTOTSUM = "); Put(sum, 0); -- DEBUG
+	-- New_Line; New_Line; Put("CALCTOTSUM = "); Put(sum, 0); -- DEBUG
 	return sum;
 	end;
 

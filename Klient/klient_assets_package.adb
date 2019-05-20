@@ -663,7 +663,6 @@ end Place;
 		sum := sum + Prot(I);
 		end if;
 	end loop;
-	Put("hej");
 	return sum;
 	end;
 
@@ -677,7 +676,6 @@ end Place;
 		end if;
 	end loop;
 	sum := sum + Bonus(Prot);
-	Put("hej");
 	return sum;
 	end;
 

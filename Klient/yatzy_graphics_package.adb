@@ -480,21 +480,21 @@
 			when others => null;
 		end case;
 	end loop;
-
+	temp1 := Prot1;
+	temp2 := Prot2;
 	if Which_Protocoll_Or_Both = 0 or Which_Protocoll_Or_Both = 1 then
 		For I in 1..19 loop
 			Goto_XY(X_Start + 2 + widthcol1, Y_Start - 1 + I * 2);
 
-			temp1 := prot1;
-			temp2 := prot2;
+
 
 			case I is
 			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
-			when 8 => reset_black_color; Put(Calcfirstsum(temp1), 1 + widthcol2 / 2);
-			when 9 => reset_black_color; Put(Bonus(temp1), 1 + widthcol2 / 2);
+			when 8 => if Other_Color /= 1 then reset_black_color; Put(Calcfirstsum(temp1), 1 + widthcol2 / 2); end if;
+			when 9 => if Other_Color /= 1 then reset_black_color; Put(Bonus(temp1), 1 + widthcol2 / 2); end if;
 			when 10..18 => other_color_chk; if Prot1(I - 3) /= -1 then Put(Prot1(I - 3), 1 + widthcol2 / 2); end if;
-			when 19 => reset_black_color; Put(Calctotsum(temp1), 1 + widthcol2 / 2);
+			when 19 => if Other_Color /= 1 then reset_black_color; Put(Calctotsum(temp1), 1 + widthcol2 / 2); end if;
 
 			when others => null;
 			end case;
@@ -507,10 +507,10 @@
 			case I is
 			when 1 => Set_Text_Modes(Off, Off, Off); Put("P2"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
-			when 8 => reset_black_color; Put(Calcfirstsum(temp2), 1 + widthcol2 / 2);
-			when 9 => reset_black_color; Put(Bonus(temp2), 1 + widthcol2 / 2);
+			when 8 => if Other_Color /= 1 then reset_black_color; Put(Calcfirstsum(temp2), 1 + widthcol2 / 2); end if;
+			when 9 => if Other_Color /= 1 then reset_black_color; Put(Bonus(temp2), 1 + widthcol2 / 2); end if;
 			when 10..18 => other_color_chk; if Prot2(I - 3) /= -1 then Put(Prot2(I - 3), 1 + widthcol2 / 2); end if;
-			when 19 => reset_black_color; Put(Calctotsum(temp2), 1 + widthcol2 / 2);
+		when 19 => if Other_Color /= 1 then reset_black_color; Put(Calctotsum(temp2), 1 + widthcol2 / 2); end if;
 
 			when others => null;
 			end case;

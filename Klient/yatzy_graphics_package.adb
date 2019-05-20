@@ -310,7 +310,9 @@
 		Put("                                                                                y:::::y               ");
 		goto_xy(X_Start, Y_Start + 17);
 		Put("                                                                               yyyyyyy                ");
+
 		goto_xy(X_Start + 20, Y_Start + 16);
+		Set_Foreground_Colour(Red);
 		Put("Tryck enter för att starta spelet...");
 
 

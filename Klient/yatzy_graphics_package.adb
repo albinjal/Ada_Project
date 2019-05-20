@@ -91,8 +91,9 @@
 			else
 				Goto_XY(Coord_Config_X, Coord_Config_Y + Curr_Index_Selected * 2);
 			end if;
-
-			Put("->");
+			Set_Foreground_Colour(Red);
+			Put("=>");
+			Set_Foreground_Colour(Black);
 			Goto_XY(1000,1000);
 		end goto_prev;
 
@@ -127,7 +128,9 @@
 				Goto_XY(Coord_Config_X, Coord_Config_Y + Curr_Index_Selected * 2);
 			end if;
 
-			Put("->");
+			Set_Foreground_Colour(Red);
+			Put("=>");
+			Set_Foreground_Colour(Black);
 			Goto_XY(1000,1000);
 		end goto_next;
 

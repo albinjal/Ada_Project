@@ -7,7 +7,7 @@ with TJa.Window.Text;      use TJa.Window.Text;
 with TJa.Window.Elementary; use TJa.Window.Elementary;
 with TJa.Window.Graphic; use TJa.Window.Graphic;
 with TJa.Keyboard;        use TJa.Keyboard;
-
+with Ada.Numerics.Discrete_Random;
 package body Klient_Assets_Package is
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -64,6 +64,20 @@ begin
 	logo_background(24, 4);
 	logo(24, 4);
 end graphics;
+
+
+function Generate
+	return Integer is
+
+	subtype Nums is Integer range 1..6;
+	package RN is
+	new Ada.Numerics.Discrete_Random(Nums);
+	Gen : RN.Generator;
+begin
+	RN.Reset(Gen);
+	return RN.Random(Gen);
+end;
+
 
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -432,7 +446,7 @@ function Roll_loop(Socket: Socket_Type; Player: Positive; Own_Protocoll: in Prot
 	type Rerolls is array(1..5) of Integer;
 
 	Number_Of_Rerolls_Entered: Integer;
-	Reroll: Rerolls;
+	Reroll, t: Rerolls;
 	Result : Arr;
 	Roll: Rolls_Type;
 	Key  : Key_Type;
@@ -488,10 +502,15 @@ begin --      --      --      --      --      --      --      --      --      --
 			Set_Buffer_Mode(Off);
 			Set_Echo_Mode(Off);
 			loop  -- Infinite loop waiting for return key
+				for X in 1..5 loop
+					t(X) := Generate;
+				end loop;
+				dice_placement(t(1), t(2),t(3), t(4), t(5));
 				Get_Immediate(Key);
 				if Is_Return(Key) then
 					exit;
 				end if;
+
 			end loop;
 			Set_Echo_Mode(On);
 			Set_Buffer_Mode(On);
@@ -663,10 +682,6 @@ end Place;
 		sum := sum + Prot(I);
 		end if;
 	end loop;
-<<<<<<< HEAD
-=======
-	New_Line; New_Line; Put("CALCFIRSTSUM = "); Put(sum, 0); -- DEBUG
->>>>>>> 1769982ccb7c7f6ac726db4b864e707765701eba
 	return sum;
 	end;
 
@@ -680,10 +695,6 @@ end Place;
 		end if;
 	end loop;
 	sum := sum + Bonus(Prot);
-<<<<<<< HEAD
-=======
-	New_Line; New_Line; Put("CALCTOTSUM = "); Put(sum, 0); -- DEBUG
->>>>>>> 1769982ccb7c7f6ac726db4b864e707765701eba
 	return sum;
 	end;
 

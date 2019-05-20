@@ -15,6 +15,7 @@ package Yatzy_graphics_package is
   procedure protocoll_background (X_Start, Y_Start: in Integer);
   procedure Start_screen (X_Start, Y_Start : in integer);
   procedure logo(X_Start, Y_Start : in Integer);
+  procedure vinst (X_Start, Y_Start : in Integer);
   Procedure logo_background (X_Start, Y_Start : in Integer);
   procedure place_graphics (avail_points : in Protocoll_Type; select_place : out Integer; Player: in Positive);
   procedure message (X_Start, Y_Start : in Integer; S : in String);

@@ -8,8 +8,12 @@ Assignment: https://www.ida.liu.se/~TDDD11/2019/Matr/SN/projectmaterial.sv.shtml
 
 First, make sure you are in the correct folder (Klient or Server)
 
-Klient:
+**Klient:**
+```
 gnatmake  -aL/courses/TDDD11/TJa/obj -aI/courses/TDDD11/TJa/src -aO/courses/TDDD11/TJa/obj  klient.adb
+```
 
-Server:
+**Server:**
+```
 gnatmake  -aL/courses/TDDD11/TJa/obj -aI/courses/TDDD11/TJa/src -aO/courses/TDDD11/TJa/obj -I../ server.adb
+```

@@ -613,6 +613,10 @@ begin
 
 	Get_Line(Socket, temp_place_points, temp_place_points_l);
 
+	if temp_place_points(1..temp_place_points_l) = "DONE" then
+		 New_Line; Put("WOGOHEWJIGOHJHFIGEW");
+	end if;
+
 	Protocoll(  Integer'Value(temp_place_points(1..2))  ) := Integer'Value(temp_place_points(3..temp_place_points_l) );
 
 	-- Own_Protocoll.selected_index := Protocoll.selected_index;
@@ -641,6 +645,10 @@ begin
 	Put_Line(Socket, Integer'Image(selected_index)); -- 7 = placement
 
 	Get_Line(Socket, temp_place_points, temp_place_points_l);
+
+	if temp_place_points(1..temp_place_points_l) = "DONE" then
+		 New_Line; Put("WOGOHEWJIGOHJHFIGEW");
+	end if;
 
 	-- SERVER RESPONDS WITH VALUE AND INDEX
 

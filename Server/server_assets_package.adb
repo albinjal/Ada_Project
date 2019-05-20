@@ -71,11 +71,13 @@ begin
 		TX: String(1..100);
 		TL, I: Integer;
 		Current_Rolls: String(1..5);
-		temp_prot_calc: Protocoll_Type;
+		temp_prot_calc, temp_prot_calc2: Protocoll_Type;
 		temp_prot1, temp_prot2: Protocoll_Type;
 
 		type rolls_arr_type_t is array (1..5) of Integer;
 		temp_calc_rolls_arr: Arr;
+
+		win_lose: Integer := 0;
 
 		first_temp: Integer := 0;
 
@@ -166,7 +168,31 @@ begin
 				
 				temp_prot_calc := Calcpoints(Prot1, temp_calc_rolls_arr);
 
+				-- 2 win lose test
+				-- temp_prot_calc2 := Calcpoints(Prot2, temp_calc_rolls_arr);
+
 				--if temp_prot_calc( Integer'Value(TX(1..TL)) ) >= 0 then
+				
+				win_lose := 1;
+
+				for x in 1..15 loop
+					if Prot1(x) = -1 or Prot2(x) = -1 then -- at least one available, send win lose
+						win_lose := 0;
+						exit;
+					end if;
+				end loop;
+
+				if win_lose = 1 then
+					-- Send win lose
+					Put("KÖöööööör"); New_Line;
+					Put_Line(Socket1, "DONE");
+					Put_Line(Socket2, "DONE");
+
+					exit;
+				end if;
+					
+				
+					
 					Put("Placement possible! Gives "); Put( temp_prot_calc( Integer'Value(TX(1..TL)) ) , 0); Put(" points."); New_Line; -- DEBUG
 
 					-- Prot1( Integer'Value ( TX(1..TL) ) ) := temp_prot_calc(Integer'Value(TX(1..TL)));

@@ -4,6 +4,8 @@ with Ada.Text_IO;         use Ada.Text_IO;
 with TJa.Sockets;         use TJa.Sockets;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
 with Server_Assets_Package; use Server_Assets_Package;
+with Klient_Assets_Package; use Klient_Assets_Package;
+
 procedure Server is
    
    --| Servern behöver en Listener_type för att ta emot inkommande anslutningar
@@ -11,7 +13,8 @@ procedure Server is
    
    --| Socket_type används för att kunna kommunicera med en klient
    Socket1, Socket2    : Socket_Type;
-   
+
+   Emptyprotocoll1, Emptyprotocoll2: Protocoll_Type;
    
 begin
    --| Denna rutin kontrollerar att programmet startas med en parameter.
@@ -24,7 +27,15 @@ begin
    end if;
    --| Initierar lyssnaren på en port (klienter bara utanför "localhost").\
    Connect_To_Klients(Socket1, Socket2, Lyssnare, Natural'Value(Argument(1)));
-   Yatzyloop(Socket1, Socket2);
+
+   -- Fill protocolls empty
+   For x in 1..15 loop
+      Emptyprotocoll1(x) := -1;
+      Emptyprotocoll2(x) := -1;
+   end loop;
+
+   -- Start main loop
+   Yatzyloop(Socket1, Socket2, Emptyprotocoll1, Emptyprotocoll2);
      
      
    

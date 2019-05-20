@@ -10,35 +10,6 @@ with TJa.Keyboard;        use TJa.Keyboard;
 with Ada.Numerics.Discrete_Random;
 package body Klient_Assets_Package is
 
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMO
---procedure Fill_Protocoll_Empty(Proto: in out Protocoll_Type) is
---begin
---	Proto(1) := 12;
---	Proto(2) := -1;
---	Proto(3) := -1;
---	Proto(4) := -1;
---	Proto(5) := -1;
---	Proto(6) := -1;
---	Proto(7) := -1;
---	Proto(8) := -1;
---	Proto(9) := -1;
---	Proto(10) := -1;
---	Proto(11) := -1;
---	Proto(12) := -1;
---	Proto(13) := -1;
---	Proto(14) := -1;
---	Proto(15) := -1;
---end Fill_Protocoll_Empty;
--- REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMOVE REMO
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
--- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-
 procedure Bootup(Socket: out Socket_Type; Adress: in String; Port: in Positive) is
 begin
 	Initiate(Socket);
@@ -675,11 +646,11 @@ end Place;
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 	function Calcfirstsum(Prot: in Protocoll_Type) return Integer is
-	sum: Integer := 0;
+		sum: Integer := 0;
 	begin
 
 	for I in 1..6 loop
-		if Prot(I) > 0 then
+		if Prot(I) > 0 AND Prot(I) < 999 then
 		sum := sum + Prot(I);
 		end if;
 	end loop;
@@ -691,7 +662,7 @@ end Place;
 	begin
 
 	for I in 1..15 loop
-		if Prot(I) > 0 then
+		if Prot(I) > 0 AND Prot(I) < 999 then
 			sum := sum + Prot(I);
 		end if;
 	end loop;

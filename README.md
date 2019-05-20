@@ -15,5 +15,5 @@ gnatmake  -aL/courses/TDDD11/TJa/obj -aI/courses/TDDD11/TJa/src -aO/courses/TDDD
 
 **Server:**
 ```
-gnatmake  -aL/courses/TDDD11/TJa/obj -aI/courses/TDDD11/TJa/src -aO/courses/TDDD11/TJa/obj -I../ server.adb
+gnatmake  -aL/courses/TDDD11/TJa/obj -aI/courses/TDDD11/TJa/src -aO/courses/TDDD11/TJa/obj -I../Klient server.adb
 ```

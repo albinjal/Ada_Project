@@ -5,6 +5,7 @@
 	with TJa.Keyboard;        use TJa.Keyboard;
 	with Ada.Text_IO;         use Ada.Text_IO;
 	with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+	with klient_assets_package; use klient_assets_package;
 	package body Yatzy_graphics_package is
 
 	-- Colors
@@ -422,10 +423,10 @@
 			case I is
 			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
-			when 8 => reset_black_color; Put("Sum:");
-			when 9 => reset_black_color; Put("BON");
+			when 8 => reset_black_color; Put(Calcfirstsum(Prot1), 1 + widthcol2 / 2);
+			when 9 => reset_black_color; Put(Bonus(Prot1), 1 + widthcol2 / 2);
 			when 10..18 => other_color_chk; if Prot1(I - 3) /= -1 then Put(Prot1(I - 3), 1 + widthcol2 / 2); end if;
-			when 19 => reset_black_color; Put("Sum:");
+			when 19 => reset_black_color; Put(Calctotsum(Prot1), 1 + widthcol2 / 2);
 
 			when others => null;
 			end case;
@@ -438,10 +439,10 @@
 			case I is
 			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
-			when 8 => reset_black_color; Put("Sum:");
-			when 9 => reset_black_color; Put("BON");
+			when 8 => reset_black_color; Put(Calcfirstsum(Prot2), 1 + widthcol2 / 2);
+			when 9 => reset_black_color; Put(Bonus(Prot2), 1 + widthcol2 / 2);
 			when 10..18 => other_color_chk; if Prot2(I - 3) /= -1 then Put(Prot2(I - 3), 1 + widthcol2 / 2); end if;
-			when 19 => reset_black_color; Put("Sum:");
+			when 19 => reset_black_color; Put(Calctotsum(Prot2), 1 + widthcol2 / 2);
 
 			when others => null;
 			end case;

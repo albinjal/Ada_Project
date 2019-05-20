@@ -3,6 +3,7 @@ with Ada.Text_IO;         use Ada.Text_IO;
 with Ada.Numerics.Discrete_Random;
 with TJa.Sockets;         use TJa.Sockets;
 with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
+with Klient_Assets_Package; use Klient_Assets_Package;
 
 package body Server_Assets_Package is
 function Generate
@@ -64,7 +65,7 @@ begin
 		return i;
 	end;
 
-	procedure Yatzyloop(Socket1, Socket2: in out Socket_Type) is
+	procedure Yatzyloop(Socket1, Socket2: in out Socket_Type; Prot1, Prot2: in out Protocoll_Type) is
 		type Rerolls is array(1..5) of Integer;
 		Reroll: Rerolls;
 		TX: String(1..100);
@@ -139,7 +140,7 @@ begin
 		--------------------------------- Slutställ tärningar
 
 	-- swap players and protocolls
-	Yatzyloop(Socket2, Socket1);
+	Yatzyloop(Socket2, Socket1, Prot2, Prot1);
 		
 	end;
 

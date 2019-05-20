@@ -503,7 +503,7 @@
 		For I in 1..19 loop
 			Goto_XY(X_Start + 3 + widthcol1 + widthcol2, Y_Start - 1 + I * 2);
 			case I is
-			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
+			when 1 => Set_Text_Modes(Off, Off, Off); Put("P2"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
 			when 8 => reset_black_color; Put(Calcfirstsum(temp2), 1 + widthcol2 / 2);
 			when 9 => reset_black_color; Put(Bonus(temp2), 1 + widthcol2 / 2);

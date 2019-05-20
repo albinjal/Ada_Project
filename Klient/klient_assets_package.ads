@@ -27,11 +27,11 @@ package klient_assets_package is
   --procedure protocoll (Prot1, Prot2 : in Protocoll_Type);
 	------------------------------------------------------------------------------------------
 	------------------------------------------------------------------------------------------
-	function Calcfirstsum(Prot: in Protocoll_Type) return Natural;
+	function Calcfirstsum(Prot: in Protocoll_Type) return Integer;
 
-	function Calctotsum(Prot: in Protocoll_Type) return Natural;
+	function Calctotsum(Prot: in Protocoll_Type) return Integer;
 
-	function Bonus(Prot: in Protocoll_Type) return Natural;
+	function Bonus(Prot: in Protocoll_Type) return Integer;
 
 	function Read(C: in Character) return Natural;
 

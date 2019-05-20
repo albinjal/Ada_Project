@@ -404,10 +404,10 @@ begin
 			Result(I) := Triss(Trolls);
 			when 10 =>
 			Result(I) := FourPair(Trolls);
-			when 11..12 =>
-			Result(I) := Stege(I, Trolls);
-			when 13 =>
+			when 11 =>
 			Result(I) := Kaok(Trolls);
+			when 12..13 =>
+			Result(I) := Stege(I, Trolls);
 			when 14 =>
 			Result(I) := Chans(Trolls);
 			when 15 =>
@@ -538,8 +538,8 @@ begin --      --      --      --      --      --      --      --      --      --
 				exit; -- exit loop, move to placement
 			elsif temp_resp_int = 1 then
 
-				message(33, 18, "Välj vilka tärningar som ska slås om (1-5):");
-				message2(33, 18, "1-5 = Välj tärningar, godkänn med retur");
+				message(33, 18, "Välj vilka tärningar som ska slås om");
+				message2(33, 18, "tryck 1-5, godkänn med retur");
 
 				--  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --  --
 				Set_Buffer_Mode(Off);
@@ -654,7 +654,7 @@ end Place;
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
-	function Calcfirstsum(Prot: in Protocoll_Type) return Natural is
+	function Calcfirstsum(Prot: in Protocoll_Type) return Integer is
 	sum: Integer := 0;
 	begin
 
@@ -663,10 +663,11 @@ end Place;
 		sum := sum + Prot(I);
 		end if;
 	end loop;
+	Put("hej");
 	return sum;
 	end;
 
-	function Calctotsum(Prot: in Protocoll_Type) return Natural is
+	function Calctotsum(Prot: in Protocoll_Type) return Integer is
 		sum: Integer := 0;
 	begin
 
@@ -676,10 +677,11 @@ end Place;
 		end if;
 	end loop;
 	sum := sum + Bonus(Prot);
+	Put("hej");
 	return sum;
 	end;
 
-	function Bonus(Prot: in Protocoll_Type) return Natural is
+	function Bonus(Prot: in Protocoll_Type) return Integer is
 
 	begin
 	if Calcfirstsum(Prot) >= 50 then

@@ -164,7 +164,7 @@ begin
 					temp_calc_rolls_arr(x) := Integer'Value( Current_Rolls(x..x) );
 				end loop;
 				
-				temp_prot_calc := Calcpoints(Prot1, temp_calc_rolls_arr);
+				-- FLYTTAD temp_prot_calc := Calcpoints(Prot1, temp_calc_rolls_arr);
 
 				--if temp_prot_calc( Integer'Value(TX(1..TL)) ) >= 0 then
 					Put("Placement possible! Gives "); Put( temp_prot_calc( Integer'Value(TX(1..TL)) ) , 0); Put(" points."); New_Line; -- DEBUG
@@ -177,6 +177,9 @@ begin
 
 					if(first_temp = 1) then
 						first_temp := 0;
+
+						temp_prot_calc := Calcpoints(Prot1, temp_calc_rolls_arr);
+
 						Put("FIRST ======================= TRUE"); New_Line; -- DEBUG
 						temp_prot1( Integer'Value ( TX(1..TL) ) ) := temp_prot_calc(Integer'Value(TX(1..TL)));
 
@@ -194,6 +197,9 @@ begin
 
 					elsif(first_temp = 0)then
 						first_temp := 1;
+
+						temp_prot_calc := Calcpoints(Prot2, temp_calc_rolls_arr);
+
 						Put("FIRST ======================= FALSE"); New_Line; -- DEBUG
 						temp_prot2( Integer'Value ( TX(1..TL) ) ) := temp_prot_calc(Integer'Value(TX(1..TL)));
 

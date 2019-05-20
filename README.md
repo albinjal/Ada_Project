@@ -4,7 +4,7 @@ Yatzy multiplayer terminal game currently under construction for school project.
 Assignment: https://www.ida.liu.se/~TDDD11/2019/Matr/SN/projectmaterial.sv.shtml
 
 
-# How to compile (Using gnat)
+## How to compile (Using gnat)
 
 First, make sure you are in the correct folder (Klient or Server)
 

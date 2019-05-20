@@ -58,6 +58,7 @@ begin
 	Set_Graphical_Mode(On);
 	background;
 	Start_screen(35, 12);
+	--vinst(25, 12);
 	Skip_Line;
 	background;
 	protocoll_background(125, 4);

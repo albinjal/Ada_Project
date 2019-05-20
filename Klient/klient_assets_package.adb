@@ -663,7 +663,7 @@ end Place;
 		sum := sum + Prot(I);
 		end if;
 	end loop;
-	Put("hej");
+	New_Line; New_Line; Put("CALCFIRSTSUM = "); Put(sum, 0); -- DEBUG
 	return sum;
 	end;
 
@@ -677,7 +677,7 @@ end Place;
 		end if;
 	end loop;
 	sum := sum + Bonus(Prot);
-	Put("hej");
+	New_Line; New_Line; Put("CALCTOTSUM = "); Put(sum, 0); -- DEBUG
 	return sum;
 	end;
 

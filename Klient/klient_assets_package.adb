@@ -663,6 +663,10 @@ end Place;
 		sum := sum + Prot(I);
 		end if;
 	end loop;
+<<<<<<< HEAD
+=======
+	New_Line; New_Line; Put("CALCFIRSTSUM = "); Put(sum, 0); -- DEBUG
+>>>>>>> 1769982ccb7c7f6ac726db4b864e707765701eba
 	return sum;
 	end;
 
@@ -676,6 +680,10 @@ end Place;
 		end if;
 	end loop;
 	sum := sum + Bonus(Prot);
+<<<<<<< HEAD
+=======
+	New_Line; New_Line; Put("CALCTOTSUM = "); Put(sum, 0); -- DEBUG
+>>>>>>> 1769982ccb7c7f6ac726db4b864e707765701eba
 	return sum;
 	end;
 

@@ -651,4 +651,34 @@ end Place;
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
+	function Calcfirstsum(Prot: in Protocoll_Type) return Natural is
+	sum: Integer := 0;
+	begin
+
+	for I in 1..6 loop
+		sum := sum + Prot(I);
+	end loop;
+	return sum;
+	end;
+
+	function Calctotsum(Prot: in Protocoll_Type) return Natural is
+		sum: Integer := 0;
+	begin
+
+	for I in 1..15 loop
+		sum := sum + Prot(I);
+	end loop;
+	sum := sum + Bonus(Prot);
+	return sum;
+	end;
+
+	function Bonus(Prot: in Protocoll_Type) return Natural is
+
+	begin
+	if Calcfirstsum >= 50 then
+		return 50;
+	end if;
+	return 0;
+	end;
+	
 end Klient_Assets_Package;

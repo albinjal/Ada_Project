@@ -154,7 +154,7 @@
 		update_protocoll(125, 4, avail_points, avail_points, Player, 1);
 
 
-		New_Line; Put("Arraystorlek: "); Put(temp_arraysize,0); -- DEBUG
+		--New_Line; Put("Arraystorlek: "); Put(temp_arraysize,0); -- DEBUG
 
 		Set_Buffer_Mode(Off);
 		Set_Echo_Mode(Off);
@@ -268,7 +268,69 @@
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
 	---------------------------------------------------------------------------------------------
+	procedure Start_screen (X_Start, Y_Start : in integer) is
 
+	begin
+		Set_Foreground_Colour(white);
+		Set_Graphical_Mode(off);
+
+		goto_xy(X_Start, Y_Start);
+		Put("YYYYYYY       YYYYYYY                      ttttttt                                                     ");
+		goto_xy(X_Start, Y_Start + 1);
+		Put("Y:::::Y       Y:::::Y                      t:::::t                                                     ");
+		goto_xy(X_Start, Y_Start + 2);
+		Put("Y:::::Y       Y:::::Y                      t:::::t                                                     ");
+		goto_xy(X_Start, Y_Start + 3);
+		Put("Y::::::Y     Y::::::Y                      t:::::t                                                     ");
+		goto_xy(X_Start, Y_Start + 4);
+		Put(" YY:::::Y   Y:::::YY aaaaaaaaaaaaa   ttttttt:::::ttttttt   zzzzzzzzzzzzzzzzz yyyyyyy           yyyyyyy ");
+		goto_xy(X_Start, Y_Start + 5);
+		Put("   Y:::::Y Y:::::Y   a::::::::::::a  t:::::::::::::::::t   z:::::::::::::::z  y:::::y         y:::::y  ");
+		goto_xy(X_Start, Y_Start + 6);
+		Put("    Y:::::Y:::::Y    aaaaaaaaa:::::a t:::::::::::::::::t   z::::::::::::::z    y:::::y       y:::::y  ");
+		goto_xy(X_Start, Y_Start + 7);
+		Put("     Y:::::::::Y              a::::a tttttt:::::::tttttt   zzzzzzzz::::::z      y:::::y     y:::::y   ");
+		goto_xy(X_Start, Y_Start + 8);
+		Put("       Y:::::Y       aa::::::::::::a       t:::::t               z::::::z         y:::::y y:::::y     ");
+		goto_xy(X_Start, Y_Start + 9);
+		Put("       Y:::::Y     a::::a    a:::::a       t:::::t    tttttt    z::::::z            y:::::::::y       ");
+		goto_xy(X_Start, Y_Start + 10);
+		Put("    YYYY:::::YYYY  a:::::aaaa::::::a       tt::::::::::::::t  z::::::::::::::z        y:::::y         ");
+		goto_xy(X_Start, Y_Start + 11);
+		Put("    Y:::::::::::Y   a::::::::::aa:::a       tt:::::::::::tt  z:::::::::::::::z       y:::::y          ");
+		goto_xy(X_Start, Y_Start + 12);
+		Put("    YYYYYYYYYYYYY    aaaaaaaaaa  aaaa        ttttttttttttt  zzzzzzzzzzzzzzzzzz      y:::::y           ");
+		goto_xy(X_Start, Y_Start + 13);
+		Put("                                                                                   y:::::y            ");
+		goto_xy(X_Start, Y_Start + 14);
+		Put("                                                                                  y:::::y             ");
+		goto_xy(X_Start, Y_Start + 15);
+		Put("                                                                                 y:::::y              ");
+		goto_xy(X_Start, Y_Start + 16);
+		Put("                                                                                y:::::y               ");
+		goto_xy(X_Start, Y_Start + 17);
+		Put("                                                                               yyyyyyy                ");
+		goto_xy(X_Start + 20, Y_Start + 16);
+		Put("Tryck enter för att starta spelet...");
+
+
+
+	end Start_screen;
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
+	---------------------------------------------------------------------------------------------
 	procedure clear_protocoll(X_Start, Y_Start: in Integer; Which_Protocoll_Or_Both: in Integer) is
 		x : Integer := X_Start;
 		y : Integer := Y_Start;
@@ -318,6 +380,7 @@
 	text_width: constant Integer := 12;
 	points_width: constant Integer := 5;
 	avail_place_text_color1: String := "[38;5;208m";
+	temp1, temp2 : Protocoll_Type;
 
 	procedure other_color_chk is
 	begin
@@ -420,13 +483,16 @@
 		For I in 1..19 loop
 			Goto_XY(X_Start + 2 + widthcol1, Y_Start - 1 + I * 2);
 
+			temp1 := prot1;
+			temp2 := prot2;
+
 			case I is
 			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot1(I - 1) /= -1 then Put(Prot1(I - 1), 1 + widthcol2 / 2); end if;
-			when 8 => reset_black_color; Put(Calcfirstsum(Prot1), 1 + widthcol2 / 2);
-			when 9 => reset_black_color; Put(Bonus(Prot1), 1 + widthcol2 / 2);
+			when 8 => reset_black_color; Put(Calcfirstsum(temp1), 1 + widthcol2 / 2);
+			when 9 => reset_black_color; Put(Bonus(temp1), 1 + widthcol2 / 2);
 			when 10..18 => other_color_chk; if Prot1(I - 3) /= -1 then Put(Prot1(I - 3), 1 + widthcol2 / 2); end if;
-			when 19 => reset_black_color; Put(Calctotsum(Prot1), 1 + widthcol2 / 2);
+			when 19 => reset_black_color; Put(Calctotsum(temp1), 1 + widthcol2 / 2);
 
 			when others => null;
 			end case;
@@ -439,10 +505,10 @@
 			case I is
 			when 1 => Set_Text_Modes(Off, Off, Off); Put("P1"); Set_Text_Modes(Off, Off, On);
 			when 2..7 => other_color_chk; if Prot2(I - 1) /= -1 then Put(Prot2(I - 1), 1 + widthcol2 / 2); end if;
-			when 8 => reset_black_color; Put(Calcfirstsum(Prot2), 1 + widthcol2 / 2);
-			when 9 => reset_black_color; Put(Bonus(Prot2), 1 + widthcol2 / 2);
+			when 8 => reset_black_color; Put(Calcfirstsum(temp2), 1 + widthcol2 / 2);
+			when 9 => reset_black_color; Put(Bonus(temp2), 1 + widthcol2 / 2);
 			when 10..18 => other_color_chk; if Prot2(I - 3) /= -1 then Put(Prot2(I - 3), 1 + widthcol2 / 2); end if;
-			when 19 => reset_black_color; Put(Calctotsum(Prot2), 1 + widthcol2 / 2);
+			when 19 => reset_black_color; Put(Calctotsum(temp2), 1 + widthcol2 / 2);
 
 			when others => null;
 			end case;
@@ -803,7 +869,7 @@ end dice_placement;
 	for X in 1..51 loop
 		for Y in 1..9 loop
 		Put(ASCII.ESC & "[48;5;15m");
-		if Y /= 5 then	
+		if Y /= 5 then
 			goto_xy((X_Start + X), (Y_Start + Y));
 		else
 			goto_xy((X_Start + X), (Y_Start + Y + 1));

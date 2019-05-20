@@ -71,8 +71,19 @@ begin
 		TX: String(1..100);
 		TL, I: Integer;
 		Current_Rolls: String(1..5);
+		temp_prot_calc: Protocoll_Type;
+
+		type rolls_arr_type_t is array (1..5) of Integer;
+		temp_calc_rolls_arr: Arr;
 
 	begin
+	-- DEBUG - REMOVE - REMOVE
+	-- DEBUG - REMOVE - REMOVE
+	Put("Socket 1 has proto var1: "); Put( Prot1(1) ); New_Line;
+	Put("Socket 1 has proto var2: "); Put( Prot1(2) ); New_Line;
+	-- DEBUG - REMOVE - REMOVE
+	-- DEBUG - REMOVE - REMOVE
+
 	--------------------------------- Slutställ tärningar
 		Current_Rolls := Roll(1..5);
 		Put("Current_rolls = " & Current_Rolls); New_Line;  -- DEBUG
@@ -127,7 +138,25 @@ begin
 				Put("INPUT FROM SOCKET 1: "); Put(TX(1..TL)); New_Line; -- DEBUG
 
 				-- CHECK IF PLACEMENT IS POSSIBLE
-				Put("Is index "); Put(TX(1..TL)); Put(" possible?");
+				Put("Is index "); Put(TX(1..TL)); Put(" possible?"); New_Line;
+				
+				for x in 1..15 loop
+					temp_prot_calc(x) := 0;
+				end loop;
+				
+				for x in 1..5 loop
+					temp_calc_rolls_arr(x) := Integer'Value( Current_Rolls(x..x) );
+				end loop;
+				
+				temp_prot_calc := Calcpoints(Prot1, temp_calc_rolls_arr);
+
+				if temp_prot_calc( Integer'Value(TX(1..TL)) ) >= 0 then
+					Put("Placement possible! Gives "); Put( temp_prot_calc( Integer'Value(TX(1..TL)) ) , 0); Put(" points."); New_Line; -- DEBUG
+				else
+					-- Not possible!
+					Put("Placement not possible! Handle this plz, code not written yet"); New_Line;
+					null; -- Add code to handle this here
+				end if;
 
 				exit;
 

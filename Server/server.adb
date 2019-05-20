@@ -29,9 +29,12 @@ begin
    Connect_To_Klients(Socket1, Socket2, Lyssnare, Natural'Value(Argument(1)));
 
    -- Fill protocolls empty
-   Emptyprotocoll1(1) := 0;
-   Emptyprotocoll2(1) := 0;
+   For x in 1..15 loop
+      Emptyprotocoll1(x) := -1;
+      Emptyprotocoll2(x) := -1;
+   end loop;
 
+   -- Start main loop
    Yatzyloop(Socket1, Socket2, Emptyprotocoll1, Emptyprotocoll2);
      
      

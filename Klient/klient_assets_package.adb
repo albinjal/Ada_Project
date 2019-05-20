@@ -626,11 +626,11 @@ end Place;
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------
 	function Calcfirstsum(Prot: in Protocoll_Type) return Integer is
-	sum: Integer := 0;
+		sum: Integer := 0;
 	begin
 
 	for I in 1..6 loop
-		if Prot(I) > 0 then
+		if Prot(I) > 0 AND Prot(I) < 999 then
 		sum := sum + Prot(I);
 		end if;
 	end loop;
@@ -643,7 +643,7 @@ end Place;
 	begin
 
 	for I in 1..15 loop
-		if Prot(I) > 0 then
+		if Prot(I) > 0 AND Prot(I) < 999 then
 			sum := sum + Prot(I);
 		end if;
 	end loop;

@@ -138,7 +138,7 @@ begin
 		end loop;
 		--------------------------------- Slutställ tärningar
 
-	-- swap players
+	-- swap players and protocolls
 	Yatzyloop(Socket2, Socket1);
 		
 	end;
